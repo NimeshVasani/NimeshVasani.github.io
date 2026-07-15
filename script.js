@@ -92,8 +92,8 @@ const projectsData = [
       "Sleek Gameplay Motion: Built custom canvas-driven animations for satisfying UI responses.",
       "Audio & Profile Tweaks: Personalized sound boards, soundtrack controls, and player profile settings."
     ],
-    "mediaType": "image",
-    "mediaUrl": "tictactoe_mockup.png",
+    "mediaType": "video",
+    "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-4b6708ba73988c4083cb/tic_tac_toe.mp4",
     "projectLink": "https://github.com/"
   },
   {
