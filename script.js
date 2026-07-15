@@ -43,7 +43,7 @@ const projectsData = [
       "Engaging UI/UX: A modern, minimalist design built with Jetpack Compose Multiplatform for a seamless aesthetic."
     ],
     "mediaType": "video",
-    "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-4b6708ba73988c4083cb/transit_app_clone.mov",
+    "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-3e22f93cc85a1e2ef965/2048_cmp.mp4",
     "projectLink": "https://github.com/"
   },
   {
@@ -92,7 +92,7 @@ const projectsData = [
       "Sleek Gameplay Motion: Built custom canvas-driven animations for satisfying UI responses.",
       "Audio & Profile Tweaks: Personalized sound boards, soundtrack controls, and player profile settings."
     ],
-    "mediaType": "video",
+    "mediaType": "video/mp4",
     "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-4b6708ba73988c4083cb/tic_tac_toe.mp4",
     "projectLink": "https://github.com/"
   },
@@ -108,8 +108,8 @@ const projectsData = [
       "Enhanced Security Visuals: Simulated biometric prompts and dynamic card detail screens.",
       "Cross-Platform Consistency: Shared Flutter codebase running beautifully across Android and iOS screens."
     ],
-    "mediaType": "image",
-    "mediaUrl": "rbc_mockup.png",
+    "mediaType": "video/mp4",
+    "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-3e22f93cc85a1e2ef965/2048_cmp.mp4",
     "projectLink": "https://github.com/"
   },
   {
