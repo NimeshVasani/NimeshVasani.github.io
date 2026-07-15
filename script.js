@@ -1,32 +1,48 @@
 // ==========================================
-// 1. BOOTSTRAP INITIALIZATION
+// 1. BOOTSTRAP INITIALIZATION (Fail-Safe Restructured)
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-    // If your code uses async loading placeholders, keep it here:
+    // 1. Instantly initialize layout, header, and animations first!
+    // This ensures your header, navigation, scrollSpy, and homepage load instantly.
+    try {
+        initParticles();
+        initializeScrollToNext();
+        initializeMobileMenu();
+        initializeScrollSpy();
+    } catch (e) {
+        console.error("Layout initialization encountered an error:", e);
+    }
+
+    // 2. Fetch projects asynchronously without blocking the main rendering thread
     const placeholder = document.getElementById("projects-placeholder");
     if (placeholder) {
         fetch("projects.html")
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
             .then(data => {
                 placeholder.innerHTML = data;
                 initializeProjectFilters(); 
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                console.error("Failed to load projects.html, running fallback initialization:", err);
+                // Graceful fallback: render portfolio cards even if fetch fails
+                initializeProjectFilters();
+            });
     } else {
-        // Fallback layout initialization if not using dynamic placeholders
         initializeProjectFilters();
     }
-
-    // Initialize layout scripts
-    initParticles();
-    initializeScrollToNext();
-    initializeMobileMenu();
-    initializeScrollSpy();
 });
 
 // ==========================================
 // 2. PROJECT PORTFOLIO DATA (Stored locally)
 // ==========================================
+// NOTE: To fix videos failing to load, move these videos into your repository's 
+// assets folder and use relative paths (e.g., "assets/videos/tic_tac_toe.mp4") 
+// rather than using redirected GitHub Release URLs.
 const projectsData = [
   {
     "id": "bhagavad-gita-app",
@@ -150,7 +166,6 @@ function renderProjectCards(projects) {
 
     projects.forEach(project => {
         const isVideo = project.mediaType === "video";
-        // If it is a video, we show our fallback cover image as the thumbnail preview first
         const imageSrc = isVideo ? FALLBACK_MEDIA : (project.mediaUrl || FALLBACK_MEDIA);
 
         const cardHtml = `
@@ -209,7 +224,6 @@ window.handleCardHover = function(cardElement, isHovering) {
         video.classList.remove("opacity-0");
         image.classList.add("opacity-0"); 
         
-        // Mute is strictly enforced programmatically to guarantee playback bypass in Safari/Chrome
         video.muted = true;
         video.play().catch(err => console.log("Hover video play blocked: ", err));
     } else {
@@ -262,7 +276,6 @@ window.openProjectDetails = function(projectId) {
     const modalVideo = document.getElementById("modal-video");
     const modalVideoSource = document.getElementById("modal-video-source");
 
-    // Clean structural reset
     modalImg.classList.add("hidden");
     modalVideo.classList.add("hidden");
     modalVideo.pause(); 
@@ -272,28 +285,24 @@ window.openProjectDetails = function(projectId) {
         modalVideo.load(); 
         modalVideo.classList.remove("hidden");
         
-        // Set properties explicitly
         modalVideo.muted = true;
         modalVideo.setAttribute('playsinline', '');
         modalVideo.setAttribute('preload', 'metadata');
         
-        // Handle programmatic autoplay gracefully
         modalVideo.play().catch(err => {
             console.log("Interactive modal block. Retrying with explicit muted layout...", err);
             modalVideo.muted = true;
             modalVideo.play();
         });
     } else {
-        // Safe binding: setup onerror handler before setting image sources!
         modalImg.onerror = function() {
-            this.onerror = null; // Prevent infinite error loops if fallback fails
+            this.onerror = null; 
             this.src = FALLBACK_MEDIA;
         };
         modalImg.src = project.mediaUrl || FALLBACK_MEDIA;
         modalImg.classList.remove("hidden");
     }
 
-    // Populate dynamic bullets lists
     const listContainer = document.getElementById("modal-features-list");
     listContainer.innerHTML = "";
     project.keyFeatures.forEach(feature => {
@@ -310,7 +319,6 @@ window.openProjectDetails = function(projectId) {
     modal.classList.remove("hidden");
     modal.classList.add("flex");
 
-    // Lock page backdrop scroll behaviors
     document.body.classList.add("overflow-hidden");
 }
 
@@ -325,7 +333,6 @@ window.closeProjectDetails = function() {
     modal.classList.add("hidden");
     modal.classList.remove("flex");
     
-    // Unlock backdrop scrolling
     document.body.classList.remove("overflow-hidden");
 }
 
