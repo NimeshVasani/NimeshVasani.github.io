@@ -37,14 +37,17 @@
                             </ul>
                         </div>
                         <div>
-                            <!-- Triggers the Gita detail dynamically via JS -->
                             <button onclick="openProjectDetails('bhagavad-gita-app')" class="inline-block px-6 py-2.5 bg-[#E14D4D] hover:bg-[#c93f3f] text-white font-semibold rounded text-sm tracking-wide transition duration-200 shadow-lg">
                                 View Project
                             </button>
                         </div>
                     </div>
                     <div class="w-64 h-auto mx-auto md:mx-0 order-1 md:order-2 flex-shrink-0 drop-shadow-2xl hover:scale-105 transition-transform duration-300">
-                        <img src="YOUR_IPHONE_MOCKUP_IMAGE.png" alt="Featured App Preview" class="w-full h-auto object-contain">
+                        <!-- Shows Bhagavad Gita app mockup -->
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop" 
+                             alt="Featured App Preview" 
+                             class="w-full h-auto object-contain rounded-lg shadow-xl"
+                             onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop'">
                     </div>
                 </div>
             </div>
@@ -74,33 +77,32 @@
             </button>
         </div>
 
-        <!-- This empty grid is populated automatically by script.js -->
+        <!-- Populated via script.js -->
         <div id="dynamic-project-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 font-sans"></div>
     </div>
 
-    <!-- 3. GORGEOUS FULLSCREEN MODAL OVERLAY (Initially Hidden) -->
+    <!-- 3. FULLSCREEN MODAL OVERLAY -->
     <div id="project-modal" class="fixed inset-0 z-50 bg-[#070a12]/95 backdrop-blur-md hidden items-center justify-center p-4 md:p-12 transition-all duration-300">
-        <!-- Inner Modal Box -->
         <div class="bg-[#0D1321] border border-gray-800 rounded-2xl w-full max-w-6xl h-[90vh] flex flex-col md:flex-row overflow-hidden relative shadow-2xl">
             
-            <!-- Close Button (Top right of modal) -->
+            <!-- Close Button -->
             <button onclick="closeProjectDetails()" class="absolute top-6 right-6 text-gray-400 hover:text-[#E14D4D] text-3xl font-bold z-50 transition duration-200">
                 &times;
             </button>
 
-            <!-- Left Half: App Screenshot / Mockup Video -->
+            <!-- Left Half: Media Renderer -->
             <div class="w-full md:w-3/5 bg-black/40 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-800 relative">
-                <!-- Image Tag (Hidden by default, updated dynamically via JS) -->
+                <!-- Image Preview -->
                 <img id="modal-image" src="" alt="Project Visual Preview" class="hidden max-h-[70vh] w-auto rounded-lg object-contain shadow-2xl">
                 
-                <!-- Video Tag (Hidden by default, updated dynamically via JS) -->
+                <!-- Video Preview -->
                 <video id="modal-video" class="hidden max-h-[70vh] w-auto rounded-lg object-contain shadow-2xl" controls autoplay loop muted playsinline>
                     <source id="modal-video-source" src="" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
 
-            <!-- Right Half: Project Title, Description and Key Features -->
+            <!-- Right Half: Project Data Details -->
             <div class="w-full md:w-2/5 p-8 md:p-12 overflow-y-auto space-y-6 flex flex-col justify-center">
                 <div class="space-y-2">
                     <h2 id="modal-title" class="text-4xl font-extrabold italic text-white leading-tight">Project Title</h2>
