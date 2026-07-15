@@ -5,66 +5,49 @@
     <div class="max-w-6xl mx-auto px-6 mb-24 relative z-10">
         <div class="grid lg:grid-cols-12 gap-12 items-center">
             
-            <!-- Left Side: Text and Intro Content -->
+            <!-- Left Side -->
             <div class="lg:col-span-7 space-y-8">
-                <!-- Huge, bold, clean "MY WORK" heading -->
                 <h2 class="text-6xl md:text-8xl font-black tracking-tighter text-white uppercase select-none leading-none">
                     My<br>Work
                 </h2>
-                
-                <!-- Description with monospace-style spacing -->
                 <p class="text-base md:text-lg text-gray-300 leading-relaxed tracking-wide font-sans">
                     Deployed scalable e-commerce, travel, social network, and language learning mobile apps using android, flutter and iOS. 
                     Collaborated in 80+ projects with 50+ clients all around the world. I am also interested in backend tech using spring-boot and react.
                 </p>
             </div>
 
-            <!-- Right Side: Interactive Mockup Showcase (With designated image placeholders) -->
+            <!-- Right Side (Featured Highlight) -->
             <div class="lg:col-span-5 relative flex flex-col justify-center min-h-[450px]">
-                
-                <!-- BACKGROUND DECORATION PLACEHOLDER: Put your code background image/GIF path in src -->
                 <div class="absolute -top-10 left-0 w-full h-full opacity-20 pointer-events-none z-0">
                     <img src="YOUR_CODE_BACKGROUND_IMAGE.png" alt="" class="w-full h-full object-contain">
                 </div>
-
                 <div class="relative z-10 flex flex-col items-start md:flex-row md:items-center gap-6">
-                    
-                    <!-- Curved arrow & project details container -->
                     <div class="space-y-6 max-w-xs order-2 md:order-1">
-                        
-                        <!-- Purple curved pointing arrow -->
                         <div class="hidden md:block transform translate-x-12 translate-y-2">
                             <svg width="80" height="50" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10 40C25 15 45 10 65 20" stroke="#8B5CF6" stroke-width="3" stroke-linecap="round"/>
-                                <path d="M55 12L67 21L58 31" stroke="#8B5CF6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 40C25 15 45 10 65 20" stroke="#E14D4D" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M55 12L67 21L58 31" stroke="#E14D4D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
-
-                        <!-- Featured Info block -->
                         <div class="space-y-2">
                             <h3 class="text-lg font-bold text-white font-sans">Featured Project</h3>
                             <ul class="text-sm text-gray-400 space-y-1 font-sans">
-                                <li>Mobile App - Customers</li>
-                                <li>Web/Desktop App - Store Owner</li>
+                                <li>The Bhagavad Gita App</li>
+                                <li>Mobile App - Android & iOS</li>
                             </ul>
                         </div>
-
-                        <!-- "View Project" CTA link button -->
                         <div>
-                            <a href="#featured-details-link" class="inline-block px-6 py-2.5 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded text-sm tracking-wide transition duration-200 shadow-lg">
+                            <!-- Triggers the Gita detail dynamically via JS -->
+                            <button onclick="openProjectDetails('bhagavad-gita-app')" class="inline-block px-6 py-2.5 bg-[#E14D4D] hover:bg-[#c93f3f] text-white font-semibold rounded text-sm tracking-wide transition duration-200 shadow-lg">
                                 View Project
-                            </a>
+                            </button>
                         </div>
                     </div>
-
-                    <!-- PHONE CONTAINER PLACEHOLDER: Put your transparent phone frame mockup in src -->
                     <div class="w-64 h-auto mx-auto md:mx-0 order-1 md:order-2 flex-shrink-0 drop-shadow-2xl hover:scale-105 transition-transform duration-300">
                         <img src="YOUR_IPHONE_MOCKUP_IMAGE.png" alt="Featured App Preview" class="w-full h-auto object-contain">
                     </div>
-
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -73,9 +56,8 @@
         <hr class="border-gray-800">
     </div>
 
-    <!-- 2. ALL PROJECTS GRID SECTION -->
+    <!-- 2. DYNAMIC PROJECTS GRID SECTION -->
     <div class="max-w-6xl mx-auto px-6 relative z-10">
-        
         <!-- Interactive Category Filters -->
         <div class="flex flex-wrap gap-3 mb-12 justify-center md:justify-start font-sans">
             <button class="filter-btn active px-5 py-2 rounded-lg border border-[#E14D4D] bg-[#E14D4D] text-white text-sm font-semibold transition duration-200" data-filter="all">
@@ -92,39 +74,39 @@
             </button>
         </div>
 
-        <!-- Dynamic Filterable Project Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 font-sans">
+        <!-- This empty grid is populated automatically by script.js -->
+        <div id="dynamic-project-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 font-sans"></div>
+    </div>
+
+    <!-- 3. GORGEOUS FULLSCREEN MODAL OVERLAY (Initially Hidden) -->
+    <div id="project-modal" class="fixed inset-0 z-50 bg-[#070a12]/95 backdrop-blur-md hidden items-center justify-center p-4 md:p-12 transition-all duration-300">
+        <!-- Inner Modal Box (Matches layout in screenshot: left media, right text details) -->
+        <div class="bg-[#0D1321] border border-gray-800 rounded-2xl w-full max-w-6xl h-[90vh] flex flex-col md:flex-row overflow-hidden relative shadow-2xl">
             
-            <!-- Project Card 1 -->
-            <div class="project-card bg-[#161D30] rounded-xl border border-gray-800 hover:border-indigo-500/50 transition duration-300 overflow-hidden group" data-tags="android flutter">
-                <div class="h-48 bg-gray-800 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
-                    <!-- Future Card Image Placeholder -->
-                    <img src="https://via.placeholder.com/400x250" alt="Project 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                </div>
-                <div class="p-6 space-y-4">
-                    <div class="flex gap-2">
-                        <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400">Android</span>
-                        <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-pink-500/10 text-pink-400">Flutter</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-white">E-Commerce App</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">A high-performance mobile marketplace with seamless payment integrations.</p>
-                </div>
+            <!-- Close Button (Top right of modal) -->
+            <button onclick="closeProjectDetails()" class="absolute top-6 right-6 text-gray-400 hover:text-[#E14D4D] text-3xl font-bold z-50 transition duration-200">
+                &times;
+            </button>
+
+            <!-- Left Half: App Screenshot / Mockup Video -->
+            <div class="w-full md:w-3/5 bg-black/40 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-800 relative">
+                <img id="modal-image" src="" alt="Project Visual Preview" class="max-h-[70vh] w-auto rounded-lg object-contain shadow-2xl">
             </div>
 
-            <!-- Project Card 2 -->
-            <div class="project-card bg-[#161D30] rounded-xl border border-gray-800 hover:border-indigo-500/50 transition duration-300 overflow-hidden group" data-tags="ios">
-                <div class="h-48 bg-gray-800 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
-                    <!-- Future Card Image Placeholder -->
-                    <img src="https://via.placeholder.com/400x250" alt="Project 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+            <!-- Right Half: Project Title, Description and Key Features -->
+            <div class="w-full md:w-2/5 p-8 md:p-12 overflow-y-auto space-y-6 flex flex-col justify-center">
+                <div class="space-y-2">
+                    <h2 id="modal-title" class="text-4xl font-extrabold italic text-white leading-tight">Project Title</h2>
+                    <p id="modal-subtitle" class="text-sm tracking-widest text-[#E14D4D] font-bold uppercase">subtitle</p>
                 </div>
-                <div class="p-6 space-y-4">
-                    <div class="flex gap-2">
-                        <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-purple-500/10 text-purple-400">iOS</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-white">Travel Planner</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Native SwiftUI application optimized for real-time itinerary management.</p>
+                
+                <p id="modal-long-desc" class="text-gray-300 text-sm leading-relaxed font-sans"></p>
+                
+                <div class="space-y-4">
+                    <h4 class="text-sm font-bold text-white tracking-widest uppercase">✨ Key Features :</h4>
+                    <ul id="modal-features-list" class="space-y-3 text-sm text-gray-400 font-sans leading-relaxed">
+                        <!-- Populated by script.js -->
+                    </ul>
                 </div>
             </div>
 
