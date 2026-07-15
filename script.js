@@ -103,7 +103,7 @@ const projectsData = [
     ],
     "mediaType": "video",
     "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/f314afaf55f8299d519a88ea517c16ea1c414e8b/personal_ai_assistant.mp4",
-    "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/35c2178c9ea495db600ddf388b1299db22cde232/bhagavad_gita.png",
+    "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/65198d48bd6b5d5920dad0dd4b2c900fcc1764c2/personal_ai_assistant.jpg",
     "projectLink": "https://github.com/"
   },
   {
@@ -120,7 +120,7 @@ const projectsData = [
     ],
     "mediaType": "video",
     "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/6e4a8d70c53109d84384ef2e4b9cde47715f4bb8/transit_app_clone.mp4",
-          "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/35c2178c9ea495db600ddf388b1299db22cde232/bhagavad_gita.png",
+          "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/65198d48bd6b5d5920dad0dd4b2c900fcc1764c2/transit_app_clone.jpg",
 
     "projectLink": "https://github.com/"
   },
@@ -139,7 +139,7 @@ const projectsData = [
     ],
     "mediaType": "video",
     "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/6e4a8d70c53109d84384ef2e4b9cde47715f4bb8/tic_tac_toe_cmp.mp4",
-          "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/35c2178c9ea495db600ddf388b1299db22cde232/bhagavad_gita.png",
+          "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/65198d48bd6b5d5920dad0dd4b2c900fcc1764c2/tic_tac_toe.jpg",
 
     "projectLink": "https://github.com/"
   },
@@ -157,7 +157,7 @@ const projectsData = [
     ],
     "mediaType": "video",
     "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-3e22f93cc85a1e2ef965/2048_cmp.mp4",
-        "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/35c2178c9ea495db600ddf388b1299db22cde232/bhagavad_gita.png",
+        "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/65198d48bd6b5d5920dad0dd4b2c900fcc1764c2/2048_cmp.jpg",
     "projectLink": "https://github.com/"
   },
   {
@@ -174,7 +174,7 @@ const projectsData = [
     ],
     "mediaType": "image",
     "mediaUrl": "kidtest_mockup.png",
-    "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/35c2178c9ea495db600ddf388b1299db22cde232/bhagavad_gita.png",
+    "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/65198d48bd6b5d5920dad0dd4b2c900fcc1764c2/kid_test.jpg",
     "projectLink": "https://github.com/"
   }
 ];
