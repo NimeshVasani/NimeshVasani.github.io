@@ -1,8 +1,10 @@
 // script.js
 
 document.addEventListener("DOMContentLoaded", () => {
+    // We use "./" to explicitly tell Safari to look in the exact same directory
+    
     // 1. Fetch Header
-    fetch("header.html")
+    fetch("./header.html")
         .then(response => {
             if (!response.ok) throw new Error("Could not load header.html");
             return response.text();
@@ -15,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(err => console.error(err));
 
     // 2. Fetch Home Content
-    fetch("home.html")
+    fetch("./home.html")
         .then(response => {
             if (!response.ok) throw new Error("Could not load home.html");
             return response.text();
@@ -27,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(err => console.error(err));
 
     // 3. Fetch Projects
-    fetch("projects.html")
+    fetch("./projects.html")
         .then(response => {
             if (!response.ok) throw new Error("Could not load projects.html");
             return response.text();
@@ -126,6 +128,7 @@ function initializeScrollSpy() {
         });
     }, observerOptions);
 
+    // Safari fix: We observe both dynamically injected sections and static sections
     sections.forEach(section => observer.observe(section));
 }
 
