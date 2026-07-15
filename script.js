@@ -62,8 +62,8 @@ const projectsData = [
       "Bookmarks & Offline Access: Save favorite verses or entire chapters to access anytime without network connectivity.",
       "Engaging UI/UX: A modern, minimalist design built with Jetpack Compose Multiplatform for a seamless aesthetic."
     ],
-    "mediaType": "image",
-    "mediaUrl": "gita_mockup.png",
+    "mediaType": "video",
+    "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-4b6708ba73988c4083cb/transit_app_clone.mov",
     "projectLink": "https://github.com/"
   },
   {
@@ -79,8 +79,8 @@ const projectsData = [
       "Media Utilities: Quick actions like one-click image saving directly into the system gallery.",
       "Consistent Cross-Platform UX: Unified development that guarantees matching experiences on both operating systems."
     ],
-    "mediaType": "image",
-    "mediaUrl": "ai_assistant_mockup.png",
+    "mediaType": "video",
+    "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-4b6708ba73988c4083cb/personal_ai_assistant.mov",
     "projectLink": "https://github.com/"
   },
   {
@@ -95,8 +95,8 @@ const projectsData = [
       "Live Tracking Capabilities: Efficient processing of location telemetry data in real time.",
       "Optimized Core Logic: Cross-compiled modules designed to reduce battery drain during continuous tracking."
     ],
-    "mediaType": "image",
-    "mediaUrl": "transit_mockup.png",
+    "mediaType": "video",
+    "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-4b6708ba73988c4083cb/transit_app_clone.mov",
     "projectLink": "https://github.com/"
   },
   {
@@ -154,6 +154,151 @@ const projectsData = [
 // ==========================================
 // 3. SKILLS & PORTFOLIO LOGIC IMPLEMENTATION
 // ==========================================
+
+function renderProjectCards(projects) {
+    const grid = document.getElementById("dynamic-project-grid");
+    if (!grid) return;
+    
+    grid.innerHTML = ""; 
+
+    projects.forEach(project => {
+        const isVideo = project.mediaType === "video";
+
+        const cardHtml = `
+            <div onclick="openProjectDetails('${project.id}')" 
+                 class="project-card bg-[#161D30] rounded-xl border border-gray-800 hover:border-[#E14D4D]/50 transition duration-300 overflow-hidden group cursor-pointer" 
+                 data-tags="${project.tags}"
+                 onmouseenter="handleCardHover(this, true)"
+                 onmouseleave="handleCardHover(this, false)">
+                
+                <!-- Media Frame -->
+                <div class="h-48 bg-gray-800 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10 pointer-events-none"></div>
+                    
+                    <!-- Fallback Cover Image -->
+                    <img src="video_thumbnail_placeholder.png" 
+                         alt="${project.title}" 
+                         class="project-card-image w-full h-full object-cover group-hover:scale-105 transition duration-300" 
+                         onerror="this.src='https://via.placeholder.com/400x250'">
+                    
+                    <!-- Hover Video Layer (Muted, Hidden, Loops) -->
+                    ${isVideo ? `
+                        <video class="project-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 pointer-events-none" muted loop playsinline>
+                            <source src="${project.mediaUrl}" type="video/mp4">
+                        </video>
+                    ` : ''}
+                </div>
+
+                <!-- Text Details -->
+                <div class="p-6 space-y-4">
+                    <div class="flex gap-2">
+                        ${project.tags.split(' ').map(tag => `
+                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-[#E14D4D]/10 text-[#E14D4D] uppercase">${tag}</span>
+                        `).join('')}
+                    </div>
+                    <h3 class="text-xl font-bold text-white">${project.title}</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">${project.shortDescription}</p>
+                </div>
+            </div>
+        `;
+        grid.insertAdjacentHTML("beforeend", cardHtml);
+    });
+}
+
+// Hover Event Handler
+window.handleCardHover = function(cardElement, isHovering) {
+    const video = cardElement.querySelector(".project-card-video");
+    const image = cardElement.querySelector(".project-card-image");
+    
+    if (!video) return;
+
+    if (isHovering) {
+        video.classList.remove("opacity-0");
+        image.classList.add("opacity-0"); // Hide static image so video is fully visible
+        video.play().catch(err => console.log("Hover video autoplay interrupted: ", err));
+    } else {
+        video.classList.add("opacity-0");
+        image.classList.remove("opacity-0");
+        video.pause();
+        video.currentTime = 0; // Reset video frame back to start
+    }
+}
+
+// ==========================================
+// 3. FULLSCREEN POPUP (Autoplays Video)
+// ==========================================
+
+window.openProjectDetails = function(projectId) {
+    const project = projectsData.find(p => p.id === projectId);
+    if (!project) return;
+
+    document.getElementById("modal-title").innerText = project.title;
+    document.getElementById("modal-subtitle").innerText = project.subtitle;
+    document.getElementById("modal-long-desc").innerText = project.longDescription;
+    
+    const modalImg = document.getElementById("modal-image");
+    const modalVideo = document.getElementById("modal-video");
+    const modalVideoSource = document.getElementById("modal-video-source");
+
+    // Hide everything before rendering
+    modalImg.classList.add("hidden");
+    modalVideo.classList.add("hidden");
+    modalVideo.pause(); 
+
+    if (project.mediaType === "video") {
+        modalVideoSource.src = project.mediaUrl;
+        modalVideo.load(); 
+        modalVideo.classList.remove("hidden");
+        
+        // Autoplay the popup video
+        modalVideo.play().catch(err => {
+            console.log("Autoplay blocked with sound. Playing muted fallback...", err);
+            modalVideo.muted = true;
+            modalVideo.play();
+        });
+    } else {
+        modalImg.src = project.mediaUrl;
+        modalImg.onerror = function() {
+            this.src = 'https://via.placeholder.com/600x400';
+        };
+        modalImg.classList.remove("hidden");
+    }
+
+    // Load list items
+    const listContainer = document.getElementById("modal-features-list");
+    listContainer.innerHTML = "";
+    project.keyFeatures.forEach(feature => {
+        const item = document.createElement("li");
+        item.classList.add("flex", "items-start");
+        item.innerHTML = `
+            <span class="text-yellow-400 mr-3 mt-0.5">✦</span>
+            <span>${feature}</span>
+        `;
+        listContainer.appendChild(item);
+    });
+
+    const modal = document.getElementById("project-modal");
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+
+    // Prevent background scrolling
+    document.body.classList.add("overflow-hidden");
+}
+
+window.closeProjectDetails = function() {
+    const modal = document.getElementById("project-modal");
+    const modalVideo = document.getElementById("modal-video");
+    
+    if (modalVideo) {
+        modalVideo.pause(); // Stop audio and play instantly when modal is exited
+    }
+
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    
+    // Restore background scrolling
+    document.body.classList.remove("overflow-hidden");
+}
 
 function initializeProjectFilters() {
     renderProjectCards(projectsData);
@@ -213,43 +358,9 @@ function setupFilterEventListeners() {
     });
 }
 
-// Modal open/close logic
-window.openProjectDetails = function(projectId) {
-    const project = projectsData.find(p => p.id === projectId);
-    if (!project) return;
 
-    document.getElementById("modal-title").innerText = project.title;
-    document.getElementById("modal-subtitle").innerText = project.subtitle;
-    document.getElementById("modal-long-desc").innerText = project.longDescription;
-    
-    const modalImg = document.getElementById("modal-image");
-    modalImg.src = project.mediaUrl;
-    modalImg.onerror = function() {
-        this.src = 'https://via.placeholder.com/600x400';
-    };
 
-    const listContainer = document.getElementById("modal-features-list");
-    listContainer.innerHTML = "";
-    project.keyFeatures.forEach(feature => {
-        const item = document.createElement("li");
-        item.classList.add("flex", "items-start");
-        item.innerHTML = `
-            <span class="text-yellow-400 mr-3 mt-0.5">✦</span>
-            <span>${feature}</span>
-        `;
-        listContainer.appendChild(item);
-    });
 
-    const modal = document.getElementById("project-modal");
-    modal.classList.remove("hidden");
-    modal.classList.add("flex");
-}
-
-window.closeProjectDetails = function() {
-    const modal = document.getElementById("project-modal");
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-}
 
 
 // ==========================================
