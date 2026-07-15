@@ -84,7 +84,7 @@ const projectsData = [
       "Engaging UI/UX: A modern, minimalist design built with Jetpack Compose Multiplatform for a seamless aesthetic."
     ],
     "mediaType": "video",
-    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/f314afaf55f8299d519a88ea517c16ea1c414e8b/2048_cmp.mp4",
+    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/f314afaf55f8299d519a88ea517c16ea1c414e8b/bhagavad_gita.mp4",
     "projectLink": "https://github.com/"
   },
   {
@@ -101,7 +101,7 @@ const projectsData = [
       "Consistent Cross-Platform UX: Unified development that guarantees matching experiences on both operating systems."
     ],
     "mediaType": "video",
-    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/f314afaf55f8299d519a88ea517c16ea1c414e8b/2048_cmp.mp4",
+    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/f314afaf55f8299d519a88ea517c16ea1c414e8b/personal_ai_assistant.mp4",
     "projectLink": "https://github.com/"
   },
   {
@@ -117,7 +117,7 @@ const projectsData = [
       "Optimized Core Logic: Cross-compiled modules designed to reduce battery drain during continuous tracking."
     ],
     "mediaType": "video",
-    "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-4b6708ba73988c4083cb/transit_app_clone.mov",
+    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/f314afaf55f8299d519a88ea517c16ea1c414e8b/transit_clone.mp4",
     "projectLink": "https://github.com/"
   },
   {
@@ -134,7 +134,7 @@ const projectsData = [
       "Audio & Profile Tweaks: Personalized sound boards, soundtrack controls, and player profile settings."
     ],
     "mediaType": "video",
-    "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-4b6708ba73988c4083cb/tic_tac_toe.mp4",
+    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/f314afaf55f8299d519a88ea517c16ea1c414e8b/tic_tac_toe_cmp.mp4",
     "projectLink": "https://github.com/"
   },
   {
