@@ -356,3 +356,47 @@ function initializeScrollSpy() {
 
     sections.forEach(section => observer.observe(section));
 }
+// Open modal helper (Locks background scroll)
+window.openProjectDetails = function(projectId) {
+    const project = projectsData.find(p => p.id === projectId);
+    if (!project) return;
+
+    document.getElementById("modal-title").innerText = project.title;
+    document.getElementById("modal-subtitle").innerText = project.subtitle;
+    document.getElementById("modal-long-desc").innerText = project.longDescription;
+    
+    const modalImg = document.getElementById("modal-image");
+    modalImg.src = project.mediaUrl;
+    modalImg.onerror = function() {
+        this.src = 'https://via.placeholder.com/600x400';
+    };
+
+    const listContainer = document.getElementById("modal-features-list");
+    listContainer.innerHTML = "";
+    project.keyFeatures.forEach(feature => {
+        const item = document.createElement("li");
+        item.classList.add("flex", "items-start");
+        item.innerHTML = `
+            <span class="text-yellow-400 mr-3 mt-0.5">✦</span>
+            <span>${feature}</span>
+        `;
+        listContainer.appendChild(item);
+    });
+
+    const modal = document.getElementById("project-modal");
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+
+    // LOCK BACKGROUND SCROLL
+    document.body.classList.add("overflow-hidden");
+}
+
+// Close Modal Helper (Unlocks background scroll)
+window.closeProjectDetails = function() {
+    const modal = document.getElementById("project-modal");
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+
+    // UNLOCK BACKGROUND SCROLL
+    document.body.classList.remove("overflow-hidden");
+}
