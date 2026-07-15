@@ -4,6 +4,31 @@
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Instantly initialize layout, header, and animations first!
     // This ensures your header, navigation, scrollSpy, and homepage load instantly.
+
+    fetch("./header.html")
+        .then(response => {
+            if (!response.ok) throw new Error("Could not load header.html");
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById("header-placeholder").innerHTML = data;
+            initializeMobileMenu();
+            initializeScrollSpy();
+        })
+        .catch(err => console.error(err));
+
+    // 2. Fetch Home Content
+    fetch("./home.html")
+        .then(response => {
+            if (!response.ok) throw new Error("Could not load home.html");
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById("home-placeholder").innerHTML = data;
+            initializeScrollToNext(); 
+            initParticles(); // <--- Initialize particles after HTML load succeeds!
+        })
+        .catch(err => console.error(err));
     try {
         initParticles();
         initializeScrollToNext();
