@@ -23,15 +23,17 @@
     <div id="home-placeholder"></div>
 
 
-    <!-- 4. SKILLS SECTION -->
-    <section id="skills" class="py-24 bg-[#0F172A] min-h-screen">
+<!-- Skills Section -->
+    <section id="skills" class="py-24 bg-[#0F172A]">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-16">
                 <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">My Technical Expertise</h2>
                 <p class="mt-4 text-gray-400">The tools, frameworks, and architectures I leverage to build highly performant digital solutions.</p>
             </div>
+            
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-[#161D30] p-8 rounded-xl border border-gray-800 hover:border-indigo-500/50 transition duration-300">
+                <!-- Mobile Development -->
+                <div class="bg-brand-card p-8 rounded-xl border border-gray-800 hover:border-indigo-500/50 transition">
                     <div class="w-12 h-12 bg-indigo-500/10 rounded-lg flex items-center justify-center mb-6">
                         <i class="fa-solid fa-mobile-screen-button text-2xl text-indigo-400"></i>
                     </div>
@@ -41,6 +43,34 @@
                         <li class="flex items-center"><span class="w-2 h-2 bg-indigo-400 rounded-full mr-2"></span> Kotlin Multiplatform (KMP)</li>
                         <li class="flex items-center"><span class="w-2 h-2 bg-indigo-400 rounded-full mr-2"></span> iOS (Swift / SwiftUI)</li>
                         <li class="flex items-center"><span class="w-2 h-2 bg-indigo-400 rounded-full mr-2"></span> Flutter & React Native</li>
+                    </ul>
+                </div>
+
+                <!-- Backend Technology -->
+                <div class="bg-brand-card p-8 rounded-xl border border-gray-800 hover:border-purple-500/50 transition">
+                    <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-server text-2xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Backend</h3>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-400 rounded-full mr-2"></span> Spring Boot (Java)</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-400 rounded-full mr-2"></span> Node.js & Express.js</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-400 rounded-full mr-2"></span> Django (Python)</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-400 rounded-full mr-2"></span> Kotlin (Backend Dev)</li>
+                    </ul>
+                </div>
+
+                <!-- Database & Infrastructure -->
+                <div class="bg-brand-card p-8 rounded-xl border border-gray-800 hover:border-pink-500/50 transition">
+                    <div class="w-12 h-12 bg-pink-500/10 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-database text-2xl text-pink-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Databases & Tools</h3>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-pink-400 rounded-full mr-2"></span> MySQL & SQLite</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-pink-400 rounded-full mr-2"></span> MongoDB</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-pink-400 rounded-full mr-2"></span> Room & Firebase Realtime</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-pink-400 rounded-full mr-2"></span> VCS (Git/GitHub) & CI/CD</li>
                     </ul>
                 </div>
             </div>
