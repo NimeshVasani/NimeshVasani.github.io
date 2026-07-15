@@ -1,40 +1,476 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nimesh Vasani | Mobile Application Developer</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            gold: '#D4AF37',
-                            dark: '#0B0F19',
-                            card: '#161D30',
-                            accent: '#6366F1'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        .modal {
-            transition: opacity 0.25s ease, visibility 0.25s ease;
+        /* Modern Reset & Root Variables */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-main: #f0f6fc;
+            --text-secondary: #8b949e;
+            --accent-color: #58a6ff;
+            --border-color: #30363d;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(13, 17, 23, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav ul li a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 10rem 2rem 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 span {
+            color: var(--accent-color);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Section Global Styles */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-top: 1px solid var(--border-color);
+        }
+
+        section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        section h2 span {
+            color: var(--accent-color);
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .skill-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .skill-card ul {
+            list-style: none;
+        }
+
+        .skill-card ul li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .skill-card ul li strong {
+            color: var(--text-main);
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .project-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .project-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .project-tags span {
+            background-color: rgba(88, 166, 255, 0.1);
+            color: var(--accent-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid var(--border-color);
+        }
+
+        .timeline-item {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: calc(-2rem - 6px);
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            border: 2px solid var(--bg-color);
+        }
+
+        .timeline-date {
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-company {
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-desc {
+            color: var(--text-secondary);
+        }
+
+        /* About Section */
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--text-secondary);
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Footer & Contact */
+        footer {
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .contact-info {
+            margin-bottom: 2rem;
+        }
+
+        .contact-info p {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-info a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            section {
+                padding: 4rem 1.5rem;
+            }
         }
     </style>
 </head>
-<body class="bg-[#0B0F19] text-gray-100 font-sans leading-relaxed">
+<body>
 
-    <!-- Header / Navigation -->
-    <header class="fixed top-0 left-0 right-0 bg-[#0B0F19]/90 backdrop-blur-md z-50 border-b border-gray-800">
+    <!-- Header Navigation -->
+    <header>
+        <nav>
+            <a href="#" class="logo">Nimesh Vasani</a>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>Hi, I'm <span>Nimesh Vasani</span></h1>
+        <p>Mobile Application Developer specializing in crafting high-impact, user-centric mobile solutions. Facilitated over 80+ projects with 50+ clients globally.</p>
+        <a href="#projects" class="btn">View My Work</a>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2>About <span>Me</span></h2>
+        <div class="about-content">
+            <p>My journey began with a Bachelor's degree in Computer Science Engineering, where my passion for programming flourished. I delved into languages such as Java, Kotlin, and JavaScript, nurturing a keen interest in mobile development. In 2018, I embarked on the exciting path of Android app development, translating programming concepts into user-friendly applications.</p>
+            <p>Taking a significant leap in 2022, I relocated to Canada to pursue further education. I enrolled in a Post-Graduation program in Mobile Application Design and Development at Lambton College. This experience was transformative, providing me with advanced knowledge in both Android and iOS app development.</p>
+            <p>Armed with a comprehensive skill set and a solid educational foundation, I am passionate about utilizing modern architectures, unified codebases, and platform optimizations to bring ideas to life.</p>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2>Technical <span>Skills</span></h2>
+        <div class="skills-grid">
+            <!-- Mobile Development -->
+            <div class="skill-card">
+                <h3>Mobile Application Development</h3>
+                <ul>
+                    <li><strong>Android:</strong> SDK, Kotlin, Java, MVVM, Dagger Hilt, Coroutines, Jetpack Compose, Retrofit, Room, XML</li>
+                    <li><strong>Cross-Platform:</strong> Flutter (Dart), KMP/KMM (Kotlin Multiplatform), React Native</li>
+                    <li><strong>iOS:</strong> Swift, SwiftUI, Combine, Core Data, Alamofire</li>
+                </ul>
+            </div>
+            <!-- Backend & Languages -->
+            <div class="skill-card">
+                <h3>Backend & Languages</h3>
+                <ul>
+                    <li><strong>Backend Frameworks:</strong> Spring Boot, Node.js, Express.js, Django, Ktor</li>
+                    <li><strong>Languages:</strong> Java, Kotlin, Swift, Dart, Python, JavaScript, C/C++, HTML/CSS, C#</li>
+                </ul>
+            </div>
+            <!-- Database & Architecture -->
+            <div class="skill-card">
+                <h3>Database & Other Tech</h3>
+                <ul>
+                    <li><strong>Databases:</strong> MySQL, Room, SQLite, MongoDB, PostgreSQL, DynamoDB, Firebase Cloud Firestore</li>
+                    <li><strong>Tools & DevOps:</strong> Git/GitHub, CI/CD, AWS, SOLID Principles, Material Design Guidelines</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2>Featured <span>Projects</span></h2>
+        <div class="projects-grid">
+            <!-- Project 1 -->
+            <div class="project-card">
+                <div class="project-content">
+                    <h3>The Bhagavad Gita App</h3>
+                    <p>An immersive cross-platform spiritual experience built with Kotlin Multiplatform. Features bookmarks, offline access, search capability, clean UI with Jetpack Compose Multiplatform, and full background audio playback integration.</p>
+                    <div class="project-tags">
+                        <span>Kotlin Multiplatform</span>
+                        <span>Compose Multiplatform</span>
+                        <span>iOS & Android</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Project 2 -->
+            <div class="project-card">
+                <div class="project-content">
+                    <h3>Personal AI Assistant App</h3>
+                    <p>An AI assistant client leveraging ChatGPT APIs (GPT-4 / GPT-3.5) and DALL-E. Features conversational context retention, AI image generation, markdown formatting, and clean UI state management.</p>
+                    <div class="project-tags">
+                        <span>KMP</span>
+                        <span>Jetpack Compose</span>
+                        <span>SwiftUI</span>
+                        <span>OpenAI API</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Project 3 -->
+            <div class="project-card">
+                <div class="project-content">
+                    <h3>My Cooking Gallery</h3>
+                    <p>A high-performance recipes application built following strict MVVM architecture. Includes comprehensive local data storage and API fetching.</p>
+                    <div class="project-tags">
+                        <span>Android</span>
+                        <span>Kotlin</span>
+                        <span>MVVM</span>
+                        <span>Dagger Hilt</span>
+                        <span>Room</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Project 4 -->
+            <div class="project-card">
+                <div class="project-content">
+                    <h3>RBC App Redesign Challenge</h3>
+                    <p>A UX/UI redesign concept project of the Royal Bank of Canada mobile app, focusing on high fidelity modern layout changes and performance enhancement.</p>
+                    <div class="project-tags">
+                        <span>Flutter</span>
+                        <span>UI/UX Redesign</span>
+                        <span>Dart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <h2>Professional <span>Experience</span></h2>
+        <div class="timeline">
+            <!-- Exp 1 -->
+            <div class="timeline-item">
+                <div class="timeline-date">2024 - Present</div>
+                <h3 class="timeline-title">Freelance Mobile Developer & Content Creator</h3>
+                <div class="timeline-company">Self-Employed</div>
+                <p class="timeline-desc">Developing production-ready applications for worldwide clients and publishing technical articles detailing state-of-the-art mobile frameworks such as Kotlin Multiplatform and Room setups.</p>
+            </div>
+            <!-- Exp 2 -->
+            <div class="timeline-item">
+                <div class="timeline-date">2020 - 2022</div>
+                <h3 class="timeline-title">Android Application Developer</h3>
+                <div class="timeline-company">Limbani Softwares — Vadodara, India</div>
+                <p class="timeline-desc">Developed and maintained robust Android applications using Kotlin and MVVM. Collaborated with cross-functional teams to deploy updates, conducted thorough optimization routines, and provided mentorship to junior engineering staff.</p>
+            </div>
+            <!-- Exp 3 -->
+            <div class="timeline-item">
+                <div class="timeline-date">2019 - 2020</div>
+                <h3 class="timeline-title">Mobile Developer</h3>
+                <div class="timeline-company">Sai Technology</div>
+                <p class="timeline-desc">Designed mobile layouts and optimized network fetching, laying the foundational roots of high-performance client architectures.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer & Contact Section -->
+    <footer id="contact">
+        <h2>Get In <span>Touch</span></h2>
+        <div class="contact-info">
+            <p>Interested in collaborating or discussing technical roles?</p>
+            <p>Email: <a href="mailto:vasaninimesh0@gmail.com">vasaninimesh0@gmail.com</a></p>
+            <p>Phone: <a href="tel:+16478939081">+1 (647) 893-9081</a></p>
+            <p>Location: Toronto, ON, Canada</p>
+        </div>
+        <p>&copy; 2026 Nimesh Vasani. Built with clean HTML & CSS for GitHub Pages.</p>
+    </footer>
+
+</body>
+</html>    <header class="fixed top-0 left-0 right-0 bg-[#0B0F19]/90 backdrop-blur-md z-50 border-b border-gray-800">
         <nav class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="text-xl font-bold tracking-wider text-brand-gold">NIMESH VASANI</a>
             <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide text-gray-300">
