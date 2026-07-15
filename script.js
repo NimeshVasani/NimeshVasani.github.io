@@ -92,7 +92,7 @@ const projectsData = [
       "Sleek Gameplay Motion: Built custom canvas-driven animations for satisfying UI responses.",
       "Audio & Profile Tweaks: Personalized sound boards, soundtrack controls, and player profile settings."
     ],
-    "mediaType": "video/mp4",
+    "mediaType": "video",
     "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-4b6708ba73988c4083cb/tic_tac_toe.mp4",
     "projectLink": "https://github.com/"
   },
@@ -108,7 +108,7 @@ const projectsData = [
       "Enhanced Security Visuals: Simulated biometric prompts and dynamic card detail screens.",
       "Cross-Platform Consistency: Shared Flutter codebase running beautifully across Android and iOS screens."
     ],
-    "mediaType": "video/mp4",
+    "mediaType": "video",
     "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-3e22f93cc85a1e2ef965/2048_cmp.mp4",
     "projectLink": "https://github.com/"
   },
@@ -170,9 +170,13 @@ function renderProjectCards(projects) {
                          class="project-card-image w-full h-full object-cover group-hover:scale-105 transition duration-300" 
                          onerror="this.src='${FALLBACK_MEDIA}'">
                     
-                    <!-- Optional Video Hover Element -->
+                    <!-- Optional Video Hover Element with faststart configs -->
                     ${isVideo ? `
-                        <video class="project-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 pointer-events-none" muted loop playsinline>
+                        <video class="project-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 pointer-events-none" 
+                               muted 
+                               loop 
+                               playsinline 
+                               preload="metadata">
                             <source src="${project.mediaUrl}" type="video/mp4">
                         </video>
                     ` : ''}
@@ -204,7 +208,10 @@ window.handleCardHover = function(cardElement, isHovering) {
     if (isHovering) {
         video.classList.remove("opacity-0");
         image.classList.add("opacity-0"); 
-        video.play().catch(err => console.log("Hover video play interrupted: ", err));
+        
+        // Mute is strictly enforced programmatically to guarantee playback bypass in Safari/Chrome
+        video.muted = true;
+        video.play().catch(err => console.log("Hover video play blocked: ", err));
     } else {
         video.classList.add("opacity-0");
         image.classList.remove("opacity-0");
@@ -265,9 +272,14 @@ window.openProjectDetails = function(projectId) {
         modalVideo.load(); 
         modalVideo.classList.remove("hidden");
         
+        // Set properties explicitly
+        modalVideo.muted = true;
+        modalVideo.setAttribute('playsinline', '');
+        modalVideo.setAttribute('preload', 'metadata');
+        
         // Handle programmatic autoplay gracefully
         modalVideo.play().catch(err => {
-            console.log("Interactive modal context block. Fallback to muted playback...", err);
+            console.log("Interactive modal block. Retrying with explicit muted layout...", err);
             modalVideo.muted = true;
             modalVideo.play();
         });
@@ -406,8 +418,8 @@ function initializeScrollSpy() {
                 const id = entry.target.getAttribute("id");
                 
                 navLinks.forEach(link => {
-                    const href = link.getAttribute("href").substring(1);
-                    if (href === id) {
+                    const href = link.getAttribute("href");
+                    if (href && href.substring(1) === id) {
                         link.classList.add(...activeClasses);
                         link.classList.remove(...defaultClasses);
                     } else {
