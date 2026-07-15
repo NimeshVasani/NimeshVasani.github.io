@@ -1,6 +1,52 @@
 // script.js
 
-// 1. ALL PROJECT DATA (Stored locally to bypass local browser fetch/CORS blocks)
+// ==========================================
+// 1. CORE ENGINE: FETCH & LOAD PAGE SECTIONS
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+    // Fetch Header
+    fetch("./header.html")
+        .then(response => {
+            if (!response.ok) throw new Error("Could not load header.html");
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById("header-placeholder").innerHTML = data;
+            initializeMobileMenu();
+            initializeScrollSpy();
+        })
+        .catch(err => console.error(err));
+
+    // Fetch Home Content
+    fetch("./home.html")
+        .then(response => {
+            if (!response.ok) throw new Error("Could not load home.html");
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById("home-placeholder").innerHTML = data;
+            initializeScrollToNext(); 
+            initParticles(); // Initializes particles.js on home screen
+        })
+        .catch(err => console.error(err));
+
+    // Fetch Projects
+    fetch("./projects.html")
+        .then(response => {
+            if (!response.ok) throw new Error("Could not load projects.html");
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById("projects-placeholder").innerHTML = data;
+            initializeProjectFilters(); // Populates dynamic grid & sets up modal
+        })
+        .catch(err => console.error(err));
+});
+
+
+// ==========================================
+// 2. PROJECT PORTFOLIO DATA (Stored locally)
+// ==========================================
 const projectsData = [
   {
     "id": "bhagavad-gita-app",
@@ -104,18 +150,21 @@ const projectsData = [
   }
 ];
 
-// Global dynamic loader (called once projects.html finishes rendering)
+
+// ==========================================
+// 3. SKILLS & PORTFOLIO LOGIC IMPLEMENTATION
+// ==========================================
+
 function initializeProjectFilters() {
-    renderProjectCards(projectsData); // Bypasses network fetch and draws instantly
+    renderProjectCards(projectsData);
     setupFilterEventListeners();
 }
 
-// Renders the cards into the grid
 function renderProjectCards(projects) {
     const grid = document.getElementById("dynamic-project-grid");
     if (!grid) return;
     
-    grid.innerHTML = ""; // Clear existing grid layout
+    grid.innerHTML = ""; 
 
     projects.forEach(project => {
         const cardHtml = `
@@ -139,7 +188,6 @@ function renderProjectCards(projects) {
     });
 }
 
-// Configures navigation filter clicks
 function setupFilterEventListeners() {
     const filterButtons = document.querySelectorAll(".filter-btn");
 
@@ -165,7 +213,7 @@ function setupFilterEventListeners() {
     });
 }
 
-// Open modal helper
+// Modal open/close logic
 window.openProjectDetails = function(projectId) {
     const project = projectsData.find(p => p.id === projectId);
     if (!project) return;
@@ -197,9 +245,114 @@ window.openProjectDetails = function(projectId) {
     modal.classList.add("flex");
 }
 
-// Close Modal Helper
 window.closeProjectDetails = function() {
     const modal = document.getElementById("project-modal");
     modal.classList.add("hidden");
     modal.classList.remove("flex");
+}
+
+
+// ==========================================
+// 4. PARTICLES & GENERAL UTILITIES
+// ==========================================
+
+function initParticles() {
+    if (typeof particlesJS !== "undefined" && document.getElementById("particles-js")) {
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 130, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ffffff" },
+                "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" } },
+                "opacity": { "value": 0.3, "random": false },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.25, "width": 1 },
+                "move": { "enable": true, "speed": 4, "direction": "none", "out_mode": "out" }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": { "enable": true, "mode": "grab" },
+                    "onclick": { "enable": true, "mode": "push" },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": { "distance": 140, "line_linked": { "opacity": 0.8 } },
+                    "push": { "particles_nb": 3 }
+                }
+            },
+            "retina_detect": true
+        });
+    }
+}
+
+function initializeScrollToNext() {
+    const scrollBtn = document.getElementById("scroll-to-next-btn");
+    const skillsSection = document.getElementById("skills");
+    
+    if (scrollBtn && skillsSection) {
+        scrollBtn.addEventListener("click", () => {
+            skillsSection.scrollIntoView({ behavior: "smooth" });
+        });
+
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 100) {
+                scrollBtn.classList.add("opacity-0", "pointer-events-none");
+            } else {
+                scrollBtn.classList.remove("opacity-0", "pointer-events-none");
+            }
+        });
+    }
+}
+
+function initializeMobileMenu() {
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+    }
+}
+
+function initializeScrollSpy() {
+    const navLinks = document.querySelectorAll("#desktop-nav .nav-link");
+    const sections = document.querySelectorAll("section");
+
+    const activeClasses = ["bg-white/10", "text-[#E14D4D]", "border", "border-white/10", "backdrop-blur-md", "shadow-sm"];
+    const defaultClasses = ["text-gray-400"];
+
+    const observerOptions = {
+        root: null,
+        rootMargin: "-20% 0px -60% 0px",
+        threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute("id");
+                
+                navLinks.forEach(link => {
+                    const href = link.getAttribute("href").substring(1);
+                    if (href === id) {
+                        link.classList.add(...activeClasses);
+                        link.classList.remove(...defaultClasses);
+                    } else {
+                        link.classList.remove(...activeClasses);
+                        link.classList.add(...defaultClasses);
+                    }
+                });
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => observer.observe(section));
 }
