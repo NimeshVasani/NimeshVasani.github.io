@@ -1,181 +1,130 @@
 <!-- projects.html -->
-<section id="projects" class="py-24 bg-[#0B0F19]">
-    <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center max-w-2xl mx-auto mb-16">
-            <span class="text-[#D4AF37] font-semibold tracking-wider uppercase text-sm">Portfolio</span>
-            <h2 class="text-3xl md:text-5xl font-black text-white mt-2">Featured Projects</h2>
-            <p class="mt-4 text-gray-400">A collection of cross-platform apps, native mobile solutions, and system designs built with modern architectures.</p>
-        </div>
-
-        <!-- Filter Navigation Tabs -->
-        <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-12">
-            <button class="filter-btn active px-5 py-2 rounded-full text-sm font-medium border border-[#D4AF37] bg-[#D4AF37] text-black transition-all duration-300" data-filter="all">All Projects</button>
-            <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium border border-gray-800 bg-[#111827] text-gray-400 hover:text-white hover:border-gray-600 transition-all duration-300" data-filter="android">Android</button>
-            <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium border border-gray-800 bg-[#111827] text-gray-400 hover:text-white hover:border-gray-600 transition-all duration-300" data-filter="ios">iOS</button>
-            <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium border border-gray-800 bg-[#111827] text-gray-400 hover:text-white hover:border-gray-600 transition-all duration-300" data-filter="flutter">Flutter</button>
-            <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium border border-gray-800 bg-[#111827] text-gray-400 hover:text-white hover:border-gray-600 transition-all duration-300" data-filter="kmp">KMP / Cross-Platform</button>
-        </div>
-
-        <!-- Projects Grid Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+<section id="projects" class="py-24 bg-[#0B0F19] min-h-screen text-gray-100 font-mono relative overflow-hidden">
+    
+    <!-- 1. FEATURED "MY WORK" HERO SECTION -->
+    <div class="max-w-6xl mx-auto px-6 mb-24 relative z-10">
+        <div class="grid lg:grid-cols-12 gap-12 items-center">
             
-            <!-- Project 1: The Bhagavad Gita App -->
-            <div class="project-card bg-[#161D30] border border-gray-800 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1" data-tags="android ios kmp">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 bg-purple-500/10 text-purple-400 text-xs font-semibold rounded-full uppercase tracking-wider">KMP</span>
-                        <div class="flex space-x-2 text-gray-400">
-                            <i class="fa-brands fa-android text-lg"></i>
-                            <i class="fa-brands fa-apple text-lg"></i>
+            <!-- Left Side: Text and Intro Content -->
+            <div class="lg:col-span-7 space-y-8">
+                <!-- Huge, bold, clean "MY WORK" heading -->
+                <h2 class="text-6xl md:text-8xl font-black tracking-tighter text-white uppercase select-none leading-none">
+                    My<br>Work
+                </h2>
+                
+                <!-- Description with monospace-style spacing -->
+                <p class="text-base md:text-lg text-gray-300 leading-relaxed tracking-wide font-sans">
+                    Deployed scalable e-commerce, travel, social network, and language learning mobile apps using android, flutter and iOS. 
+                    Collaborated in 80+ projects with 50+ clients all around the world. I am also interested in backend tech using spring-boot and react.
+                </p>
+            </div>
+
+            <!-- Right Side: Interactive Mockup Showcase (With designated image placeholders) -->
+            <div class="lg:col-span-5 relative flex flex-col justify-center min-h-[450px]">
+                
+                <!-- BACKGROUND DECORATION PLACEHOLDER: Put your code background image/GIF path in src -->
+                <div class="absolute -top-10 left-0 w-full h-full opacity-20 pointer-events-none z-0">
+                    <img src="YOUR_CODE_BACKGROUND_IMAGE.png" alt="" class="w-full h-full object-contain">
+                </div>
+
+                <div class="relative z-10 flex flex-col items-start md:flex-row md:items-center gap-6">
+                    
+                    <!-- Curved arrow & project details container -->
+                    <div class="space-y-6 max-w-xs order-2 md:order-1">
+                        
+                        <!-- Purple curved pointing arrow -->
+                        <div class="hidden md:block transform translate-x-12 translate-y-2">
+                            <svg width="80" height="50" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 40C25 15 45 10 65 20" stroke="#8B5CF6" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M55 12L67 21L58 31" stroke="#8B5CF6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+
+                        <!-- Featured Info block -->
+                        <div class="space-y-2">
+                            <h3 class="text-lg font-bold text-white font-sans">Featured Project</h3>
+                            <ul class="text-sm text-gray-400 space-y-1 font-sans">
+                                <li>Mobile App - Customers</li>
+                                <li>Web/Desktop App - Store Owner</li>
+                            </ul>
+                        </div>
+
+                        <!-- "View Project" CTA link button -->
+                        <div>
+                            <a href="#featured-details-link" class="inline-block px-6 py-2.5 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold rounded text-sm tracking-wide transition duration-200 shadow-lg">
+                                View Project
+                            </a>
                         </div>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2">The Bhagavad Gita App</h3>
-                    <p class="text-gray-400 text-sm mb-4">A cross-platform app crafted with Jetpack Compose Multiplatform delivering seamless audio, translations, and multi-language support on iOS and Android.</p>
-                    <div class="flex flex-wrap gap-2 mb-6">
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">Kotlin</span>
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">Compose Multiplatform</span>
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">SQLite</span>
+
+                    <!-- PHONE CONTAINER PLACEHOLDER: Put your transparent phone frame mockup in src -->
+                    <div class="w-64 h-auto mx-auto md:mx-0 order-1 md:order-2 flex-shrink-0 drop-shadow-2xl hover:scale-105 transition-transform duration-300">
+                        <img src="YOUR_IPHONE_MOCKUP_IMAGE.png" alt="Featured App Preview" class="w-full h-auto object-contain">
                     </div>
-                    <a href="#" class="inline-flex items-center text-[#D4AF37] hover:text-yellow-500 font-semibold text-sm">
-                        View Project <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
-                    </a>
+
                 </div>
             </div>
 
-            <!-- Project 2: Personal AI Assistant App -->
-            <div class="project-card bg-[#161D30] border border-gray-800 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1" data-tags="android ios kmp">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-xs font-semibold rounded-full uppercase tracking-wider">KMP / AI</span>
-                        <div class="flex space-x-2 text-gray-400">
-                            <i class="fa-brands fa-android text-lg"></i>
-                            <i class="fa-brands fa-apple text-lg"></i>
-                        </div>
+        </div>
+    </div>
+
+    <!-- Divider Line -->
+    <div class="max-w-6xl mx-auto px-6 mb-16">
+        <hr class="border-gray-800">
+    </div>
+
+    <!-- 2. ALL PROJECTS GRID SECTION -->
+    <div class="max-w-6xl mx-auto px-6 relative z-10">
+        
+        <!-- Interactive Category Filters -->
+        <div class="flex flex-wrap gap-3 mb-12 justify-center md:justify-start font-sans">
+            <button class="filter-btn active px-5 py-2 rounded-lg border border-[#E14D4D] bg-[#E14D4D] text-white text-sm font-semibold transition duration-200" data-filter="all">
+                All Projects
+            </button>
+            <button class="filter-btn px-5 py-2 rounded-lg border border-gray-800 bg-[#111827] text-gray-400 text-sm font-semibold hover:border-gray-700 transition duration-200" data-filter="android">
+                Android
+            </button>
+            <button class="filter-btn px-5 py-2 rounded-lg border border-gray-800 bg-[#111827] text-gray-400 text-sm font-semibold hover:border-gray-700 transition duration-200" data-filter="ios">
+                iOS
+            </button>
+            <button class="filter-btn px-5 py-2 rounded-lg border border-gray-800 bg-[#111827] text-gray-400 text-sm font-semibold hover:border-gray-700 transition duration-200" data-filter="flutter">
+                Flutter
+            </button>
+        </div>
+
+        <!-- Dynamic Filterable Project Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 font-sans">
+            
+            <!-- Project Card 1 -->
+            <div class="project-card bg-[#161D30] rounded-xl border border-gray-800 hover:border-indigo-500/50 transition duration-300 overflow-hidden group" data-tags="android flutter">
+                <div class="h-48 bg-gray-800 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
+                    <!-- Future Card Image Placeholder -->
+                    <img src="https://via.placeholder.com/400x250" alt="Project 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="flex gap-2">
+                        <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400">Android</span>
+                        <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-pink-500/10 text-pink-400">Flutter</span>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Personal AI Assistant</h3>
-                    <p class="text-gray-400 text-sm mb-4">Integrates GPT-4/GPT-3.5 engine frameworks with Swift UI and Jetpack Compose to drive conversational memory, image extraction, and formatting utilities.</p>
-                    <div class="flex flex-wrap gap-2 mb-6">
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">KMP</span>
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">SwiftUI</span>
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">ChatGPT API</span>
-                    </div>
-                    <a href="#" class="inline-flex items-center text-[#D4AF37] hover:text-yellow-500 font-semibold text-sm">
-                        View Project <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
-                    </a>
+                    <h3 class="text-xl font-bold text-white">E-Commerce App</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">A high-performance mobile marketplace with seamless payment integrations.</p>
                 </div>
             </div>
 
-            <!-- Project 3: 2048 Game -->
-            <div class="project-card bg-[#161D30] border border-gray-800 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1" data-tags="android ios kmp">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-semibold rounded-full uppercase tracking-wider">Compose</span>
-                        <div class="flex space-x-2 text-gray-400">
-                            <i class="fa-brands fa-android text-lg"></i>
-                            <i class="fa-brands fa-apple text-lg"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">2048 Game - Compose</h3>
-                    <p class="text-gray-400 text-sm mb-4">A complete state-driven MVI puzzle game implemented cross-platform. Leverages Jetpack Compose Multiplatform UI systems for absolute consistency.</p>
-                    <div class="flex flex-wrap gap-2 mb-6">
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">MVI</span>
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">Compose Multiplatform</span>
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">Kotlin</span>
-                    </div>
-                    <a href="#" class="inline-flex items-center text-[#D4AF37] hover:text-yellow-500 font-semibold text-sm">
-                        View Project <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
-                    </a>
+            <!-- Project Card 2 -->
+            <div class="project-card bg-[#161D30] rounded-xl border border-gray-800 hover:border-indigo-500/50 transition duration-300 overflow-hidden group" data-tags="ios">
+                <div class="h-48 bg-gray-800 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
+                    <!-- Future Card Image Placeholder -->
+                    <img src="https://via.placeholder.com/400x250" alt="Project 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                 </div>
-            </div>
-
-            <!-- Project 4: Tic-Tac-Toe Game -->
-            <div class="project-card bg-[#161D30] border border-gray-800 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1" data-tags="android ios flutter">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 bg-cyan-500/10 text-cyan-400 text-xs font-semibold rounded-full uppercase tracking-wider">Flutter</span>
-                        <div class="flex space-x-2 text-gray-400">
-                            <i class="fa-brands fa-android text-lg"></i>
-                            <i class="fa-brands fa-apple text-lg"></i>
-                        </div>
+                <div class="p-6 space-y-4">
+                    <div class="flex gap-2">
+                        <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-purple-500/10 text-purple-400">iOS</span>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Tic-Tac-Toe App</h3>
-                    <p class="text-gray-400 text-sm mb-4">Implements a dual-engine architecture for real-time multiplayer lobbies alongside smart AI routines with scalable local states using Flutter SDK.</p>
-                    <div class="flex flex-wrap gap-2 mb-6">
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">Flutter</span>
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">Dart</span>
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">AI Engine</span>
-                    </div>
-                    <a href="#" class="inline-flex items-center text-[#D4AF37] hover:text-yellow-500 font-semibold text-sm">
-                        View Project <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Project 5: KMM Note App -->
-            <div class="project-card bg-[#161D30] border border-gray-800 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1" data-tags="android ios kmp">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 bg-amber-500/10 text-amber-400 text-xs font-semibold rounded-full uppercase tracking-wider">Native Mobile</span>
-                        <div class="flex space-x-2 text-gray-400">
-                            <i class="fa-brands fa-android text-lg"></i>
-                            <i class="fa-brands fa-apple text-lg"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">KMM Note App</h3>
-                    <p class="text-gray-400 text-sm mb-4">Runs natively on Android and iOS utilizing SQLDelight for fast local databases with completely shared cross-platform logic structures.</p>
-                    <div class="flex flex-wrap gap-2 mb-6">
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">SQLDelight</span>
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">Kotlin Multiplatform</span>
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">Swift</span>
-                    </div>
-                    <a href="#" class="inline-flex items-center text-[#D4AF37] hover:text-yellow-500 font-semibold text-sm">
-                        View Project <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Project 6: RBC App Redesign -->
-            <div class="project-card bg-[#161D30] border border-gray-800 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1" data-tags="android ios flutter">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-xs font-semibold rounded-full uppercase tracking-wider">UI / UX</span>
-                        <div class="flex space-x-2 text-gray-400">
-                            <i class="fa-brands fa-android text-lg"></i>
-                            <i class="fa-brands fa-apple text-lg"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">RBC App Redesign</h3>
-                    <p class="text-gray-400 text-sm mb-4">A complete UX optimization and structural interface redesign project built in Flutter, adding custom dashboard structures and analytics graphs.</p>
-                    <div class="flex flex-wrap gap-2 mb-6">
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">Flutter</span>
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">UI Redesign</span>
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">State management</span>
-                    </div>
-                    <a href="#" class="inline-flex items-center text-[#D4AF37] hover:text-yellow-500 font-semibold text-sm">
-                        View Project <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Project 7: KidTest Android App -->
-            <div class="project-card bg-[#161D30] border border-gray-800 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1" data-tags="android">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="px-3 py-1 bg-rose-500/10 text-rose-400 text-xs font-semibold rounded-full uppercase tracking-wider">Android Native</span>
-                        <div class="flex space-x-2 text-gray-400">
-                            <i class="fa-brands fa-android text-lg"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">KidTest Android App</h3>
-                    <p class="text-gray-400 text-sm mb-4">A delightful, intuitive, and highly interactive native Android game engineered with custom logic challenges to boost cognitive IQ in children.</p>
-                    <div class="flex flex-wrap gap-2 mb-6">
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">Kotlin</span>
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">Android SDK</span>
-                        <span class="px-2.5 py-1 bg-[#0F172A] text-xs text-gray-400 rounded">Jetpack</span>
-                    </div>
-                    <a href="#" class="inline-flex items-center text-[#D4AF37] hover:text-yellow-500 font-semibold text-sm">
-                        View Project <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
-                    </a>
+                    <h3 class="text-xl font-bold text-white">Travel Planner</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Native SwiftUI application optimized for real-time itinerary management.</p>
                 </div>
             </div>
 
