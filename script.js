@@ -84,7 +84,7 @@ const projectsData = [
       "Engaging UI/UX: A modern, minimalist design built with Jetpack Compose Multiplatform for a seamless aesthetic."
     ],
     "mediaType": "video",
-    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/f314afaf55f8299d519a88ea517c16ea1c414e8b/bhagavad_gita.mp4",
+    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/280882cc163fc76d72a8efcb06cc02469822daad/bhagavad_gita.mp4",
     "projectLink": "https://github.com/"
   },
   {
@@ -117,7 +117,7 @@ const projectsData = [
       "Optimized Core Logic: Cross-compiled modules designed to reduce battery drain during continuous tracking."
     ],
     "mediaType": "video",
-    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/f314afaf55f8299d519a88ea517c16ea1c414e8b/transit_clone.mp4",
+    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/280882cc163fc76d72a8efcb06cc02469822daad/transit_clone.mp4",
     "projectLink": "https://github.com/"
   },
   {
