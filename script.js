@@ -199,7 +199,7 @@ function renderProjectCards(projects) {
 
     projects.forEach(project => {
         const isVideo = project.mediaType === "video";
-        const imageSrc = isVideo ? FALLBACK_MEDIA : (project.mediaUrl || project.imageSrc);
+        const imageSrc = isVideo ? FALLBACK_MEDIA : (project.imageSrc || FALLBACK_MEDIA);
 
         const cardHtml = `
             <div onclick="openProjectDetails('${project.id}')" 
