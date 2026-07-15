@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(data => {
             document.getElementById("home-placeholder").innerHTML = data;
-            initializeScrollToBottom(); // Enable your new bottom scroll button
+            initializeScrollToNext(); // Enable click scroll to Skills & fade out
         })
         .catch(err => console.error(err));
 
@@ -39,15 +39,26 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(err => console.error(err));
 });
 
-// Controls the Hero "Scroll Down" action to bottom of screen
-function initializeScrollToBottom() {
-    const scrollBtn = document.getElementById("scroll-to-bottom-btn");
-    if (scrollBtn) {
+// Controls the Hero "Scroll Down" action directly to Skills section & makes button disappear
+function initializeScrollToNext() {
+    const scrollBtn = document.getElementById("scroll-to-next-btn");
+    const skillsSection = document.getElementById("skills");
+    
+    if (scrollBtn && skillsSection) {
+        // Scroll to Skills section on click
         scrollBtn.addEventListener("click", () => {
-            window.scrollTo({
-                top: document.documentElement.scrollHeight,
+            skillsSection.scrollIntoView({
                 behavior: "smooth"
             });
+        });
+
+        // Hide and disable button dynamically once user scrolls past Home area
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 100) {
+                scrollBtn.classList.add("opacity-0", "pointer-events-none");
+            } else {
+                scrollBtn.classList.remove("opacity-0", "pointer-events-none");
+            }
         });
     }
 }
@@ -90,7 +101,7 @@ function initializeScrollSpy() {
 
     const observerOptions = {
         root: null,
-        rootMargin: "-20% 0px -60% 0px", // Focus tracking area roughly in the center-top of viewport
+        rootMargin: "-20% 0px -60% 0px", // Focus tracking area
         threshold: 0
     };
 
@@ -102,7 +113,7 @@ function initializeScrollSpy() {
                 navLinks.forEach(link => {
                     const href = link.getAttribute("href").substring(1);
                     if (href === id) {
-                        // Apply gorgeous iOS glass pill look
+                        // Apply iOS glass pill look
                         link.classList.add(...activeClasses);
                         link.classList.remove(...defaultClasses);
                     } else {
@@ -147,67 +158,6 @@ function initializeProjectFilters() {
                         card.style.opacity = "1";
                     }, 50);
                 } else {
-                    card.classList.add("hidden");
-                }
-            });
-        });
-    });
-}        .catch(err => console.error(err));
-});
-
-// Mobile menu controller
-function initializeMobileMenu() {
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    
-    if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-        
-        const mobileLinks = mobileMenu.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-    }
-}
-
-// Project Tag Filtering Controller
-function initializeProjectFilters() {
-    const filterButtons = document.querySelectorAll(".filter-btn");
-    const projectCards = document.querySelectorAll(".project-card");
-
-    if (filterButtons.length === 0 || projectCards.length === 0) return;
-
-    filterButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            // Remove active states from all tabs
-            filterButtons.forEach(btn => {
-                btn.classList.remove("active", "bg-[#D4AF37]", "text-black", "border-[#D4AF37]");
-                btn.classList.add("bg-[#111827]", "text-gray-400", "border-gray-800");
-            });
-
-            // Make active tab highlighted
-            button.classList.add("active", "bg-[#D4AF37]", "text-black", "border-[#D4AF37]");
-            button.classList.remove("bg-[#111827]", "text-gray-400", "border-gray-800");
-
-            const selectedCategory = button.getAttribute("data-filter");
-
-            // Filter logic
-            projectCards.forEach(card => {
-                const tags = card.getAttribute("data-tags").split(" ");
-                
-                if (selectedCategory === "all" || tags.includes(selectedCategory)) {
-                    // Show matching item
-                    card.classList.remove("hidden");
-                    card.style.opacity = "0";
-                    setTimeout(() => {
-                        card.style.opacity = "1";
-                    }, 50);
-                } else {
-                    // Hide non-matching item
                     card.classList.add("hidden");
                 }
             });
