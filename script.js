@@ -1,48 +1,28 @@
-// script.js
-
 // ==========================================
-// 1. CORE ENGINE: FETCH & LOAD PAGE SECTIONS
+// 1. BOOTSTRAP INITIALIZATION
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-    // Fetch Header
-    fetch("./header.html")
-        .then(response => {
-            if (!response.ok) throw new Error("Could not load header.html");
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById("header-placeholder").innerHTML = data;
-            initializeMobileMenu();
-            initializeScrollSpy();
-        })
-        .catch(err => console.error(err));
+    // If your code uses async loading placeholders, keep it here:
+    const placeholder = document.getElementById("projects-placeholder");
+    if (placeholder) {
+        fetch("projects.html")
+            .then(response => response.text())
+            .then(data => {
+                placeholder.innerHTML = data;
+                initializeProjectFilters(); 
+            })
+            .catch(err => console.error(err));
+    } else {
+        // Fallback layout initialization if not using dynamic placeholders
+        initializeProjectFilters();
+    }
 
-    // Fetch Home Content
-    fetch("./home.html")
-        .then(response => {
-            if (!response.ok) throw new Error("Could not load home.html");
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById("home-placeholder").innerHTML = data;
-            initializeScrollToNext(); 
-            initParticles(); // Initializes particles.js on home screen
-        })
-        .catch(err => console.error(err));
-
-    // Fetch Projects
-    fetch("./projects.html")
-        .then(response => {
-            if (!response.ok) throw new Error("Could not load projects.html");
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById("projects-placeholder").innerHTML = data;
-            initializeProjectFilters(); // Populates dynamic grid & sets up modal
-        })
-        .catch(err => console.error(err));
+    // Initialize layout scripts
+    initParticles();
+    initializeScrollToNext();
+    initializeMobileMenu();
+    initializeScrollSpy();
 });
-
 
 // ==========================================
 // 2. PROJECT PORTFOLIO DATA (Stored locally)
@@ -150,155 +130,12 @@ const projectsData = [
   }
 ];
 
+// Elegant global placeholder for failing graphics assets
+const FALLBACK_MEDIA = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop";
 
 // ==========================================
-// 3. SKILLS & PORTFOLIO LOGIC IMPLEMENTATION
+// 3. CORE LOGIC & CARD RENDERING
 // ==========================================
-
-function renderProjectCards(projects) {
-    const grid = document.getElementById("dynamic-project-grid");
-    if (!grid) return;
-    
-    grid.innerHTML = ""; 
-
-    projects.forEach(project => {
-        const isVideo = project.mediaType === "video";
-
-        const cardHtml = `
-            <div onclick="openProjectDetails('${project.id}')" 
-                 class="project-card bg-[#161D30] rounded-xl border border-gray-800 hover:border-[#E14D4D]/50 transition duration-300 overflow-hidden group cursor-pointer" 
-                 data-tags="${project.tags}"
-                 onmouseenter="handleCardHover(this, true)"
-                 onmouseleave="handleCardHover(this, false)">
-                
-                <!-- Media Frame -->
-                <div class="h-48 bg-gray-800 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10 pointer-events-none"></div>
-                    
-                    <!-- Fallback Cover Image -->
-                    <img src="video_thumbnail_placeholder.png" 
-                         alt="${project.title}" 
-                         class="project-card-image w-full h-full object-cover group-hover:scale-105 transition duration-300" 
-                         onerror="this.src='https://via.placeholder.com/400x250'">
-                    
-                    <!-- Hover Video Layer (Muted, Hidden, Loops) -->
-                    ${isVideo ? `
-                        <video class="project-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 pointer-events-none" muted loop playsinline>
-                            <source src="${project.mediaUrl}" type="video/mp4">
-                        </video>
-                    ` : ''}
-                </div>
-
-                <!-- Text Details -->
-                <div class="p-6 space-y-4">
-                    <div class="flex gap-2">
-                        ${project.tags.split(' ').map(tag => `
-                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-[#E14D4D]/10 text-[#E14D4D] uppercase">${tag}</span>
-                        `).join('')}
-                    </div>
-                    <h3 class="text-xl font-bold text-white">${project.title}</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">${project.shortDescription}</p>
-                </div>
-            </div>
-        `;
-        grid.insertAdjacentHTML("beforeend", cardHtml);
-    });
-}
-
-// Hover Event Handler
-window.handleCardHover = function(cardElement, isHovering) {
-    const video = cardElement.querySelector(".project-card-video");
-    const image = cardElement.querySelector(".project-card-image");
-    
-    if (!video) return;
-
-    if (isHovering) {
-        video.classList.remove("opacity-0");
-        image.classList.add("opacity-0"); // Hide static image so video is fully visible
-        video.play().catch(err => console.log("Hover video autoplay interrupted: ", err));
-    } else {
-        video.classList.add("opacity-0");
-        image.classList.remove("opacity-0");
-        video.pause();
-        video.currentTime = 0; // Reset video frame back to start
-    }
-}
-
-// ==========================================
-// 3. FULLSCREEN POPUP (Autoplays Video)
-// ==========================================
-
-window.openProjectDetails = function(projectId) {
-    const project = projectsData.find(p => p.id === projectId);
-    if (!project) return;
-
-    document.getElementById("modal-title").innerText = project.title;
-    document.getElementById("modal-subtitle").innerText = project.subtitle;
-    document.getElementById("modal-long-desc").innerText = project.longDescription;
-    
-    const modalImg = document.getElementById("modal-image");
-    const modalVideo = document.getElementById("modal-video");
-    const modalVideoSource = document.getElementById("modal-video-source");
-
-    // Hide everything before rendering
-    modalImg.classList.add("hidden");
-    modalVideo.classList.add("hidden");
-    modalVideo.pause(); 
-
-    if (project.mediaType === "video") {
-        modalVideoSource.src = project.mediaUrl;
-        modalVideo.load(); 
-        modalVideo.classList.remove("hidden");
-        
-        // Autoplay the popup video
-        modalVideo.play().catch(err => {
-            console.log("Autoplay blocked with sound. Playing muted fallback...", err);
-            modalVideo.muted = true;
-            modalVideo.play();
-        });
-    } else {
-        modalImg.src = project.mediaUrl;
-        modalImg.onerror = function() {
-            this.src = 'https://via.placeholder.com/600x400';
-        };
-        modalImg.classList.remove("hidden");
-    }
-
-    // Load list items
-    const listContainer = document.getElementById("modal-features-list");
-    listContainer.innerHTML = "";
-    project.keyFeatures.forEach(feature => {
-        const item = document.createElement("li");
-        item.classList.add("flex", "items-start");
-        item.innerHTML = `
-            <span class="text-yellow-400 mr-3 mt-0.5">✦</span>
-            <span>${feature}</span>
-        `;
-        listContainer.appendChild(item);
-    });
-
-    const modal = document.getElementById("project-modal");
-    modal.classList.remove("hidden");
-    modal.classList.add("flex");
-
-    // Prevent background scrolling
-    document.body.classList.add("overflow-hidden");
-}
-
-window.closeProjectDetails = function() {
-    const modal = document.getElementById("project-modal");
-    const modalVideo = document.getElementById("modal-video");
-    
-    if (modalVideo) {
-        modalVideo.pause(); // Stop audio and play instantly when modal is exited
-    }
-
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-    
-    // Restore background scrolling
-    document.body.classList.remove("overflow-hidden");
-}
 
 function initializeProjectFilters() {
     renderProjectCards(projectsData);
@@ -312,12 +149,36 @@ function renderProjectCards(projects) {
     grid.innerHTML = ""; 
 
     projects.forEach(project => {
+        const isVideo = project.mediaType === "video";
+        // If it is a video, we show our fallback cover image as the thumbnail preview first
+        const imageSrc = isVideo ? FALLBACK_MEDIA : (project.mediaUrl || FALLBACK_MEDIA);
+
         const cardHtml = `
-            <div onclick="openProjectDetails('${project.id}')" class="project-card bg-[#161D30] rounded-xl border border-gray-800 hover:border-[#E14D4D]/50 transition duration-300 overflow-hidden group cursor-pointer" data-tags="${project.tags}">
+            <div onclick="openProjectDetails('${project.id}')" 
+                 class="project-card bg-[#161D30] rounded-xl border border-gray-800 hover:border-[#E14D4D]/50 transition duration-300 overflow-hidden group cursor-pointer" 
+                 data-tags="${project.tags}"
+                 onmouseenter="handleCardHover(this, true)"
+                 onmouseleave="handleCardHover(this, false)">
+                
+                <!-- Media Frame -->
                 <div class="h-48 bg-gray-800 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
-                    <img src="${project.mediaUrl}" alt="${project.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/400x250'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10 pointer-events-none"></div>
+                    
+                    <!-- Cover Artwork Image -->
+                    <img src="${imageSrc}" 
+                         alt="${project.title}" 
+                         class="project-card-image w-full h-full object-cover group-hover:scale-105 transition duration-300" 
+                         onerror="this.src='${FALLBACK_MEDIA}'">
+                    
+                    <!-- Optional Video Hover Element -->
+                    ${isVideo ? `
+                        <video class="project-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 pointer-events-none" muted loop playsinline>
+                            <source src="${project.mediaUrl}" type="video/mp4">
+                        </video>
+                    ` : ''}
                 </div>
+
+                <!-- Card Meta Data -->
                 <div class="p-6 space-y-4">
                     <div class="flex gap-2">
                         ${project.tags.split(' ').map(tag => `
@@ -333,6 +194,26 @@ function renderProjectCards(projects) {
     });
 }
 
+// Media Hovers Trigger
+window.handleCardHover = function(cardElement, isHovering) {
+    const video = cardElement.querySelector(".project-card-video");
+    const image = cardElement.querySelector(".project-card-image");
+    
+    if (!video) return;
+
+    if (isHovering) {
+        video.classList.remove("opacity-0");
+        image.classList.add("opacity-0"); 
+        video.play().catch(err => console.log("Hover video play interrupted: ", err));
+    } else {
+        video.classList.add("opacity-0");
+        image.classList.remove("opacity-0");
+        video.pause();
+        video.currentTime = 0; 
+    }
+}
+
+// Filter Actions
 function setupFilterEventListeners() {
     const filterButtons = document.querySelectorAll(".filter-btn");
 
@@ -358,13 +239,86 @@ function setupFilterEventListeners() {
     });
 }
 
+// ==========================================
+// 4. DETAILED MODAL VIEWER
+// ==========================================
 
+window.openProjectDetails = function(projectId) {
+    const project = projectsData.find(p => p.id === projectId);
+    if (!project) return;
 
+    document.getElementById("modal-title").innerText = project.title;
+    document.getElementById("modal-subtitle").innerText = project.subtitle;
+    document.getElementById("modal-long-desc").innerText = project.longDescription;
+    
+    const modalImg = document.getElementById("modal-image");
+    const modalVideo = document.getElementById("modal-video");
+    const modalVideoSource = document.getElementById("modal-video-source");
 
+    // Clean structural reset
+    modalImg.classList.add("hidden");
+    modalVideo.classList.add("hidden");
+    modalVideo.pause(); 
 
+    if (project.mediaType === "video") {
+        modalVideoSource.src = project.mediaUrl;
+        modalVideo.load(); 
+        modalVideo.classList.remove("hidden");
+        
+        // Handle programmatic autoplay gracefully
+        modalVideo.play().catch(err => {
+            console.log("Interactive modal context block. Fallback to muted playback...", err);
+            modalVideo.muted = true;
+            modalVideo.play();
+        });
+    } else {
+        // Safe binding: setup onerror handler before setting image sources!
+        modalImg.onerror = function() {
+            this.onerror = null; // Prevent infinite error loops if fallback fails
+            this.src = FALLBACK_MEDIA;
+        };
+        modalImg.src = project.mediaUrl || FALLBACK_MEDIA;
+        modalImg.classList.remove("hidden");
+    }
+
+    // Populate dynamic bullets lists
+    const listContainer = document.getElementById("modal-features-list");
+    listContainer.innerHTML = "";
+    project.keyFeatures.forEach(feature => {
+        const item = document.createElement("li");
+        item.classList.add("flex", "items-start");
+        item.innerHTML = `
+            <span class="text-yellow-400 mr-3 mt-0.5">✦</span>
+            <span>${feature}</span>
+        `;
+        listContainer.appendChild(item);
+    });
+
+    const modal = document.getElementById("project-modal");
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+
+    // Lock page backdrop scroll behaviors
+    document.body.classList.add("overflow-hidden");
+}
+
+window.closeProjectDetails = function() {
+    const modal = document.getElementById("project-modal");
+    const modalVideo = document.getElementById("modal-video");
+    
+    if (modalVideo) {
+        modalVideo.pause();
+    }
+
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    
+    // Unlock backdrop scrolling
+    document.body.classList.remove("overflow-hidden");
+}
 
 // ==========================================
-// 4. PARTICLES & GENERAL UTILITIES
+// 5. LAYOUT ANIMATIONS & GLOBAL UTILITIES
 // ==========================================
 
 function initParticles() {
@@ -466,48 +420,4 @@ function initializeScrollSpy() {
     }, observerOptions);
 
     sections.forEach(section => observer.observe(section));
-}
-// Open modal helper (Locks background scroll)
-window.openProjectDetails = function(projectId) {
-    const project = projectsData.find(p => p.id === projectId);
-    if (!project) return;
-
-    document.getElementById("modal-title").innerText = project.title;
-    document.getElementById("modal-subtitle").innerText = project.subtitle;
-    document.getElementById("modal-long-desc").innerText = project.longDescription;
-    
-    const modalImg = document.getElementById("modal-image");
-    modalImg.src = project.mediaUrl;
-    modalImg.onerror = function() {
-        this.src = 'https://via.placeholder.com/600x400';
-    };
-
-    const listContainer = document.getElementById("modal-features-list");
-    listContainer.innerHTML = "";
-    project.keyFeatures.forEach(feature => {
-        const item = document.createElement("li");
-        item.classList.add("flex", "items-start");
-        item.innerHTML = `
-            <span class="text-yellow-400 mr-3 mt-0.5">✦</span>
-            <span>${feature}</span>
-        `;
-        listContainer.appendChild(item);
-    });
-
-    const modal = document.getElementById("project-modal");
-    modal.classList.remove("hidden");
-    modal.classList.add("flex");
-
-    // LOCK BACKGROUND SCROLL
-    document.body.classList.add("overflow-hidden");
-}
-
-// Close Modal Helper (Unlocks background scroll)
-window.closeProjectDetails = function() {
-    const modal = document.getElementById("project-modal");
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-
-    // UNLOCK BACKGROUND SCROLL
-    document.body.classList.remove("overflow-hidden");
 }
