@@ -13,7 +13,18 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(err => console.error(err));
 
-    // 2. Fetch Projects
+    // 2. Fetch Home Content
+    fetch("home.html")
+        .then(response => {
+            if (!response.ok) throw new Error("Could not load home.html");
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById("home-placeholder").innerHTML = data;
+        })
+        .catch(err => console.error(err));
+
+    // 3. Fetch Projects
     fetch("projects.html")
         .then(response => {
             if (!response.ok) throw new Error("Could not load projects.html");
