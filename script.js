@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             document.getElementById("home-placeholder").innerHTML = data;
             initializeScrollToNext(); 
-            initParticles(); // <--- Initialize particles after HTML load succeeds!
+           
         })
         .catch(err => console.error(err));
     try {
@@ -84,7 +84,7 @@ const projectsData = [
       "Engaging UI/UX: A modern, minimalist design built with Jetpack Compose Multiplatform for a seamless aesthetic."
     ],
     "mediaType": "video",
-    "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-3e22f93cc85a1e2ef965/2048_cmp.mp4",
+    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/f314afaf55f8299d519a88ea517c16ea1c414e8b/2048_cmp.mp4",
     "projectLink": "https://github.com/"
   },
   {
@@ -101,7 +101,7 @@ const projectsData = [
       "Consistent Cross-Platform UX: Unified development that guarantees matching experiences on both operating systems."
     ],
     "mediaType": "video",
-    "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-4b6708ba73988c4083cb/personal_ai_assistant.mov",
+    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/f314afaf55f8299d519a88ea517c16ea1c414e8b/2048_cmp.mp4",
     "projectLink": "https://github.com/"
   },
   {
