@@ -85,6 +85,7 @@ const projectsData = [
     ],
     "mediaType": "video",
     "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/280882cc163fc76d72a8efcb06cc02469822daad/bhagavad_gita.mp4",
+    "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/35c2178c9ea495db600ddf388b1299db22cde232/bhagavad_gita.png",
     "projectLink": "https://github.com/"
   },
   {
@@ -102,6 +103,7 @@ const projectsData = [
     ],
     "mediaType": "video",
     "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/f314afaf55f8299d519a88ea517c16ea1c414e8b/personal_ai_assistant.mp4",
+    "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/35c2178c9ea495db600ddf388b1299db22cde232/bhagavad_gita.png",
     "projectLink": "https://github.com/"
   },
   {
@@ -118,6 +120,8 @@ const projectsData = [
     ],
     "mediaType": "video",
     "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/6e4a8d70c53109d84384ef2e4b9cde47715f4bb8/transit_app_clone.mp4",
+          "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/35c2178c9ea495db600ddf388b1299db22cde232/bhagavad_gita.png",
+
     "projectLink": "https://github.com/"
   },
   {
@@ -135,6 +139,8 @@ const projectsData = [
     ],
     "mediaType": "video",
     "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/6e4a8d70c53109d84384ef2e4b9cde47715f4bb8/tic_tac_toe_cmp.mp4",
+          "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/35c2178c9ea495db600ddf388b1299db22cde232/bhagavad_gita.png",
+
     "projectLink": "https://github.com/"
   },
   {
@@ -151,6 +157,7 @@ const projectsData = [
     ],
     "mediaType": "video",
     "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-3e22f93cc85a1e2ef965/2048_cmp.mp4",
+        "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/35c2178c9ea495db600ddf388b1299db22cde232/bhagavad_gita.png",
     "projectLink": "https://github.com/"
   },
   {
@@ -167,6 +174,7 @@ const projectsData = [
     ],
     "mediaType": "image",
     "mediaUrl": "kidtest_mockup.png",
+    "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/35c2178c9ea495db600ddf388b1299db22cde232/bhagavad_gita.png",
     "projectLink": "https://github.com/"
   }
 ];
@@ -191,7 +199,7 @@ function renderProjectCards(projects) {
 
     projects.forEach(project => {
         const isVideo = project.mediaType === "video";
-        const imageSrc = isVideo ? FALLBACK_MEDIA : (project.mediaUrl || FALLBACK_MEDIA);
+        const imageSrc = isVideo ? FALLBACK_MEDIA : (project.mediaUrl || project.imageSrc);
 
         const cardHtml = `
             <div onclick="openProjectDetails('${project.id}')" 
