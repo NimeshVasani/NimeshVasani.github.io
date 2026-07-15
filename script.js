@@ -1,169 +1,111 @@
-// script.js
+// Dynamic Project loading system from projects.json
+let localProjectsData = []; // Stores json data locally once fetched
 
-document.addEventListener("DOMContentLoaded", () => {
-    // We use "./" to explicitly tell Safari to look in the exact same directory
-    
-    // 1. Fetch Header
-    fetch("./header.html")
-        .then(response => {
-            if (!response.ok) throw new Error("Could not load header.html");
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById("header-placeholder").innerHTML = data;
-            initializeMobileMenu();
-            initializeScrollSpy(); // Enable real-time active tab highlighter
-        })
-        .catch(err => console.error(err));
-
-    // 2. Fetch Home Content
-    fetch("./home.html")
-        .then(response => {
-            if (!response.ok) throw new Error("Could not load home.html");
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById("home-placeholder").innerHTML = data;
-            initializeScrollToNext(); // Enable click scroll to Skills & fade out
-        })
-        .catch(err => console.error(err));
-
-    // 3. Fetch Projects
-    fetch("./projects.html")
-        .then(response => {
-            if (!response.ok) throw new Error("Could not load projects.html");
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById("projects-placeholder").innerHTML = data;
-            initializeProjectFilters();
-        })
-        .catch(err => console.error(err));
-});
-
-// Controls the Hero "Scroll Down" action directly to Skills section & makes button disappear
-function initializeScrollToNext() {
-    const scrollBtn = document.getElementById("scroll-to-next-btn");
-    const skillsSection = document.getElementById("skills");
-    
-    if (scrollBtn && skillsSection) {
-        // Scroll to Skills section on click
-        scrollBtn.addEventListener("click", () => {
-            skillsSection.scrollIntoView({
-                behavior: "smooth"
-            });
-        });
-
-        // Hide and disable button dynamically once user scrolls past Home area
-        window.addEventListener("scroll", () => {
-            if (window.scrollY > 100) {
-                scrollBtn.classList.add("opacity-0", "pointer-events-none");
-            } else {
-                scrollBtn.classList.remove("opacity-0", "pointer-events-none");
-            }
-        });
-    }
-}
-
-// Mobile hamburger toggle logic
-function initializeMobileMenu() {
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    
-    if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-        
-        const mobileLinks = mobileMenu.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-    }
-}
-
-// iOS-Glass style real-time page-scroll active tab highlighter (ScrollSpy)
-function initializeScrollSpy() {
-    const navLinks = document.querySelectorAll("#desktop-nav .nav-link");
-    const sections = document.querySelectorAll("section");
-
-    // iOS glass classes to apply for active tab
-    const activeClasses = [
-        "bg-white/10", 
-        "text-[#D4AF37]", 
-        "border", 
-        "border-white/10", 
-        "backdrop-blur-md", 
-        "shadow-sm"
-    ];
-    
-    const defaultClasses = ["text-gray-400"];
-
-    const observerOptions = {
-        root: null,
-        rootMargin: "-20% 0px -60% 0px", // Focus tracking area
-        threshold: 0
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const id = entry.target.getAttribute("id");
-                
-                navLinks.forEach(link => {
-                    const href = link.getAttribute("href").substring(1);
-                    if (href === id) {
-                        // Apply iOS glass pill look
-                        link.classList.add(...activeClasses);
-                        link.classList.remove(...defaultClasses);
-                    } else {
-                        // Reset other non-active tabs
-                        link.classList.remove(...activeClasses);
-                        link.classList.add(...defaultClasses);
-                    }
-                });
-            }
-        });
-    }, observerOptions);
-
-    // Safari fix: We observe both dynamically injected sections and static sections
-    sections.forEach(section => observer.observe(section));
-}
-
-// Interactive Project filtering engine
 function initializeProjectFilters() {
-    const filterButtons = document.querySelectorAll(".filter-btn");
-    const projectCards = document.querySelectorAll(".project-card");
+    const grid = document.getElementById("dynamic-project-grid");
+    if (!grid) return;
 
-    if (filterButtons.length === 0 || projectCards.length === 0) return;
+    // Fetch details from the central JSON file
+    fetch("./projects.json")
+        .then(response => {
+            if (!response.ok) throw new Error("Could not load projects.json");
+            return response.json();
+        })
+        .then(data => {
+            localProjectsData = data;
+            renderProjectCards(data); // Render initial state (All)
+            setupFilterEventListeners();
+        })
+        .catch(err => console.error("Error loading project dynamic data:", err));
+}
+
+// Builds physical cards in the grid dynamically
+function renderProjectCards(projects) {
+    const grid = document.getElementById("dynamic-project-grid");
+    grid.innerHTML = ""; // Clear existing grid space
+
+    projects.forEach(project => {
+        const cardHtml = `
+            <div onclick="openProjectDetails('${project.id}')" class="project-card bg-[#161D30] rounded-xl border border-gray-800 hover:border-[#E14D4D]/50 transition duration-300 overflow-hidden group cursor-pointer" data-tags="${project.tags}">
+                <div class="h-48 bg-gray-800 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
+                    <img src="${project.mediaUrl}" alt="${project.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="flex gap-2">
+                        ${project.tags.split(' ').map(tag => `
+                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-[#E14D4D]/10 text-[#E14D4D] uppercase">${tag}</span>
+                        `).join('')}
+                    </div>
+                    <h3 class="text-xl font-bold text-white">${project.title}</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">${project.shortDescription}</p>
+                </div>
+            </div>
+        `;
+        grid.insertAdjacentHTML("beforeend", cardHtml);
+    });
+}
+
+// Configures navigation filter clicks
+function setupFilterEventListeners() {
+    const filterButtons = document.querySelectorAll(".filter-btn");
 
     filterButtons.forEach(button => {
         button.addEventListener("click", () => {
             filterButtons.forEach(btn => {
-                btn.classList.remove("active", "bg-[#D4AF37]", "text-black", "border-[#D4AF37]");
+                btn.classList.remove("active", "bg-[#E14D4D]", "text-white", "border-[#E14D4D]");
                 btn.classList.add("bg-[#111827]", "text-gray-400", "border-gray-800");
             });
 
-            button.classList.add("active", "bg-[#D4AF37]", "text-black", "border-[#D4AF37]");
+            button.classList.add("active", "bg-[#E14D4D]", "text-white", "border-[#E14D4D]");
             button.classList.remove("bg-[#111827]", "text-gray-400", "border-gray-800");
 
             const selectedCategory = button.getAttribute("data-filter");
 
-            projectCards.forEach(card => {
-                const tags = card.getAttribute("data-tags").split(" ");
-                
-                if (selectedCategory === "all" || tags.includes(selectedCategory)) {
-                    card.classList.remove("hidden");
-                    card.style.opacity = "0";
-                    setTimeout(() => {
-                        card.style.opacity = "1";
-                    }, 50);
-                } else {
-                    card.classList.add("hidden");
-                }
-            });
+            if (selectedCategory === "all") {
+                renderProjectCards(localProjectsData);
+            } else {
+                const filtered = localProjectsData.filter(p => p.tags.split(' ').includes(selectedCategory));
+                renderProjectCards(filtered);
+            }
         });
     });
+}
+
+// Open modal helper - Populates details dynamically
+window.openProjectDetails = function(projectId) {
+    const project = localProjectsData.find(p => p.id === projectId);
+    if (!project) return;
+
+    document.getElementById("modal-title").innerText = project.title;
+    document.getElementById("modal-subtitle").innerText = project.subtitle;
+    document.getElementById("modal-long-desc").innerText = project.longDescription;
+    document.getElementById("modal-image").src = project.mediaUrl;
+
+    // Map features list dynamically
+    const listContainer = document.getElementById("modal-features-list");
+    listContainer.innerHTML = "";
+    project.keyFeatures.forEach(feature => {
+        const item = document.createElement("li");
+        item.classList.add("flex", "items-start");
+        
+        // Match the star emblem layout
+        item.innerHTML = `
+            <span class="text-yellow-400 mr-3 mt-0.5">✦</span>
+            <span>${feature}</span>
+        `;
+        listContainer.appendChild(item);
+    });
+
+    // Fade and show Modal smoothly
+    const modal = document.getElementById("project-modal");
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+}
+
+// Close Modal Helper
+window.closeProjectDetails = function() {
+    const modal = document.getElementById("project-modal");
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
 }
