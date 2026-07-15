@@ -117,7 +117,7 @@ const projectsData = [
       "Optimized Core Logic: Cross-compiled modules designed to reduce battery drain during continuous tracking."
     ],
     "mediaType": "video",
-    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/280882cc163fc76d72a8efcb06cc02469822daad/transit_clone.mp4",
+    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/6e4a8d70c53109d84384ef2e4b9cde47715f4bb8/transit_clone.mp4",
     "projectLink": "https://github.com/"
   },
   {
@@ -134,7 +134,7 @@ const projectsData = [
       "Audio & Profile Tweaks: Personalized sound boards, soundtrack controls, and player profile settings."
     ],
     "mediaType": "video",
-    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/f314afaf55f8299d519a88ea517c16ea1c414e8b/tic_tac_toe_cmp.mp4",
+    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/6e4a8d70c53109d84384ef2e4b9cde47715f4bb8/tic_tac_toe_cmp.mp4",
     "projectLink": "https://github.com/"
   },
   {
