@@ -90,7 +90,14 @@
 
             <!-- Left Half: App Screenshot / Mockup Video -->
             <div class="w-full md:w-3/5 bg-black/40 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-800 relative">
-                <img id="modal-image" src="" alt="Project Visual Preview" class="max-h-[70vh] w-auto rounded-lg object-contain shadow-2xl">
+                <!-- Image Tag (Hidden by default, updated dynamically via JS) -->
+                <img id="modal-image" src="" alt="Project Visual Preview" class="hidden max-h-[70vh] w-auto rounded-lg object-contain shadow-2xl">
+                
+                <!-- Video Tag (Hidden by default, updated dynamically via JS) -->
+                <video id="modal-video" class="hidden max-h-[70vh] w-auto rounded-lg object-contain shadow-2xl" controls autoplay loop muted playsinline>
+                    <source id="modal-video-source" src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
             </div>
 
             <!-- Right Half: Project Title, Description and Key Features -->
