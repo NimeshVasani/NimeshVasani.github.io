@@ -117,7 +117,7 @@ const projectsData = [
       "Optimized Core Logic: Cross-compiled modules designed to reduce battery drain during continuous tracking."
     ],
     "mediaType": "video",
-    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/6e4a8d70c53109d84384ef2e4b9cde47715f4bb8/transit_clone.mp4",
+    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/6e4a8d70c53109d84384ef2e4b9cde47715f4bb8/transit_app_clone.mp4",
     "projectLink": "https://github.com/"
   },
   {
