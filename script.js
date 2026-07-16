@@ -1,102 +1,53 @@
 // ==========================================
-// 1. BOOTSTRAP INITIALIZATION (Fail-Safe Restructured)
+// 1. BOOTSTRAP INITIALIZATION (Unified & Async Safe)
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Instantly initialize layout, header, and animations first!
-    // This ensures your header, navigation, scrollSpy, and homepage load instantly.
-try {
+    // Instantly bootstrap non-blocking layout visual effects
+    try {
         initParticles();
-        initializeScrollToNext();
-        initializeMobileMenu();
-        initializeScrollSpy();
     } catch (e) {
-        console.error("Layout initialization encountered an error:", e);
+        console.error("Visual elements initialization error:", e);
     }
 
+    // Array to hold all fetch promises so we can track when they are completely loaded
     const fetchPromises = [];
-    
-    fetch("./header.html")
-        .then(response => {
-            if (!response.ok) throw new Error("Could not load header.html");
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById("header-placeholder").innerHTML = data;
-            initializeMobileMenu();
-            initializeScrollSpy();
-        })
-        .catch(err => console.error(err));
 
-    // 2. Fetch Home Content
-    fetch("./home.html")
-        .then(response => {
-            if (!response.ok) throw new Error("Could not load home.html");
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById("home-placeholder").innerHTML = data;
-            initializeScrollToNext(); 
-           
-        })
-        .catch(err => console.error(err));
-
-    
-    
-
-    // 2. Fetch projects asynchronously without blocking the main rendering thread
-    const placeholder = document.getElementById("projects-placeholder");
-    if (placeholder) {
-        fetch("projects.html")
+    // 1. Fetch Header Template
+    const headerPlaceholder = document.getElementById("header-placeholder");
+    if (headerPlaceholder) {
+        const pHeader = fetch("./header.html")
             .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error("Could not load header.html");
                 return response.text();
             })
             .then(data => {
-                placeholder.innerHTML = data;
-                initializeProjectFilters(); 
+                headerPlaceholder.innerHTML = data;
+                initializeMobileMenu();
             })
-            .catch(err => {
-                console.error("Failed to load projects.html, running fallback initialization:", err);
-                // Graceful fallback: render portfolio cards even if fetch fails
-                initializeProjectFilters();
-            });
-    } else {
-        initializeProjectFilters();
+            .catch(err => console.error(err));
+        fetchPromises.push(pHeader);
     }
 
-    Promise.all(fetchPromises)
-        .then(() => {
-            // Give the DOM a tiny millisecond to paint the new heights
-            setTimeout(() => {
-                initializeScrollSpy();
-            }, 100);
-        })
-        .catch(err => {
-            console.error("Error loading templates, initializing scroll spy anyway:", err);
-            initializeScrollSpy();
-        });
-});
-
-// ==========================================
-// 1. BOOTSTRAP INITIALIZATION
-// ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-    // 1. Instantly initialize layout, header, and animations (Zero blocking!)
-    try {
-        initParticles();
-        initializeScrollToNext();
-        initializeMobileMenu();
-        initializeScrollSpy();
-    } catch (e) {
-        console.error("Layout initialization encountered an error:", e);
+    // 2. Fetch Home Content Template
+    const homePlaceholder = document.getElementById("home-placeholder");
+    if (homePlaceholder) {
+        const pHome = fetch("./home.html")
+            .then(response => {
+                if (!response.ok) throw new Error("Could not load home.html");
+                return response.text();
+            })
+            .then(data => {
+                homePlaceholder.innerHTML = data;
+                initializeScrollToNext(); 
+            })
+            .catch(err => console.error(err));
+        fetchPromises.push(pHome);
     }
 
-    // 2. Load Projects Section
+    // 3. Fetch Projects Section
     const projectsPlaceholder = document.getElementById("projects-placeholder");
     if (projectsPlaceholder) {
-        fetch("projects.html")
+        const pProjects = fetch("projects.html")
             .then(response => {
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 return response.text();
@@ -106,17 +57,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 initializeProjectFilters(); 
             })
             .catch(err => {
-                console.error("Failed to load projects.html:", err);
-                initializeProjectFilters(); // Safe fallback
+                console.error("Failed to load projects.html, running fallback:", err);
+                initializeProjectFilters(); // Safe Fallback
             });
+        fetchPromises.push(pProjects);
     } else {
         initializeProjectFilters();
     }
 
-    // 3. Load Experience Section
+    // 4. Fetch Experience Section
     const experiencePlaceholder = document.getElementById("experience-placeholder");
     if (experiencePlaceholder) {
-        fetch("experience.html")
+        const pExperience = fetch("experience.html")
             .then(response => {
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 return response.text();
@@ -125,12 +77,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 experiencePlaceholder.innerHTML = data;
             })
             .catch(err => console.error("Failed to load experience.html:", err));
+        fetchPromises.push(pExperience);
     }
 
-    // 4. Load Extra Section (Freelance Pitch, Quotes & Chat Bubble)
+    // 5. Fetch Extra Section (Freelance Pitch & Quotes Grid)
     const extraPlaceholder = document.getElementById("extra-placeholder");
     if (extraPlaceholder) {
-        fetch("extra.html")
+        const pExtra = fetch("extra.html")
             .then(response => {
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 return response.text();
@@ -139,14 +92,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 extraPlaceholder.innerHTML = data;
             })
             .catch(err => console.error("Failed to load extra.html:", err));
+        fetchPromises.push(pExtra);
     }
+
+    // ==========================================
+    // CRITICAL RUNTIME FIX: Run Scroll Spy ONLY after all layouts are complete
+    // ==========================================
+    Promise.all(fetchPromises)
+        .then(() => {
+            // A tiny 100ms delay gives the browser layout engine time to finish painting heights
+            setTimeout(() => {
+                initializeScrollSpy();
+            }, 100);
+        })
+        .catch(err => {
+            console.warn("One or more templates failed to load, initializing ScrollSpy anyway.", err);
+            initializeScrollSpy();
+        });
 });
+
 // ==========================================
 // 2. PROJECT PORTFOLIO DATA (Stored locally)
 // ==========================================
-// NOTE: To fix videos failing to load, move these videos into your repository's 
-// assets folder and use relative paths (e.g., "assets/videos/tic_tac_toe.mp4") 
-// rather than using redirected GitHub Release URLs.
 const projectsData = [
   {
     "id": "bhagavad-gita-app",
@@ -199,8 +166,7 @@ const projectsData = [
     ],
     "mediaType": "video",
     "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/6e4a8d70c53109d84384ef2e4b9cde47715f4bb8/transit_app_clone.mp4",
-          "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/65198d48bd6b5d5920dad0dd4b2c900fcc1764c2/transit_app_clone.jpg",
-
+    "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/65198d48bd6b5d5920dad0dd4b2c900fcc1764c2/transit_app_clone.jpg",
     "projectLink": "https://github.com/"
   },
   {
@@ -218,8 +184,7 @@ const projectsData = [
     ],
     "mediaType": "video",
     "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/6e4a8d70c53109d84384ef2e4b9cde47715f4bb8/tic_tac_toe_cmp.mp4",
-          "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/65198d48bd6b5d5920dad0dd4b2c900fcc1764c2/tic_tac_toe.jpg",
-
+    "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/65198d48bd6b5d5920dad0dd4b2c900fcc1764c2/tic_tac_toe.jpg",
     "projectLink": "https://github.com/"
   },
   {
@@ -236,7 +201,7 @@ const projectsData = [
     ],
     "mediaType": "video",
     "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-3e22f93cc85a1e2ef965/2048_cmp.mp4",
-        "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/65198d48bd6b5d5920dad0dd4b2c900fcc1764c2/2048_cmp.jpg",
+    "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/65198d48bd6b5d5920dad0dd4b2c900fcc1764c2/2048_cmp.jpg",
     "projectLink": "https://github.com/"
   },
   {
@@ -258,13 +223,11 @@ const projectsData = [
   }
 ];
 
-// Elegant global placeholder for failing graphics assets
 const FALLBACK_MEDIA = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop";
 
 // ==========================================
 // 3. CORE LOGIC & CARD RENDERING
 // ==========================================
-
 function initializeProjectFilters() {
     renderProjectCards(projectsData);
     setupFilterEventListeners();
@@ -297,7 +260,7 @@ function renderProjectCards(projects) {
                          class="project-card-image w-full h-full object-cover group-hover:scale-105 transition duration-300" 
                          onerror="this.src='${FALLBACK_MEDIA}'">
                     
-                    <!-- Optional Video Hover Element with faststart configs -->
+                    <!-- Optional Video Hover Element -->
                     ${isVideo ? `
                         <video class="project-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 pointer-events-none" 
                                muted 
@@ -375,7 +338,6 @@ function setupFilterEventListeners() {
 // ==========================================
 // 4. DETAILED MODAL VIEWER
 // ==========================================
-
 window.openProjectDetails = function(projectId) {
     const project = projectsData.find(p => p.id === projectId);
     if (!project) return;
@@ -451,7 +413,6 @@ window.closeProjectDetails = function() {
 // ==========================================
 // 5. LAYOUT ANIMATIONS & GLOBAL UTILITIES
 // ==========================================
-
 function initParticles() {
     if (typeof particlesJS !== "undefined" && document.getElementById("particles-js")) {
         particlesJS("particles-js", {
@@ -517,11 +478,15 @@ function initializeMobileMenu() {
         });
     }
 }
+
+// ==========================================
+// 6. SCROLL SPY ENGINE
+// ==========================================
 function initializeScrollSpy() {
     const navLinks = document.querySelectorAll("#desktop-nav .nav-link");
-    const sections = document.querySelectorAll("section");
+    // Ensure both custom headers/sections have id hooks loaded in DOM
+    const sections = document.querySelectorAll("section, header[id], div[id]");
 
-    // We change the border color instead of adding/removing the 'border' layout class
     const activeClasses = [
         "bg-white/10",
         "text-[#E14D4D]",
@@ -532,15 +497,21 @@ function initializeScrollSpy() {
 
     const defaultClasses = [
         "text-gray-400",
-        "border-transparent" // Keeps a 1px invisible border so the element size never shifts!
+        "border-transparent"
     ];
 
-    // Ensure all links have the default baseline classes (like borders) on initialization
+    // Ensure transition frames are pre-assigned to prevent sudden shifts
     navLinks.forEach(link => {
         link.classList.add("border", "transition-all", "duration-300", "ease-in-out");
     });
 
     function updateActiveSection() {
+        // Safe Fallback: instantly highlight 'home' if user scrolls near the top
+        if (window.scrollY < 120) {
+            setActiveLink("home");
+            return;
+        }
+
         let currentSection = null;
         let minDistance = Infinity;
         const viewportCenter = window.innerHeight / 2;
@@ -548,7 +519,7 @@ function initializeScrollSpy() {
         sections.forEach(section => {
             const rect = section.getBoundingClientRect();
 
-            // Ignore sections completely outside the viewport
+            // Ignore structures out of vertical screen scope
             if (rect.bottom < 0 || rect.top > window.innerHeight) return;
 
             const sectionCenter = rect.top + rect.height / 2;
@@ -560,10 +531,16 @@ function initializeScrollSpy() {
             }
         });
 
+        if (currentSection) {
+            setActiveLink(currentSection);
+        }
+    }
+
+    function setActiveLink(activeId) {
         navLinks.forEach(link => {
             const href = link.getAttribute("href");
 
-            if (href && href.substring(1) === currentSection) {
+            if (href && href.substring(1) === activeId) {
                 link.classList.add(...activeClasses);
                 link.classList.remove(...defaultClasses);
             } else {
@@ -573,10 +550,9 @@ function initializeScrollSpy() {
         });
     }
 
-    // Run once on page load
+    // Run layout scan
     updateActiveSection();
 
-    // Update while scrolling
     let ticking = false;
     window.addEventListener("scroll", () => {
         if (!ticking) {
@@ -588,23 +564,23 @@ function initializeScrollSpy() {
         }
     });
 
-    // Also update on resize
     window.addEventListener("resize", updateActiveSection);
 }
 
-function toggleAccordion(id) {
+// ==========================================
+// 7. ACCORDION (Exposed Globally)
+// ==========================================
+window.toggleAccordion = function(id) {
     const content = document.getElementById(id);
     const icon = document.getElementById(`icon-${id}`);
     
     if (!content || !icon) return;
 
     if (content.classList.contains('hidden')) {
-        // Expand
         content.classList.remove('hidden');
-        icon.innerText = '—'; // Change plus to minus symbol
+        icon.innerText = '—'; // Long Dash / Minus
         icon.classList.add('rotate-180');
     } else {
-        // Collapse
         content.classList.add('hidden');
         icon.innerText = '+';
         icon.classList.remove('rotate-180');
