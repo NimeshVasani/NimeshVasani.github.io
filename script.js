@@ -473,3 +473,22 @@ function initializeScrollSpy() {
 
     sections.forEach(section => observer.observe(section));
 }
+
+function toggleAccordion(id) {
+    const content = document.getElementById(id);
+    const icon = document.getElementById(`icon-${id}`);
+    
+    if (!content || !icon) return;
+
+    if (content.classList.contains('hidden')) {
+        // Expand
+        content.classList.remove('hidden');
+        icon.innerText = '—'; // Change plus to minus symbol
+        icon.classList.add('rotate-180');
+    } else {
+        // Collapse
+        content.classList.add('hidden');
+        icon.innerText = '+';
+        icon.classList.remove('rotate-180');
+    }
+}
