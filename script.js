@@ -12,6 +12,9 @@ try {
     } catch (e) {
         console.error("Layout initialization encountered an error:", e);
     }
+
+    const fetchPromises = [];
+    
     fetch("./header.html")
         .then(response => {
             if (!response.ok) throw new Error("Could not load header.html");
@@ -62,6 +65,18 @@ try {
     } else {
         initializeProjectFilters();
     }
+
+    Promise.all(fetchPromises)
+        .then(() => {
+            // Give the DOM a tiny millisecond to paint the new heights
+            setTimeout(() => {
+                initializeScrollSpy();
+            }, 100);
+        })
+        .catch(err => {
+            console.error("Error loading templates, initializing scroll spy anyway:", err);
+            initializeScrollSpy();
+        });
 });
 
 // ==========================================
