@@ -29,6 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
            
         })
         .catch(err => console.error(err));
+
+    
     try {
         initParticles();
         initializeScrollToNext();
@@ -62,6 +64,68 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// ==========================================
+// 1. BOOTSTRAP INITIALIZATION
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Instantly initialize layout, header, and animations (Zero blocking!)
+    try {
+        initParticles();
+        initializeScrollToNext();
+        initializeMobileMenu();
+        initializeScrollSpy();
+    } catch (e) {
+        console.error("Layout initialization encountered an error:", e);
+    }
+
+    // 2. Load Projects Section
+    const projectsPlaceholder = document.getElementById("projects-placeholder");
+    if (projectsPlaceholder) {
+        fetch("projects.html")
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response.text();
+            })
+            .then(data => {
+                projectsPlaceholder.innerHTML = data;
+                initializeProjectFilters(); 
+            })
+            .catch(err => {
+                console.error("Failed to load projects.html:", err);
+                initializeProjectFilters(); // Safe fallback
+            });
+    } else {
+        initializeProjectFilters();
+    }
+
+    // 3. Load Experience Section
+    const experiencePlaceholder = document.getElementById("experience-placeholder");
+    if (experiencePlaceholder) {
+        fetch("experience.html")
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response.text();
+            })
+            .then(data => {
+                experiencePlaceholder.innerHTML = data;
+            })
+            .catch(err => console.error("Failed to load experience.html:", err));
+    }
+
+    // 4. Load Extra Section (Freelance Pitch, Quotes & Chat Bubble)
+    const extraPlaceholder = document.getElementById("extra-placeholder");
+    if (extraPlaceholder) {
+        fetch("extra.html")
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response.text();
+            })
+            .then(data => {
+                extraPlaceholder.innerHTML = data;
+            })
+            .catch(err => console.error("Failed to load extra.html:", err));
+    }
+});
 // ==========================================
 // 2. PROJECT PORTFOLIO DATA (Stored locally)
 // ==========================================
