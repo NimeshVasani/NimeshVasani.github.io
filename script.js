@@ -502,40 +502,72 @@ function initializeMobileMenu() {
         });
     }
 }
-
 function initializeScrollSpy() {
     const navLinks = document.querySelectorAll("#desktop-nav .nav-link");
     const sections = document.querySelectorAll("section");
 
-    const activeClasses = ["bg-white/10", "text-[#E14D4D]", "border", "border-white/10", "backdrop-blur-md", "shadow-sm"];
+    const activeClasses = [
+        "bg-white/10",
+        "text-[#E14D4D]",
+        "border",
+        "border-white/10",
+        "backdrop-blur-md",
+        "shadow-sm"
+    ];
+
     const defaultClasses = ["text-gray-400"];
 
-    const observerOptions = {
-        root: null,
-        rootMargin: "-20% 0px -60% 0px",
-        threshold: 0
-    };
+    function updateActiveSection() {
+        let currentSection = null;
+        let minDistance = Infinity;
+        const viewportCenter = window.innerHeight / 2;
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const id = entry.target.getAttribute("id");
-                
-                navLinks.forEach(link => {
-                    const href = link.getAttribute("href");
-                    if (href && href.substring(1) === id) {
-                        link.classList.add(...activeClasses);
-                        link.classList.remove(...defaultClasses);
-                    } else {
-                        link.classList.remove(...activeClasses);
-                        link.classList.add(...defaultClasses);
-                    }
-                });
+        sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+
+            // Ignore sections completely outside the viewport
+            if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+            const sectionCenter = rect.top + rect.height / 2;
+            const distance = Math.abs(viewportCenter - sectionCenter);
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                currentSection = section.id;
             }
         });
-    }, observerOptions);
 
-    sections.forEach(section => observer.observe(section));
+        navLinks.forEach(link => {
+            const href = link.getAttribute("href");
+
+            if (href && href.substring(1) === currentSection) {
+                link.classList.add(...activeClasses);
+                link.classList.remove(...defaultClasses);
+            } else {
+                link.classList.remove(...activeClasses);
+                link.classList.add(...defaultClasses);
+            }
+        });
+    }
+
+    // Run once on page load
+    updateActiveSection();
+
+    // Update while scrolling
+    let ticking = false;
+
+    window.addEventListener("scroll", () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                updateActiveSection();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    // Also update on resize
+    window.addEventListener("resize", updateActiveSection);
 }
 
 function toggleAccordion(id) {
