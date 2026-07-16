@@ -4,7 +4,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Instantly initialize layout, header, and animations first!
     // This ensures your header, navigation, scrollSpy, and homepage load instantly.
-
+try {
+        initParticles();
+        initializeScrollToNext();
+        initializeMobileMenu();
+        initializeScrollSpy();
+    } catch (e) {
+        console.error("Layout initialization encountered an error:", e);
+    }
     fetch("./header.html")
         .then(response => {
             if (!response.ok) throw new Error("Could not load header.html");
@@ -31,14 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(err => console.error(err));
 
     
-    try {
-        initParticles();
-        initializeScrollToNext();
-        initializeMobileMenu();
-        initializeScrollSpy();
-    } catch (e) {
-        console.error("Layout initialization encountered an error:", e);
-    }
+    
 
     // 2. Fetch projects asynchronously without blocking the main rendering thread
     const placeholder = document.getElementById("projects-placeholder");
