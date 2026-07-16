@@ -506,16 +506,24 @@ function initializeScrollSpy() {
     const navLinks = document.querySelectorAll("#desktop-nav .nav-link");
     const sections = document.querySelectorAll("section");
 
+    // We change the border color instead of adding/removing the 'border' layout class
     const activeClasses = [
         "bg-white/10",
         "text-[#E14D4D]",
-        "border",
         "border-white/10",
         "backdrop-blur-md",
         "shadow-sm"
     ];
 
-    const defaultClasses = ["text-gray-400"];
+    const defaultClasses = [
+        "text-gray-400",
+        "border-transparent" // Keeps a 1px invisible border so the element size never shifts!
+    ];
+
+    // Ensure all links have the default baseline classes (like borders) on initialization
+    navLinks.forEach(link => {
+        link.classList.add("border", "transition-all", "duration-300", "ease-in-out");
+    });
 
     function updateActiveSection() {
         let currentSection = null;
@@ -555,7 +563,6 @@ function initializeScrollSpy() {
 
     // Update while scrolling
     let ticking = false;
-
     window.addEventListener("scroll", () => {
         if (!ticking) {
             window.requestAnimationFrame(() => {
