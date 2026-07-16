@@ -1,75 +1,125 @@
-<section id="extra-footer" class="bg-black text-white py-16 border-t border-gray-900 relative">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-0 rounded-2xl overflow-hidden border border-gray-800">
+<section id="extra-footer" class="bg-black text-white w-full">
+    <!-- Edge-to-edge layout on desktop, stacked on mobile -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 w-full">
+        
+        <!-- ================= LEFT SIDE: FREELANCE PITCH (Matches main BG) ================= -->
+        <div class="bg-black p-8 md:p-16 lg:p-20 flex flex-col justify-center space-y-8">
+            <h3 class="text-3xl md:text-4xl font-mono text-white leading-tight max-w-lg">
+                Available for Select freelance opportunities
+            </h3>
             
-            <!-- Column 1: Freelance Pitch -->
-            <div class="bg-black p-8 md:p-12 flex flex-col justify-center space-y-6">
-                <h3 class="text-3xl md:text-4xl font-serif text-white leading-tight">
-                    Available for Select freelance opportunities
-                </h3>
-                <div class="space-y-4 text-gray-300 text-base md:text-lg">
-                    <p>Have an exciting project you need help with?</p>
-                    <p>
-                        Send me an <a href="mailto:your.email@example.com" class="text-[#E14D4D] hover:underline">email</a> 
-                        or contact me via <a href="#contact" class="text-[#E14D4D] hover:underline">instant message</a>!
-                    </p>
-                </div>
-            </div>
+            <div class="space-y-6 text-gray-300 text-sm md:text-base font-sans">
+                <p class="leading-relaxed">
+                    Have an exciting project you need help with?<br>
+                    Send me an email or contact me via instant message!
+                </p>
+                
+                <!-- Main Email -->
+                <p class="pt-4">
+                    <a href="mailto:vasaninimesh0@gmail.com" class="text-white hover:text-[#E14D4D] text-lg md:text-xl font-mono underline underline-offset-4 decoration-gray-600 hover:decoration-[#E14D4D]">
+                        vasaninimesh0@gmail.com
+                    </a>
+                </p>
 
-            <!-- Column 2: Steve Jobs Quote (Purple) -->
-            <div class="bg-[#A855F7] text-white p-8 md:p-12 flex flex-col justify-between relative min-h-[400px]">
-                <!-- Top Quote Icon and Avatar -->
+                <!-- Social/Contact Links -->
+                <ul class="space-y-2 pt-4 font-mono text-sm">
+                    <li>
+                        <a href="https://linkedin.com" target="_blank" class="text-white hover:text-[#E14D4D] underline underline-offset-4 decoration-gray-600 hover:decoration-[#E14D4D]">LinkedIn</a>
+                    </li>
+                    <li>
+                        <a href="https://m.me/" target="_blank" class="text-white hover:text-[#E14D4D] underline underline-offset-4 decoration-gray-600 hover:decoration-[#E14D4D]">Messenger</a>
+                    </li>
+                    <li>
+                        <a href="https://instagram.com" target="_blank" class="text-white hover:text-[#E14D4D] underline underline-offset-4 decoration-gray-600 hover:decoration-[#E14D4D]">Instagram</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com" target="_blank" class="text-white hover:text-[#E14D4D] underline underline-offset-4 decoration-gray-600 hover:decoration-[#E14D4D]">GitHub</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Simple Footer Signature -->
+            <p class="text-xs text-gray-500 font-mono pt-8">
+                © 2022 by Nimesh Vasani. Mobile Developer
+            </p>
+        </div>
+
+        <!-- ================= RIGHT SIDE: THE 3 QUOTES GRID ================= -->
+        <div class="grid grid-cols-1 md:grid-cols-2 w-full">
+            
+            <!-- COLUMN A: Steve Jobs Quote (Full-height Purple) -->
+            <div class="bg-[#A855F7] text-white p-8 md:p-12 lg:p-16 flex flex-col justify-between min-h-[500px] lg:min-h-0">
                 <div class="flex justify-between items-start">
-                    <!-- Giant Quote Icon -->
                     <span class="text-6xl font-serif leading-none opacity-80">“</span>
-                    <!-- Circular Avatar -->
                     <img src="https://upload.wikimedia.org/wikipedia/commons/d/d2/Steve_Jobs_Headshot_2010-CROP_%28cropped%29.jpg" 
                          alt="Steve Jobs" 
-                         class="w-16 h-16 rounded-full object-cover border-2 border-white/50 shadow-md">
+                         class="w-14 h-14 rounded-full object-cover border-2 border-white/40 shadow-md">
                 </div>
 
-                <!-- Quote Text -->
                 <div class="my-6">
-                    <p class="text-sm md:text-base leading-relaxed font-sans text-purple-50">
+                    <p class="text-xs md:text-sm leading-relaxed font-sans text-purple-50">
                         You can't connect the dots looking forward; you can only connect them looking backwards. 
                         So you have to trust that the dots will somehow connect in your future. You have to trust in something 
                         - your gut, destiny, life, karma, whatever. This approach has never let me down, and it has made all 
                         the difference in my life.
+                        <br><br>
+                        I'm as proud of many of the things we haven't done as of the things we have done. Innovation is saying no to a thousand things.
                     </p>
                 </div>
 
-                <!-- Author Signature -->
                 <div class="font-mono text-xs text-purple-200">
-                    — Steve Jobs
+                    — Steve Jobs<br>
+                    <span class="opacity-75">Founder of Apple Inc.</span>
                 </div>
             </div>
 
-            <!-- Column 3: Robert C. Martin Quote (Blue) -->
-            <div class="bg-[#2563EB] text-white p-8 md:p-12 flex flex-col justify-between relative min-h-[400px]">
-                <!-- Top Quote Icon and Avatar -->
-                <div class="flex justify-between items-start">
-                    <!-- Giant Quote Icon -->
-                    <span class="text-6xl font-serif leading-none opacity-80">“</span>
-                    <!-- Circular Avatar -->
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Robert_Cecil_Martin.jpg" 
-                         alt="Robert C. Martin" 
-                         class="w-16 h-16 rounded-full object-cover border-2 border-white/50 shadow-md">
+            <!-- COLUMN B: Split Right Stack (Blue and Teal) -->
+            <div class="flex flex-col w-full h-full">
+                
+                <!-- Quote 2: Robert C. Martin (Blue Top Card) -->
+                <div class="bg-[#2563EB] text-white p-8 md:p-12 flex flex-col justify-between flex-1 min-h-[250px]">
+                    <div class="flex justify-between items-start">
+                        <span class="text-5xl font-serif leading-none opacity-80">“</span>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Robert_Cecil_Martin.jpg" 
+                             alt="Robert C. Martin" 
+                             class="w-14 h-14 rounded-full object-cover border-2 border-white/40 shadow-md">
+                    </div>
+
+                    <div class="my-4">
+                        <p class="text-xs md:text-sm leading-relaxed font-sans text-blue-50">
+                            Clean code always looks like it was written by someone who cares. Most good programmers 
+                            do programming not because they expect to get paid or get adulation by the public, but because 
+                            it is fun to program.
+                        </p>
+                    </div>
+
+                    <div class="font-mono text-xs text-blue-200">
+                        — Robert C. Martin<br>
+                        <span class="opacity-75">Known For Agile Manifesto.</span>
+                    </div>
                 </div>
 
-                <!-- Quote Text -->
-                <div class="my-6">
-                    <p class="text-sm md:text-base leading-relaxed font-sans text-blue-50">
-                        Clean code always looks like it was written by someone who cares. Most good programmers 
-                        do programming not because they expect to get paid or get adulation by the public, but because 
-                        it is fun to program.
-                    </p>
+                <!-- Quote 3: Anonymous (Teal Bottom Card) -->
+                <div class="bg-[#0891B2] text-white p-8 md:p-12 flex flex-col justify-between flex-1 min-h-[250px]">
+                    <div class="flex justify-between items-start">
+                        <span class="text-5xl font-serif leading-none opacity-80">“</span>
+                        <!-- Robot / AI Avatar -->
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=150&auto=format&fit=crop" 
+                             alt="Anonymous" 
+                             class="w-14 h-14 rounded-full object-cover border-2 border-white/40 shadow-md grayscale">
+                    </div>
+
+                    <div class="my-4">
+                        <p class="text-xs md:text-sm leading-relaxed font-sans text-cyan-50">
+                            When I wrote this code, only God and I understood what I did. Now only God knows.
+                        </p>
+                    </div>
+
+                    <div class="font-mono text-xs text-cyan-200">
+                        — Anonymous
+                    </div>
                 </div>
 
-                <!-- Author Signature -->
-                <div class="font-mono text-xs text-blue-200">
-                    — Robert C. Martin <br>
-                    <span class="opacity-75">Known For Agile Manifesto</span>
-                </div>
             </div>
 
         </div>
