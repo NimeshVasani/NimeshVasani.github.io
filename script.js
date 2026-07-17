@@ -442,17 +442,19 @@ function initializeMobileMenu() {
 }
 
 // ==========================================
-// 6. SCROLL SPY ENGINE
+// 6. SCROLL SPY ENGINE (Updated for data-target)
 // ==========================================
 function initializeScrollSpy() {
-    const navLinks = document.querySelectorAll("#desktop-nav .nav-link");
+    // Select both desktop AND mobile navigation links that have custom target attributes
+    const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
     
     const sections = [];
     navLinks.forEach(link => {
-        const href = link.getAttribute("href");
-        if (href && href.startsWith("#")) {
-            const element = document.querySelector(href);
-            if (element) {
+        const targetId = link.getAttribute("data-target");
+        if (targetId) {
+            const element = document.getElementById(targetId);
+            // Push unique target elements to scroll monitoring array
+            if (element && !sections.includes(element)) {
                 sections.push(element);
             }
         }
@@ -471,7 +473,8 @@ function initializeScrollSpy() {
         "border-transparent"
     ];
 
-    navLinks.forEach(link => {
+    // Apply baseline styles to desktop links
+    document.querySelectorAll("#desktop-nav .nav-link").forEach(link => {
         link.classList.add("border", "transition-all", "duration-300", "ease-in-out");
     });
 
@@ -506,14 +509,24 @@ function initializeScrollSpy() {
 
     function setActiveLink(activeId) {
         navLinks.forEach(link => {
-            const href = link.getAttribute("href");
+            const targetId = link.getAttribute("data-target");
 
-            if (href && href.substring(1) === activeId) {
+            if (targetId === activeId) {
+                // Apply visual state highlights
                 link.classList.add(...activeClasses);
                 link.classList.remove(...defaultClasses);
+                
+                // Keep mobile menu highlight styling in sync if matching
+                if (link.classList.contains("mobile-nav-link")) {
+                    link.classList.add("text-[#D4AF37]");
+                }
             } else {
                 link.classList.remove(...activeClasses);
                 link.classList.add(...defaultClasses);
+                
+                if (link.classList.contains("mobile-nav-link")) {
+                    link.classList.remove("text-[#D4AF37]");
+                }
             }
         });
     }
@@ -554,6 +567,9 @@ window.toggleAccordion = function(id) {
     }
 }
 
+// ==========================================
+// 8. GLOBAL EVENT LISTENERS
+// ==========================================
 document.addEventListener("click", (e) => {
     const targetId = e.target.getAttribute("data-target");
     if (targetId) {
