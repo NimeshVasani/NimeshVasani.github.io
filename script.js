@@ -196,7 +196,7 @@ const projectsData = [
       "Cross-Platform Consistency: Shared Flutter codebase running beautifully across Android and iOS screens."
     ],
     "mediaType": "video",
-    "mediaUrl": "https://github.com/NimeshVasani/projects_videos/releases/download/untagged-3e22f93cc85a1e2ef965/2048_cmp.mp4",
+    "mediaUrl": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/9e3eb5f242b5acb9e19668dedf1f02c9c5038a80/2048_cmp.mp4",
     "imageSrc": "https://raw.githubusercontent.com/NimeshVasani/projects_videos/65198d48bd6b5d5920dad0dd4b2c900fcc1764c2/2048_cmp.jpg",
     "projectLink": "https://github.com/"
   },
