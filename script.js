@@ -8,9 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. Fetch Header Template
     const headerPlaceholder = document.getElementById("header-placeholder");
     if (headerPlaceholder) {
-        const pHeader = fetch("header.html") // Root relative path for GitHub Pages
+        const pHeader = fetch("header.html")
             .then(response => {
-                if (!response.ok) throw new Error("Could not load header.html. Check if the file name matches perfectly.");
+                if (!response.ok) throw new Error("Could not load header.html");
                 return response.text();
             })
             .then(data => {
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (homePlaceholder) {
         const pHome = fetch("home.html")
             .then(response => {
-                if (!response.ok) throw new Error("Could not load home.html. Check if the file name matches perfectly.");
+                if (!response.ok) throw new Error("Could not load home.html");
                 return response.text();
             })
             .then(data => {
@@ -89,14 +89,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // CRITICAL RUNTIME FIX: Run Scroll Spy ONLY after all layouts are complete
+    // Run Scroll Spy ONLY after all layouts are complete
     // ==========================================
     Promise.all(fetchPromises)
         .then(() => {
             console.log("📂 Step 1: All HTML templates successfully fetched!");
             setTimeout(() => {
                 initializeScrollSpy();
-            }, 150); // Small delay to allow the browser to paint heights correctly
+            }, 150); 
         })
         .catch(err => {
             console.warn("One or more templates failed to load, initializing ScrollSpy anyway.", err);
