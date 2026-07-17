@@ -3,11 +3,7 @@
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     // Instantly bootstrap non-blocking layout visual effects
-    try {
-        initParticles();
-    } catch (e) {
-        console.error("Visual elements initialization error:", e);
-    }
+   
 
     // Array to hold all fetch promises so we can track when they are completely loaded
     const fetchPromises = [];
@@ -413,34 +409,7 @@ window.closeProjectDetails = function() {
 // ==========================================
 // 5. LAYOUT ANIMATIONS & GLOBAL UTILITIES
 // ==========================================
-function initParticles() {
-    if (typeof particlesJS !== "undefined" && document.getElementById("particles-js")) {
-        particlesJS("particles-js", {
-            "particles": {
-                "number": { "value": 130, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#ffffff" },
-                "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" } },
-                "opacity": { "value": 0.3, "random": false },
-                "size": { "value": 3, "random": true },
-                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.25, "width": 1 },
-                "move": { "enable": true, "speed": 4, "direction": "none", "out_mode": "out" }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": { "enable": true, "mode": "grab" },
-                    "onclick": { "enable": true, "mode": "push" },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": { "distance": 140, "line_linked": { "opacity": 0.8 } },
-                    "push": { "particles_nb": 3 }
-                }
-            },
-            "retina_detect": true
-        });
-    }
-}
+
 
 function initializeScrollToNext() {
     const scrollBtn = document.getElementById("scroll-to-next-btn");
