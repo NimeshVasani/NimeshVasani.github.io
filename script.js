@@ -571,17 +571,53 @@ window.toggleAccordion = function(id) {
 // 8. GLOBAL EVENT LISTENERS
 // ==========================================
 document.addEventListener("click", (e) => {
-    const targetId = e.target.getAttribute("data-target");
-    if (targetId) {
-        // If they click 'Home' but are on the bio page, let the default href="/" link redirect them back
-        if (targetId === "home" && window.location.pathname.includes("/bio")) {
-            return;
-        }
+    // Find the closest element with a data-target attribute (in case they click an icon or inner span)
+    const navLink = e.target.closest("[data-target]");
+    if (!navLink) return;
 
-        const element = document.getElementById(targetId);
-        if (element) {
-            e.preventDefault();
-            element.scrollIntoView({ behavior: "smooth" });
-        }
+    const targetId = navLink.getAttribute("data-target");
+    
+    // 1. If we are on an independent sub-page (like bio or blog.html) and click "Home", 
+    // let the default anchor link redirect us back to the landing index page.
+    if (targetId === "home" && (window.location.pathname.includes("/bio") || window.location.pathname.includes("/blog"))) {
+        return; 
+    }
+
+    // 2. Look for the target container on the current page
+    const element = document.getElementById(targetId);
+    if (element) {
+        e.preventDefault();
+
+        // 3. Smoothly scroll to the clicked section, offsetting for a sticky header if you have one
+        const headerOffset = 80; // Adjust this value to match your header's actual height
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+        });
+
+        // 4. Instant Feedback: Force-apply active highlights immediately without waiting for scrollspy to catch up
+        const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
+        const activeClasses = ["bg-white/10", "text-[#E14D4D]", "border-white/10", "backdrop-blur-md", "shadow-sm"];
+        const defaultClasses = ["text-gray-400", "border-transparent"];
+
+        navLinks.forEach(link => {
+            const linkTarget = link.getAttribute("data-target");
+            if (linkTarget === targetId) {
+                link.classList.add(...activeClasses);
+                link.classList.remove(...defaultClasses);
+                if (link.classList.contains("mobile-nav-link")) {
+                    link.classList.add("text-[#D4AF37]");
+                }
+            } else {
+                link.classList.remove(...activeClasses);
+                link.classList.add(...defaultClasses);
+                if (link.classList.contains("mobile-nav-link")) {
+                    link.classList.remove("text-[#D4AF37]");
+                }
+            }
+        });
     }
 });
