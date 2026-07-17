@@ -97,12 +97,15 @@ document.addEventListener("DOMContentLoaded", () => {
     Promise.all(fetchPromises)
         .then(() => {
             // A tiny 100ms delay gives the browser layout engine time to finish painting heights
+            console.log("📂 Step 1: All HTML templates successfully fetched!");
             setTimeout(() => {
                 initializeScrollSpy();
+                console.log("📂 Step 2!");
             }, 100);
         })
         .catch(err => {
             console.warn("One or more templates failed to load, initializing ScrollSpy anyway.", err);
+            console.log("📂 Step 3: All HTML templates successfully fetched!");
             initializeScrollSpy();
         });
 });
