@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bio | The Full Story</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Immersive dynamic background image styling */
+        .bg-immersive {
+            background-image: radial-gradient(circle at 20% 30%, rgba(225, 77, 77, 0.15) 0%, transparent 40%),
+                              radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                              url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="bg-immersive text-gray-100 font-sans min-h-screen flex items-center justify-center p-4 md:p-8 relative overflow-x-hidden">
+
+    <!-- Subtle animated dark overlay to keep content highly readable -->
+    <div class="absolute inset-0 bg-[#0B0F19]/80 backdrop-blur-sm z-0"></div>
+
+    <!-- MAIN CARD CONTAINER -->
+    <main class="relative z-10 max-w-3xl w-full my-8 animate-fade-in">
+        
+        <!-- BACK HOME BUTTON -->
+        <a href="index.html" class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-400 hover:text-white mb-6 group transition-all duration-300">
+            <i class="fa-solid fa-arrow-left transition-transform duration-300 group-hover:-translate-x-1"></i> 
+            Back to Portfolio
+        </a>
+
+        <!-- GLASS CONTENT CARD -->
+        <div class="bg-[#111827]/60 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+            
+            <!-- Sleek color accent bar at top of card -->
+            <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#E14D4D] via-[#D4AF37] to-purple-600"></div>
+
+            <!-- Header Section -->
+            <header class="mb-8 border-b border-white/5 pb-6">
+                <span class="text-[#D4AF37] text-xs font-bold tracking-widest uppercase block mb-1">About Me</span>
+                <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-2">The Full Story</h1>
+                <p class="text-sm text-gray-400 italic">"Turning vision into reality through focus, determination, and code."</p>
+            </header>
+
+            <!-- Biography Paragraphs with beautiful typography -->
+            <article class="space-y-6 text-gray-300 leading-relaxed text-sm md:text-base font-normal">
+                
+                <p class="first-letter:text-4xl first-letter:font-bold first-letter:text-[#E14D4D] first-letter:mr-2 first-letter:float-left">
+                    I feel incredibly fortunate to have forged a fulfilling career doing what I love. From a young age, I harbored a clear vision of my professional future, and driven by focus and determination, I set out to turn that vision into reality.
+                </p>
+
+                <p>
+                    My journey began with a <span class="text-white font-semibold">Bachelor's degree in Computer Science Engineering</span>, where my passion for programming flourished. I delved into languages such as Java, Kotlin, and JavaScript, nurturing a keen interest in mobile development. In 2018, I embarked on the exciting path of Android app development, translating my programming skills into tangible, user-friendly applications.
+                </p>
+
+                <p>
+                    Taking a significant leap in 2022, I relocated to Canada to pursue further education. I enrolled in a Post-Graduation program in <span class="text-white font-semibold">Mobile Application Design and Development at Lambton College</span>. This experience was transformative, providing me with advanced knowledge in both Android and iOS app development.
+                </p>
+
+                <p>
+                    Throughout this academic journey, I honed my skills, gaining expertise that extends beyond the basics. The challenges I encountered and overcame during my time in Canada have significantly enriched my perspective and added layers to my professional capabilities.
+                </p>
+
+                <p>
+                    Now, armed with a comprehensive skill set and a solid educational foundation, I am eager to contribute my expertise to meaningful projects. Having worked on inspiring endeavors and collaborated with influential and creative individuals, I firmly believe in the synergy created when talented minds come together.
+                </p>
+
+                <p class="bg-white/5 border-l-2 border-[#D4AF37] p-4 rounded-r-lg text-gray-200">
+                    If you are interested in learning more about my experience or exploring potential collaborations on upcoming projects, please don't hesitate to get in touch. I look forward to the opportunity to discuss how my unique background and skills can contribute to the success of future endeavors.
+                </p>
+
+            </article>
+
+            <!-- Card Footer Action Buttons -->
+            <footer class="mt-8 pt-6 border-t border-white/5 flex flex-wrap gap-4 items-center justify-between">
+                <!-- Social & contact hooks -->
+                <div class="flex gap-4 text-gray-400 text-lg">
+                    <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="mailto:your-email@example.com" class="hover:text-white transition-colors"><i class="fa-solid fa-envelope"></i></a>
+                </div>
+
+                <!-- Call to Action Button -->
+                <a href="index.html#contact" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#E14D4D] hover:bg-[#c93f3f] text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-lg hover:shadow-red-500/20">
+                    Get In Touch <i class="fa-solid fa-paper-plane text-[10px]"></i>
+                </a>
+            </footer>
+
+        </div>
+    </main>
+
+    <!-- Tailwind config helper to add standard fade-in animation -->
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+    </style>
+</body>
+</html>
