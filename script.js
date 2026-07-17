@@ -502,9 +502,10 @@ function initializeScrollSpy() {
                 currentSection = section.id;
             }
         });
-
+        console.log(sections.length);
         if (currentSection) {
             setActiveLink(currentSection);
+            console.log(currentSection);
         }
     }
 
