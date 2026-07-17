@@ -1,12 +1,10 @@
 name: Build Tailwind CSS
 
-
 on:
   push:
     branches:
-      - main  # Adjust this if your default branch is "master" or something else
+      - main  # Make sure this matches your default branch name
 
-# Grant write permissions so the workflow can commit and push the built CSS back to the repo
 permissions:
   contents: write
 
@@ -15,36 +13,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository
+      # Step 1: Check out your repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js environment
+      # Step 2: Set up Node.js (Removed the strict cache rule)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Or your preferred Node version
-          cache: 'npm'       # Automatically caches node_modules dependencies
+          node-version: '20'
 
-      # Step 3: Install dependencies
+      # Step 3: Install Tailwind locally on the runner
       - name: Install dependencies
-        run: npm ci          # Use 'npm install' if you don't have a package-lock.json
+        run: npm install
 
-      # Step 4: Build Tailwind CSS
-      # Note: Ensure you have a build script in your package.json (e.g., "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify")
+      # Step 4: Run the Tailwind compilation script from your package.json
       - name: Build CSS
         run: npm run build
 
-      # Step 5: Commit and push the built CSS if there are changes
+      # Step 5: Commit the brand-new, tiny compiled CSS file back to your project
       - name: Commit and Push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          # Add only the built CSS file (adjust path as necessary, e.g., dist/output.css)
           git add dist/output.css || true
           
-          # Commit only if there are actual modifications
           if ! git diff --cached --quiet; then
             git commit -m "build(css): compile tailwind production assets [skip ci]"
             git push
