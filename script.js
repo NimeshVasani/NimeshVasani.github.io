@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("📂 Step 1: All HTML templates successfully fetched!");
             setTimeout(() => {
                 initializeScrollSpy();
-                console.log("📂 Step 2!");
+                console.log(fetchPromises.length);
             }, 100);
         })
         .catch(err => {
