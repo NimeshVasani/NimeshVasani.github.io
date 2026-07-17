@@ -453,11 +453,23 @@ function initializeMobileMenu() {
 
 // ==========================================
 // 6. SCROLL SPY ENGINE
-// ==========================================
+
 function initializeScrollSpy() {
     const navLinks = document.querySelectorAll("#desktop-nav .nav-link");
-    // Ensure both custom headers/sections have id hooks loaded in DOM
-    const sections = document.querySelectorAll("section, header[id], div[id]");
+    
+    // FIX: Instead of gathering raw divs, dynamically match ONLY the elements targeted by your nav links!
+    const sections = [];
+    navLinks.forEach(link => {
+        const href = link.getAttribute("href");
+        if (href && href.startsWith("#")) {
+            const element = document.querySelector(href);
+            if (element) {
+                sections.push(element);
+            }
+        }
+    });
+
+    console.log(`🎯 ScrollSpy initialized! Watching exactly ${sections.length} sections:`, sections.map(s => s.id));
 
     const activeClasses = [
         "bg-white/10",
@@ -502,10 +514,10 @@ function initializeScrollSpy() {
                 currentSection = section.id;
             }
         });
-        console.log(sections.length);
+
         if (currentSection) {
             setActiveLink(currentSection);
-            console.log(currentSection);
+            console.log(`📍 ScrollSpy Active Section: #${currentSection}`);
         }
     }
 
@@ -513,6 +525,7 @@ function initializeScrollSpy() {
         navLinks.forEach(link => {
             const href = link.getAttribute("href");
 
+            // Safety check + substring match
             if (href && href.substring(1) === activeId) {
                 link.classList.add(...activeClasses);
                 link.classList.remove(...defaultClasses);
@@ -539,7 +552,6 @@ function initializeScrollSpy() {
 
     window.addEventListener("resize", updateActiveSection);
 }
-
 // ==========================================
 // 7. ACCORDION (Exposed Globally)
 // ==========================================
