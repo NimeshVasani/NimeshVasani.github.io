@@ -553,3 +553,19 @@ window.toggleAccordion = function(id) {
         icon.classList.remove('rotate-180');
     }
 }
+
+document.addEventListener("click", (e) => {
+    const targetId = e.target.getAttribute("data-target");
+    if (targetId) {
+        // If they click 'Home' but are on the bio page, let the default href="/" link redirect them back
+        if (targetId === "home" && window.location.pathname.includes("/bio")) {
+            return;
+        }
+
+        const element = document.getElementById(targetId);
+        if (element) {
+            e.preventDefault();
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    }
+});
