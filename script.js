@@ -2,7 +2,6 @@
 // 1. BOOTSTRAP INITIALIZATION (Unified & Async Safe)
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-    // Array to hold all fetch promises so we can track when they are completely loaded
     const fetchPromises = [];
 
     // 1. Fetch Header Template
@@ -51,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch(err => {
                 console.error("Failed to load projects.html, running fallback:", err);
-                initializeProjectFilters(); // Safe Fallback
+                initializeProjectFilters();
             });
         fetchPromises.push(pProjects);
     } else {
@@ -88,9 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
         fetchPromises.push(pExtra);
     }
 
-    // ==========================================
-    // Run Scroll Spy ONLY after all layouts are complete
-    // ==========================================
     Promise.all(fetchPromises)
         .then(() => {
             console.log("📂 Step 1: All HTML templates successfully fetched!");
@@ -231,15 +227,13 @@ function customSmoothScrollTo(targetElement, duration = 650, headerOffset = 80) 
         if (startTime === null) startTime = currentTime;
         const timeElapsed = currentTime - startTime;
         
-        // easeInQuad: starts slow and accelerates into standard motion
         const run = easeInQuad(timeElapsed, startPosition, distance, duration);
-        
         window.scrollTo(0, run);
         
         if (timeElapsed < duration) {
             requestAnimationFrame(animation);
         } else {
-            window.scrollTo(0, targetPosition); // Snap cleanly at the exact target
+            window.scrollTo(0, targetPosition);
         }
     }
 
@@ -276,29 +270,16 @@ function renderProjectCards(projects) {
                  onmouseenter="handleCardHover(this, true)"
                  onmouseleave="handleCardHover(this, false)">
                 
-                <!-- Media Frame -->
                 <div class="h-48 bg-gray-800 relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10 pointer-events-none"></div>
-                    
-                    <!-- Cover Artwork Image -->
-                    <img src="${imageSrc}" 
-                         alt="${project.title}" 
-                         class="project-card-image w-full h-full object-cover group-hover:scale-105 transition duration-300" 
-                         onerror="this.src='${FALLBACK_MEDIA}'">
-                    
-                    <!-- Optional Video Hover Element -->
+                    <img src="${imageSrc}" alt="${project.title}" class="project-card-image w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='${FALLBACK_MEDIA}'">
                     ${isVideo ? `
-                        <video class="project-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 pointer-events-none" 
-                               muted 
-                               loop 
-                               playsinline 
-                               preload="metadata">
+                        <video class="project-card-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 pointer-events-none" muted loop playsinline preload="metadata">
                             <source src="${project.mediaUrl}" type="video/mp4">
                         </video>
                     ` : ''}
                 </div>
 
-                <!-- Card Meta Data -->
                 <div class="p-6 space-y-4">
                     <div class="flex gap-2">
                         ${project.tags.split(' ').map(tag => `
@@ -317,13 +298,11 @@ function renderProjectCards(projects) {
 window.handleCardHover = function(cardElement, isHovering) {
     const video = cardElement.querySelector(".project-card-video");
     const image = cardElement.querySelector(".project-card-image");
-    
     if (!video) return;
 
     if (isHovering) {
         video.classList.remove("opacity-0");
         image.classList.add("opacity-0"); 
-        
         video.muted = true;
         video.play().catch(err => console.log("Hover video play blocked: ", err));
     } else {
@@ -336,7 +315,6 @@ window.handleCardHover = function(cardElement, isHovering) {
 
 function setupFilterEventListeners() {
     const filterButtons = document.querySelectorAll(".filter-btn");
-
     filterButtons.forEach(button => {
         button.addEventListener("click", () => {
             filterButtons.forEach(btn => {
@@ -348,7 +326,6 @@ function setupFilterEventListeners() {
             button.classList.remove("bg-[#111827]", "text-gray-400", "border-gray-800");
 
             const selectedCategory = button.getAttribute("data-filter");
-
             if (selectedCategory === "all") {
                 renderProjectCards(projectsData);
             } else {
@@ -382,13 +359,10 @@ window.openProjectDetails = function(projectId) {
         modalVideoSource.src = project.mediaUrl;
         modalVideo.load(); 
         modalVideo.classList.remove("hidden");
-        
         modalVideo.muted = true;
         modalVideo.setAttribute('playsinline', '');
         modalVideo.setAttribute('preload', 'metadata');
-        
         modalVideo.play().catch(err => {
-            console.log("Interactive modal block. Retrying with explicit muted layout...", err);
             modalVideo.muted = true;
             modalVideo.play();
         });
@@ -406,31 +380,23 @@ window.openProjectDetails = function(projectId) {
     project.keyFeatures.forEach(feature => {
         const item = document.createElement("li");
         item.classList.add("flex", "items-start");
-        item.innerHTML = `
-            <span class="text-yellow-400 mr-3 mt-0.5">✦</span>
-            <span>${feature}</span>
-        `;
+        item.innerHTML = `<span class="text-yellow-400 mr-3 mt-0.5">✦</span><span>${feature}</span>`;
         listContainer.appendChild(item);
     });
 
     const modal = document.getElementById("project-modal");
     modal.classList.remove("hidden");
     modal.classList.add("flex");
-
     document.body.classList.add("overflow-hidden");
 }
 
 window.closeProjectDetails = function() {
     const modal = document.getElementById("project-modal");
     const modalVideo = document.getElementById("modal-video");
-    
-    if (modalVideo) {
-        modalVideo.pause();
-    }
+    if (modalVideo) modalVideo.pause();
 
     modal.classList.add("hidden");
     modal.classList.remove("flex");
-    
     document.body.classList.remove("overflow-hidden");
 }
 
@@ -475,42 +441,28 @@ function initializeMobileMenu() {
 }
 
 // ==========================================
-// 6. SCROLL SPY ENGINE (Updated for data-target)
-// ==========================================
-// ==========================================
 // 6. SCROLL SPY ENGINE (Cross-Page & Subpage Aware)
 // ==========================================
 function initializeScrollSpy() {
     const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
     const currentPath = window.location.pathname;
 
-    const activeClasses = [
-        "bg-white/10",
-        "text-[#E14D4D]",
-        "border-white/10",
-        "backdrop-blur-md",
-        "shadow-sm"
-    ];
-
-    const defaultClasses = [
-        "text-gray-400",
-        "border-transparent"
-    ];
+    const activeClasses = ["bg-white/10", "text-[#E14D4D]", "border-white/10", "backdrop-blur-md", "shadow-sm"];
+    const defaultClasses = ["text-gray-400", "border-transparent"];
 
     document.querySelectorAll("#desktop-nav .nav-link").forEach(link => {
         link.classList.add("border", "transition-all", "duration-300", "ease-in-out");
     });
 
-    // Helper to highlight a specific tab by its target name
     function forceSetActive(targetName) {
-     navLinks.forEach(link => {
+        navLinks.forEach(link => {
             const targetId = link.getAttribute("data-target") || "";
             const href = link.getAttribute("href") || "";
 
-            // Check if the link corresponds to our target name (handles data-target or href matching)
             const isMatch = (targetId === targetName) || 
                             (href.includes(targetName)) || 
-                            (targetName === "home" && href === "index.html");
+                            (targetName === "home" && (href === "index.html" || href === "/"));
+
             if (isMatch) {
                 link.classList.add(...activeClasses);
                 link.classList.remove(...defaultClasses);
@@ -527,19 +479,16 @@ function initializeScrollSpy() {
         });
     }
 
-    // IF WE ARE ON THE BIO PAGE: Force-highlight Bio tab and stop scroll spy
     if (currentPath.includes("bio")) {
         forceSetActive("bio");
         return;
     }
 
-    // IF WE ARE ON THE BLOG PAGE: Force-highlight Blog tab and stop scroll spy
     if (currentPath.includes("blog")) {
         forceSetActive("blog");
         return;
     }
 
-    // OTHERWISE (We are on the Home page): Run normal section tracking
     const sections = [];
     navLinks.forEach(link => {
         const targetId = link.getAttribute("data-target");
@@ -594,13 +543,13 @@ function initializeScrollSpy() {
 
     window.addEventListener("resize", updateActiveSection);
 }
+
 // ==========================================
 // 7. ACCORDION (Exposed Globally)
 // ==========================================
 window.toggleAccordion = function(id) {
     const content = document.getElementById(id);
     const icon = document.getElementById(`icon-${id}`);
-    
     if (!content || !icon) return;
 
     if (content.classList.contains('hidden')) {
@@ -615,37 +564,24 @@ window.toggleAccordion = function(id) {
 }
 
 // ==========================================
-// 8. GLOBAL EVENT LISTENERS (Cross-Page & Smooth Scroll Safe)
-// ==========================================
-
-// ==========================================
-// 8. GLOBAL EVENT LISTENERS (Cross-Page & Smooth Scroll Safe)
+// 8. GLOBAL EVENT LISTENERS (Cross-Page Safe)
 // ==========================================
 document.addEventListener("click", (e) => {
     const navLink = e.target.closest("[data-target]");
     if (!navLink) return;
 
     const targetId = navLink.getAttribute("data-target");
-    const href = navLink.getAttribute("href");
     const element = document.getElementById(targetId);
 
-    // If we are clicking a link that points to a different page (e.g., index.html#projects from bio page),
-    // let the browser handle the navigation naturally.
-    if (href && href.includes("index.html") && !window.location.pathname.includes("index.html") && window.location.pathname !== "/") {
-        return; 
-    }
-
-    // If the element doesn't exist on this page, let browser handle href
+    // If the target section does NOT exist on the current page (e.g. clicking #projects from bio.html),
+    // do NOT prevent default—let the browser naturally navigate to index.html#projects!
     if (!element) {
         return; 
     }
 
     e.preventDefault();
-
-    // Use accelerating scroll function
     customSmoothScrollTo(element, 650, 80);
 
-    // Instant Feedback: Force-apply active highlights immediately
     const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
     const activeClasses = ["bg-white/10", "text-[#E14D4D]", "border-white/10", "backdrop-blur-md", "shadow-sm"];
     const defaultClasses = ["text-gray-400", "border-transparent"];
