@@ -219,9 +219,9 @@ const projectsData = [
 const FALLBACK_MEDIA = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop";
 
 // ==========================================
-// CUSTOM VISIBLE SMOOTH SCROLL UTILITY
+// ACCELERATING SMOOTH SCROLL UTILITY (Slow Start, Regular Speed)
 // ==========================================
-function customSmoothScrollTo(targetElement, duration = 1100, headerOffset = 80) {
+function customSmoothScrollTo(targetElement, duration = 650, headerOffset = 80) {
     const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerOffset;
     const startPosition = window.pageYOffset;
     const distance = targetPosition - startPosition;
@@ -230,20 +230,22 @@ function customSmoothScrollTo(targetElement, duration = 1100, headerOffset = 80)
     function animation(currentTime) {
         if (startTime === null) startTime = currentTime;
         const timeElapsed = currentTime - startTime;
-        const run = easeInOutQuad(timeElapsed, startPosition, distance, duration);
+        
+        // easeInQuad: starts slow and accelerates into standard motion
+        const run = easeInQuad(timeElapsed, startPosition, distance, duration);
         
         window.scrollTo(0, run);
         
         if (timeElapsed < duration) {
             requestAnimationFrame(animation);
+        } else {
+            window.scrollTo(0, targetPosition); // Snap cleanly at the exact target
         }
     }
 
-    function easeInOutQuad(t, b, c, d) {
-        t /= d / 2;
-        if (t < 1) return c / 2 * t * t + b;
-        t--;
-        return -c / 2 * (t * (t - 2) - 1) + b;
+    function easeInQuad(t, b, c, d) {
+        t /= d;
+        return c * t * t + b;
     }
 
     requestAnimationFrame(animation);
@@ -441,7 +443,7 @@ function initializeScrollToNext() {
     
     if (scrollBtn && skillsSection) {
         scrollBtn.addEventListener("click", () => {
-            customSmoothScrollTo(skillsSection, 1100, 80);
+            customSmoothScrollTo(skillsSection, 650, 80);
         });
 
         window.addEventListener("scroll", () => {
@@ -594,7 +596,7 @@ window.toggleAccordion = function(id) {
 }
 
 // ==========================================
-// 8. GLOBAL EVENT LISTENERS (Custom Speed Smooth Scroll)
+// 8. GLOBAL EVENT LISTENERS (Accelerating Smooth Scroll)
 // ==========================================
 document.addEventListener("click", (e) => {
     const navLink = e.target.closest("[data-target]");
@@ -610,8 +612,8 @@ document.addEventListener("click", (e) => {
     if (element) {
         e.preventDefault();
 
-        // Use custom speed smooth scroll function (1100ms duration with 80px sticky header offset)
-        customSmoothScrollTo(element, 1100, 80);
+        // Use accelerating scroll function (650ms duration with slow start, snappy finish)
+        customSmoothScrollTo(element, 650, 80);
 
         // Instant Feedback: Force-apply active highlights immediately
         const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
