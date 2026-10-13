@@ -1,303 +1,48 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nimesh Vasani | Mobile Application Developer</title>
-    
-    <link rel="stylesheet" href="./dist/output.css">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* Modern Glassmorphic Terminal Styling */
-        .terminal-box {
-            background: rgba(13, 17, 23, 0.92);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(225, 77, 77, 0.25);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .terminal-glow {
-            text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
-        }
-        #terminal-body::-webkit-scrollbar {
-            width: 4px;
-        }
-        #terminal-body::-webkit-scrollbar-thumb {
-            background: rgba(225, 77, 77, 0.3);
-            border-radius: 4px;
-        }
-
-        /* Active Nav Link Styling */
-        .nav-link.active {
-            background-color: #E14D4D !important;
-            color: #ffffff !important;
-            font-weight: 600;
-        }
-
-        /* Keyframe Animations for Hero Entry */
-        @keyframes slideFromLeft {
-            0% { transform: translateX(-50px); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(15px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        .animate-slide-left {
-            opacity: 0;
-            animation: slideFromLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .animate-fade-in {
-            opacity: 0;
-            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
-        }
-    </style>
-</head>
-<body class="bg-[#0B0F19] text-gray-100 font-sans leading-relaxed relative overflow-x-hidden min-h-screen">
-
-    <!-- FIXED FULL-SCREEN STARFIELD CANVAS (Visible on entire website during scroll) -->
-    <canvas id="hero-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
-
-    <!-- ========================================== -->
-    <!-- 1. HEADER CONTAINER (Glass Pill Layout with Active Red Tab) -->
-    <!-- ========================================== -->
-    <header class="sticky top-0 z-50 w-full bg-[#0B0F19]/80 backdrop-blur-xl border-b border-white/10 transition-all duration-300">
-        <nav class="max-w-7xl mx-auto px-6 py-3.5 flex items-center justify-between relative">
-            
-            <!-- Left: Brand / Name Logo -->
-            <div class="flex items-center">
-                <a href="#home" class="text-white font-black tracking-wider uppercase text-base hover:text-[#E14D4D] transition duration-200 select-none">
-                    NIMESH VASANI
-                </a>
-            </div>
-
-            <!-- Center: Floating Glass Pill Navigation Tabs -->
-            <div class="hidden md:flex items-center space-x-1 bg-[#111827]/80 border border-white/10 p-1.5 rounded-full shadow-lg backdrop-blur-md" id="desktop-nav">
-                <a href="#home" class="nav-link active px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Home</a>
-                <a href="#skills" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Skills</a>
-                <a href="#projects" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Projects</a>
-                <a href="#experience" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Experience</a>
-                <a href="blog.html" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Blog</a>         
-                <a href="bio.html" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Bio</a>
-            </div>
-            
-            <!-- Right: Social Icons & Mobile Toggle -->
-            <div class="flex items-center gap-4">
-                <div class="hidden sm:flex items-center space-x-3 text-gray-400">
-                    <a href="https://github.com/NimeshVasani" target="_blank" aria-label="GitHub" class="hover:text-white transition duration-200 p-1">
-                        <i class="fa-brands fa-github text-base"></i>
-                    </a>
-                    <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn" class="hover:text-[#E14D4D] transition duration-200 p-1">
-                        <i class="fa-brands fa-linkedin text-base"></i>
-                    </a>
-                    <a href="mailto:nmvasani@gmail.com" aria-label="Email" class="hover:text-[#E14D4D] transition duration-200 p-1">
-                        <i class="fa-solid fa-envelope text-base"></i>
-                    </a>
-                </div>
-
-                <div class="md:hidden">
-                    <button id="mobile-menu-btn" aria-label="Toggle menu" class="text-gray-300 hover:text-[#E14D4D] focus:outline-none p-1">
-                        <i class="fa-solid fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </nav>
-        
-        <!-- Mobile Dropdown Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-[#111827]/95 backdrop-blur-xl border-b border-gray-800 px-6 py-4 space-y-3 font-mono text-sm">
-            <a href="#home" class="block text-gray-300 hover:text-[#E14D4D] py-1">Home</a>
-            <a href="#skills" class="block text-gray-300 hover:text-[#E14D4D] py-1">Skills</a>
-            <a href="#projects" class="block text-gray-300 hover:text-[#E14D4D] py-1">Projects</a>
-            <a href="#experience" class="block text-gray-300 hover:text-[#E14D4D] py-1">Experience</a>
-            <a href="blog.html" class="block text-gray-300 hover:text-[#E14D4D] py-1">Blog</a>
-            <a href="bio.html" class="block text-gray-300 hover:text-[#E14D4D] py-1">Bio</a>
-        </div>
-    </header>
-
-    <!-- ========================================== -->
-    <!-- 2. HOME CONTAINER (Centered Half Blackhole + Purple Nebula) -->
-    <!-- ========================================== -->
-    <section id="home" class="min-h-screen flex flex-col justify-between pt-24 px-6 md:px-12 pb-8 relative font-mono overflow-hidden">
-        
-        <!-- TOP NEBULA & BLACKHOLE BACKGROUND WRAPPER -->
-        <div class="absolute top-0 left-0 w-full h-[50vh] overflow-hidden pointer-events-none z-10 flex items-center justify-center">
-            <!-- Radial Cosmic Purple Nebula Glow Effect -->
-            <div class="absolute top-0 w-[800px] h-[400px] bg-radial from-purple-600/35 via-indigo-900/20 to-transparent blur-3xl pointer-events-none"></div>
-            
-            <!-- Video Centered -->
-            <video autoplay muted loop playsinline class="w-full h-full object-cover object-center opacity-70">
-                <source src="https://raw.githubusercontent.com/YourUsername/YourVideoRepo/main/blackhole.webm" type="video/webm">
-            </video>
-            
-            <!-- Bottom Smooth Transition Mask into Dark BG -->
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B0F19]/50 to-[#0B0F19]"></div>
-        </div>
-
-        <!-- Hero Content -->
-        <div class="max-w-4xl mx-auto my-auto w-full space-y-6 z-20 relative pt-16">
-            <div class="animate-slide-left space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300 backdrop-blur-md">
-                    <span class="w-2 h-2 rounded-full bg-[#E14D4D] animate-pulse"></span>
-                    <span>Available for Mobile & Software Roles</span>
-                </div>
-                
-                <h1 class="text-6xl md:text-8xl font-black italic tracking-tight text-white select-none leading-none drop-shadow-lg">
-                    Nimesh Vasani
-                </h1>
-                
-                <p class="text-xl md:text-2xl font-bold tracking-widest text-[#E14D4D] uppercase pt-1 drop-shadow-md">
-                    [ Mobile Application Developer ]
-                </p>
-            </div>
-            
-            <div class="animate-fade-in">
-                <p class="text-base md:text-xl text-gray-300 max-w-2xl leading-relaxed tracking-wide font-sans drop-shadow-md">
-                    Crafting high-performance, user-centric mobile applications for Android, iOS, and cross-platform ecosystems with precision architecture.
-                </p>
-            </div>
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div class="flex justify-center w-full pb-6 z-20 relative">
-            <a href="#skills" aria-label="Scroll down" class="flex flex-col items-center gap-2 text-gray-400 hover:text-[#E14D4D] transition-all duration-500 group">
-                <div class="w-8 h-14 rounded-full border border-gray-700 group-hover:border-[#E14D4D] flex items-center justify-center p-1 bg-black/30 backdrop-blur-sm">
-                    <span class="text-[#E14D4D] font-bold text-lg leading-none animate-bounce mt-1">↓</span>
-                </div>
-            </a>
-        </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- 3. SKILLS SECTION (Horizontal 3-Column Terminal Layout) -->
-    <!-- ========================================== -->
-    <section id="skills" class="py-24 relative z-20">
-        <div class="max-w-6xl mx-auto px-6">
-            
-            <!-- Section Title -->
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-black italic tracking-wider text-white uppercase">
-                    MY EXPERTISE
-                </h2>
-                <a href="#projects" class="text-xs font-mono text-gray-400 hover:text-[#E14D4D] underline underline-offset-4 mt-2 inline-block">In Details 🔗</a>
-            </div>
-            
-            <!-- Horizontal 3-Column Container (Matches Wix reference) -->
-            <div class="border border-gray-700 bg-[#0B0F19]/90 backdrop-blur-md rounded-lg overflow-hidden grid grid-cols-1 md:grid-cols-3 font-mono">
-                
-                <!-- COLUMN 1: Backend Technology -->
-                <div class="p-8 border-b md:border-b-0 md:border-r border-gray-700 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center gap-4 mb-6">
-                            <i class="fa-solid fa-code text-3xl text-[#E14D4D]"></i>
-                            <h3 class="text-xl font-bold text-white leading-tight">
-                                Backend<br>Technology
-                            </h3>
-                        </div>
-
-                        <span class="text-xs text-gray-500">&lt;h1&gt;</span>
-                        <ul class="space-y-2 text-sm text-gray-300 pl-4 py-2">
-                            <li>| - Spring Boot (Java)</li>
-                            <li>| - Node.js</li>
-                            <li>| - Django (Python)</li>
-                            <li>| - Express.js (JavaScript)</li>
-                            <li>| - Kotlin (backend development)</li>
-                        </ul>
-                        <span class="text-xs text-gray-500">&lt;/h1&gt;</span>
-                    </div>
-                </div>
-
-                <!-- COLUMN 2: Mobile App Development -->
-                <div class="p-8 border-b md:border-b-0 md:border-r border-gray-700 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center gap-4 mb-6">
-                            <i class="fa-solid fa-mobile-screen-button text-3xl text-purple-400"></i>
-                            <h3 class="text-xl font-bold text-white leading-tight">
-                                Mobile App<br>Development
-                            </h3>
-                        </div>
-
-                        <span class="text-xs text-gray-500">&lt;h1&gt;</span>
-                        <ul class="space-y-2 text-sm text-gray-300 pl-4 py-2">
-                            <li>| - Android (Kotlin / Java)</li>
-                            <li>| - Flutter</li>
-                            <li>| - iOS (Swift)</li>
-                            <li>| - KMP (Kotlin Multiplatform)</li>
-                            <li>| - React Native</li>
-                        </ul>
-                        <span class="text-xs text-gray-500">&lt;/h1&gt;</span>
-                    </div>
-                </div>
-
-                <!-- COLUMN 3: Database & Other Tech -->
-                <div class="p-8 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center gap-4 mb-6">
-                            <i class="fa-solid fa-laptop-code text-3xl text-[#E14D4D]"></i>
-                            <h3 class="text-xl font-bold text-white leading-tight">
-                                Database &amp;<br>Other Tech
-                            </h3>
-                        </div>
-
-                        <span class="text-xs text-gray-500">&lt;h1&gt;</span>
-                        <ul class="space-y-2 text-sm text-gray-300 pl-4 py-2">
-                            <li>| - MySQL</li>
-                            <li>| - Room (Android-specific)</li>
-                            <li>| - SQLite (Android-specific)</li>
-                            <li>| - Firebase Real-time Database</li>
-                            <li>| - MongoDB</li>
-                            <li>| - Git / GitHub (VCS)</li>
-                            <li>| - CI/CD</li>
-                        </ul>
-                        <span class="text-xs text-gray-500">&lt;/h1&gt;</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- 4. DYNAMIC SECTION PLACEHOLDERS -->
-    <!-- ========================================== -->
-    <div id="projects-placeholder"></div>
-    <div id="experience-placeholder"></div>
-    <div id="extra-placeholder"></div>
-
-    <!-- ========================================== -->
-    <!-- INTERACTIVE DEV TERMINAL WIDGET (Vertically Expanding) -->
-    <!-- ========================================== -->
-    <div id="dev-terminal-widget" class="fixed bottom-6 right-6 z-40 hidden md:block w-80 terminal-box rounded-xl overflow-hidden font-mono text-xs shadow-2xl transition-all duration-300">
-        <div class="bg-[#161D30] px-4 py-3 flex items-center justify-between border-b border-gray-800 cursor-pointer" onclick="toggleTerminalMinimize()">
-            <div class="flex items-center gap-2">
-                <button aria-label="Minimize terminal" class="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 transition focus:outline-none"></button>
-                <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
-                <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
-                <span class="text-gray-300 font-bold ml-1 text-[11px] tracking-tight">nimesh@dev-env:~</span>
-            </div>
-            <span class="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/25">● ONLINE</span>
-        </div>
-
-        <div id="terminal-content-wrap" class="flex flex-col transition-all duration-300">
-            <div id="terminal-body" class="p-3.5 max-h-80 overflow-y-auto space-y-2 text-gray-300 bg-[#0B0F19]/90 transition-all duration-300">
-                <p class="text-gray-500 text-[11px]">[SYS] Initializing Kotlin Multiplatform runtime...</p>
-                <p class="text-emerald-400 terminal-glow">✓ Environment ready. Type <span class="text-yellow-400 font-bold">'help'</span> for instructions.</p>
-            </div>
-
-            <div class="bg-[#111827] px-3 py-2.5 border-t border-gray-800 flex items-center gap-2 shrink-0">
-                <span class="text-[#E14D4D] font-bold">❯</span>
-                <input type="text" id="terminal-input" placeholder="type 'skills', 'projects', 'hire'..." class="bg-transparent border-none outline-none text-white w-full text-xs font-mono focus:ring-0 placeholder:text-gray-600">
-            </div>
-        </div>
-    </div>
-
-    <!-- Script File Linking -->
+<!-- Script File Linking -->
     <script src="script.js"></script>
 
-    <!-- Canvas & Terminal Controller Scripts -->
+    <!-- Canvas & Active Scrollspy Terminal Controller Scripts -->
     <script>
-  
+        // Scrollspy & Dynamic Header Nav Active State Switching
+        document.addEventListener("DOMContentLoaded", () => {
+            const sections = document.querySelectorAll("section[id], div[id$='-placeholder']");
+            const navLinks = document.querySelectorAll("#desktop-nav .nav-link");
+
+            // 1. Click Handling
+            navLinks.forEach(link => {
+                link.addEventListener("click", function() {
+                    navLinks.forEach(l => l.classList.remove("active"));
+                    this.classList.add("active");
+                });
+            });
+
+            // 2. Scrollspy Observer to highlight tab dynamically on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: "-20% 0px -70% 0px",
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute("id");
+                        // Clean up placeholder suffixes if needed
+                        const cleanId = id.replace("-placeholder", "");
+                        
+                        navLinks.forEach(link => {
+                            const targetAttr = link.getAttribute("href");
+                            if (targetAttr === `#${cleanId}` || targetAttr === `index.html#${cleanId}`) {
+                                navLinks.forEach(l => l.classList.remove("active"));
+                                link.classList.add("active");
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => observer.observe(section));
+
             // Terminal Logic
             const inputField = document.getElementById("terminal-input");
             const terminalBody = document.getElementById("terminal-body");
@@ -486,5 +231,3 @@
             animate();
         })();
     </script>
-</body>
-</html>
