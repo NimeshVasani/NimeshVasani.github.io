@@ -1,92 +1,178 @@
 <!-- home.html -->
 <style>
-    /* Keyframe Animations optimized for smooth hardware rendering */
+    /* Keyframe Animations for smooth entry */
     @keyframes slideFromLeft {
-        0% {
-            transform: translateX(-60px);
-            opacity: 0;
-        }
-        100% {
-            transform: translateX(0);
-            opacity: 1;
-        }
+        0% { transform: translateX(-50px); opacity: 0; }
+        100% { transform: translateX(0); opacity: 1; }
     }
 
     @keyframes fadeIn {
-        0% {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        0% { opacity: 0; transform: translateY(15px); }
+        100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* Animation Utility Classes */
     .animate-slide-left {
         opacity: 0;
-        animation: slideFromLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation: slideFromLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         will-change: transform, opacity;
     }
 
     .animate-fade-in {
         opacity: 0;
-        animation: fadeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+        animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
         will-change: transform, opacity;
-    }
-
-    /* Modern Ambient Glow Mesh */
-    .bg-ambient-mesh {
-        background-color: #0B0F19;
-        background-image: 
-            radial-gradient(at 10% 20%, rgba(225, 77, 77, 0.12) 0px, transparent 50%),
-            radial-gradient(at 90% 10%, rgba(212, 175, 55, 0.08) 0px, transparent 50%),
-            radial-gradient(at 50% 60%, rgba(147, 51, 234, 0.06) 0px, transparent 50%),
-            radial-gradient(at 90% 90%, rgba(225, 77, 77, 0.1) 0px, transparent 50%);
-        background-attachment: fixed;
     }
 </style>
 
-<section id="home" class="min-h-screen flex flex-col justify-between pt-32 px-6 md:px-12 pb-8 relative font-mono bg-ambient-mesh overflow-hidden">
+<section id="home" class="min-h-screen flex flex-col justify-between pt-32 px-6 md:px-12 pb-8 relative font-mono bg-[#0B0F19] overflow-hidden">
     
-    <!-- Hero content wrapper -->
-    <div class="max-w-4xl mx-auto my-auto w-full space-y-8 z-10 relative">
+    <!-- Interactive Background Canvas Animation (Daksh.io Style) -->
+    <canvas id="hero-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
+    <!-- Hero content wrapper (Sits cleanly above the canvas animation) -->
+    <div class="max-w-4xl mx-auto my-auto w-full space-y-6 z-10 relative">
         
-        <!-- Animated Intro Block (Slides in from Left) -->
+        <!-- Animated Intro Block -->
         <div class="animate-slide-left space-y-4">
-            <!-- Greeting Tagline -->
-            <div class="flex items-center gap-3 text-gray-300 text-base md:text-lg tracking-wider">
-                <span>Hi, I am</span>
-                <span class="w-10 h-[3px] bg-[#E14D4D] rounded-full"></span>
+            <!-- Terminal status badge -->
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300">
+                <span class="w-2 h-2 rounded-full bg-[#E14D4D] animate-pulse"></span>
+                <span>Available for Mobile & Software Roles</span>
             </div>
             
-            <!-- Large Main Title -->
+            <!-- Main Title -->
             <h1 class="text-6xl md:text-8xl font-black italic tracking-tight text-white select-none leading-none">
                 Nimesh Vasani
             </h1>
             
-            <!-- Role Highlight Badge -->
-            <p class="text-xl md:text-2xl font-bold tracking-widest text-[#E14D4D] uppercase pt-2">
+            <!-- Role Highlight -->
+            <p class="text-xl md:text-2xl font-bold tracking-widest text-[#E14D4D] uppercase pt-1">
                 [ Mobile Application Developer ]
             </p>
         </div>
         
-        <!-- Animated Subtitle / Bio Paragraph (Fades in smoothly) -->
+        <!-- Bio Description -->
         <div class="animate-fade-in">
             <p class="text-base md:text-xl text-gray-400 max-w-2xl leading-relaxed tracking-wide font-sans">
-                Passionate mobile app developer committed to crafting and enhancing user-centric, high-impact applications for global enterprises. Proficient with Android, iOS, and Flutter.
+                Crafting high-performance, user-centric mobile applications for Android, iOS, and cross-platform ecosystems with precision architecture.
             </p>
         </div>
     </div>
 
-    <!-- Red Rounded-Pill Scroll Indicator (Disappears on Scroll) -->
+    <!-- Scroll Down Indicator -->
     <div class="flex justify-center w-full pb-6 z-10 relative">
         <button id="scroll-to-next-btn" aria-label="Scroll down" class="flex flex-col items-center gap-2 text-gray-400 hover:text-[#E14D4D] transition-all duration-500 focus:outline-none group">
-            <div class="w-8 h-14 rounded-full border border-[#E14D4D] flex items-center justify-center p-1 transition duration-300 group-hover:border-red-400">
-                <!-- Smooth bouncing arrow -->
+            <div class="w-8 h-14 rounded-full border border-gray-700 group-hover:border-[#E14D4D] flex items-center justify-center p-1 transition duration-300">
                 <span class="text-[#E14D4D] font-bold text-lg leading-none animate-bounce mt-1">↓</span>
             </div>
         </button>
     </div>
 </section>
+
+<!-- Canvas Animation Script -->
+<script>
+    (function() {
+        const canvas = document.getElementById('hero-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 140 };
+
+        function resize() {
+            width = canvas.width = canvas.offsetWidth;
+            height = canvas.height = canvas.offsetHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        window.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+
+        window.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.8;
+                this.vy = (Math.random() - 0.5) * 0.8;
+                this.size = Math.random() * 1.5 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = 'rgba(225, 77, 77, 0.35)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Initialize particle density based on screen size
+        const particleCount = Math.min(Math.floor((width * height) / 12000), 70);
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Update and draw particles & connections
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 110) {
+                        ctx.strokeStyle = `rgba(225, 77, 77, ${0.15 * (1 - dist / 110)})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+
+                // Connect particles to mouse cursor for interactive feel
+                if (mouse.x !== null && mouse.y !== null) {
+                    const mdx = particles[i].x - mouse.x;
+                    const mdy = particles[i].y - mouse.y;
+                    const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+
+                    if (mdist < mouse.radius) {
+                        ctx.strokeStyle = `rgba(212, 175, 55, ${0.25 * (1 - mdist / mouse.radius)})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    })();
+</script>
