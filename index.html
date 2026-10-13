@@ -349,4 +349,151 @@
                                 terminalBody.scrollTop = 0;
                                 return;
                             default:
-                                responseDiv.innerHTML = `<span class="
+                                responseDiv.innerHTML = `<span class="text-red-400">zsh: command not found: ${escapeHtml(cmd)}. Type 'help'.</span>`;
+                        }
+
+                        terminalBody.appendChild(responseDiv);
+                        inputField.value = "";
+                        terminalBody.scrollTop = terminalBody.scrollHeight;
+                    }
+                });
+            }
+        });
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function toggleTerminalMinimize() {
+            const contentWrap = document.getElementById("terminal-content-wrap");
+            contentWrap.classList.toggle("hidden");
+        }
+
+        // Falling Stars & Full-Screen Canvas Animation
+        (function() {
+            const canvas = document.getElementById('hero-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            let width, height;
+            let stars = [];
+            let shootingStars = [];
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Star {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * 0.3;
+                    this.vy = (Math.random() - 0.5) * 0.3;
+                    this.size = Math.random() * 1.5 + 0.5;
+                    this.alpha = Math.random() * 0.7 + 0.3;
+                    this.alphaChange = (Math.random() * 0.02) + 0.005;
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                    this.alpha += this.alphaChange;
+                    if (this.alpha > 1 || this.alpha < 0.2) {
+                        this.alphaChange *= -1;
+                    }
+                }
+
+                draw() {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            class ShootingStar {
+                constructor() {
+                    this.reset();
+                }
+
+                reset() {
+                    this.x = Math.random() * width;
+                    this.y = 0;
+                    this.len = Math.random() * 90 + 50;
+                    this.speed = Math.random() * 7 + 5;
+                    this.angle = Math.PI / 4;
+                    this.opacity = Math.random() * 0.8 + 0.2;
+                }
+
+                update() {
+                    this.x += this.speed * Math.cos(this.angle);
+                    this.y += this.speed * Math.sin(this.angle);
+
+                    if (this.x > width || this.y > height) {
+                        this.reset();
+                    }
+                }
+
+                draw() {
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                    ctx.lineWidth = 1.2;
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y);
+                    ctx.lineTo(this.x - this.len * Math.cos(this.angle), this.y - this.len * Math.sin(this.angle));
+                    ctx.stroke();
+                }
+            }
+
+            const starCount = Math.min(Math.floor((width * height) / 10000), 90);
+            for (let i = 0; i < starCount; i++) {
+                stars.push(new Star());
+            }
+
+            for (let i = 0; i < 4; i++) {
+                shootingStars.push(new ShootingStar());
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = 0; i < stars.length; i++) {
+                    stars[i].update();
+                    stars[i].draw();
+
+                    for (let j = i + 1; j < stars.length; j++) {
+                        const dx = stars[i].x - stars[j].x;
+                        const dy = stars[i].y - stars[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 90) {
+                            ctx.strokeStyle = `rgba(225, 77, 77, ${0.08 * (1 - dist / 90)})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.beginPath();
+                            ctx.moveTo(stars[i].x, stars[i].y);
+                            ctx.lineTo(stars[j].x, stars[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                for (let i = 0; i < shootingStars.length; i++) {
+                    shootingStars[i].update();
+                    shootingStars[i].draw();
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        })();
+    </script>
+</body>
+</html>
