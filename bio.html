@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,22 +21,16 @@
         }
     </style>
 </head>
-    <div id="header-placeholder"></div>
-<body class="bg-immersive text-gray-100 font-sans min-h-screen flex items-center justify-center p-4 md:p-8 relative overflow-x-hidden">
+<body class="bg-immersive text-gray-100 font-sans min-h-screen flex flex-col items-center justify-start p-4 md:p-8 pt-24 relative overflow-x-hidden">
 
     <!-- Subtle animated dark overlay to keep content highly readable -->
-    <div class="absolute inset-0 bg-[#0B0F19]/80 backdrop-blur-sm z-0"></div>
-    <!-- Place this right at the top of your <body> tag in blog.html and bio files -->
+    <div class="absolute inset-0 bg-[#0B0F19]/80 backdrop-blur-sm z-0 pointer-events-none"></div>
 
+    <!-- GLOBAL HEADER PLACEHOLDER (Now safely inside <body>) -->
+    <div id="header-placeholder" class="w-full z-50"></div>
 
     <!-- MAIN CARD CONTAINER -->
     <main class="relative z-10 max-w-3xl w-full my-8 animate-fade-in">
-        
-        <!-- BACK HOME BUTTON -->
-        <a href="index.html" class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-gray-400 hover:text-white mb-6 group transition-all duration-300">
-            <i class="fa-solid fa-arrow-left transition-transform duration-300 group-hover:-translate-x-1"></i> 
-            Back to Portfolio
-        </a>
 
         <!-- GLASS CONTENT CARD -->
         <div class="bg-[#111827]/60 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
@@ -110,7 +103,7 @@
         }
     </style>
 
-     <!-- Script File Linking -->
+    <!-- Script File Linking -->
     <script src="script.js"></script>
 </body>
 </html>
