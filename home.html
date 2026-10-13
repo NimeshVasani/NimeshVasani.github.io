@@ -26,43 +26,48 @@
 
 <section id="home" class="min-h-screen flex flex-col justify-between pt-32 px-6 md:px-12 pb-8 relative font-mono bg-[#0B0F19] overflow-hidden">
     
-    <!-- Interactive Background Canvas Animation (Daksh.io Style) -->
-    <canvas id="hero-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+    <!-- LAYER 0: Looping Blackhole Webm Video Background -->
+    <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-60">
+        <source src="https://github.com/NimeshVasani/projects_videos/raw/refs/heads/main/blackhole.webm" type="video/webm">
+    </video>
 
-    <!-- Hero content wrapper (Sits cleanly above the canvas animation) -->
-    <div class="max-w-4xl mx-auto my-auto w-full space-y-6 z-10 relative">
+    <!-- LAYER 1: Interactive Starfield Canvas Animation -->
+    <canvas id="hero-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-10"></canvas>
+
+    <!-- LAYER 2: Hero content wrapper (Sits cleanly above video and canvas) -->
+    <div class="max-w-4xl mx-auto my-auto w-full space-y-6 z-20 relative">
         
         <!-- Animated Intro Block -->
         <div class="animate-slide-left space-y-4">
             <!-- Terminal status badge -->
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300 backdrop-blur-md">
                 <span class="w-2 h-2 rounded-full bg-[#E14D4D] animate-pulse"></span>
                 <span>Available for Mobile & Software Roles</span>
             </div>
             
             <!-- Main Title -->
-            <h1 class="text-6xl md:text-8xl font-black italic tracking-tight text-white select-none leading-none">
+            <h1 class="text-6xl md:text-8xl font-black italic tracking-tight text-white select-none leading-none drop-shadow-lg">
                 Nimesh Vasani
             </h1>
             
             <!-- Role Highlight -->
-            <p class="text-xl md:text-2xl font-bold tracking-widest text-[#E14D4D] uppercase pt-1">
+            <p class="text-xl md:text-2xl font-bold tracking-widest text-[#E14D4D] uppercase pt-1 drop-shadow-md">
                 [ Mobile Application Developer ]
             </p>
         </div>
         
         <!-- Bio Description -->
         <div class="animate-fade-in">
-            <p class="text-base md:text-xl text-gray-400 max-w-2xl leading-relaxed tracking-wide font-sans">
+            <p class="text-base md:text-xl text-gray-300 max-w-2xl leading-relaxed tracking-wide font-sans drop-shadow-md">
                 Crafting high-performance, user-centric mobile applications for Android, iOS, and cross-platform ecosystems with precision architecture.
             </p>
         </div>
     </div>
 
     <!-- Scroll Down Indicator -->
-    <div class="flex justify-center w-full pb-6 z-10 relative">
+    <div class="flex justify-center w-full pb-6 z-20 relative">
         <button id="scroll-to-next-btn" aria-label="Scroll down" class="flex flex-col items-center gap-2 text-gray-400 hover:text-[#E14D4D] transition-all duration-500 focus:outline-none group">
-            <div class="w-8 h-14 rounded-full border border-gray-700 group-hover:border-[#E14D4D] flex items-center justify-center p-1 transition duration-300">
+            <div class="w-8 h-14 rounded-full border border-gray-700 group-hover:border-[#E14D4D] flex items-center justify-center p-1 transition duration-300 bg-black/30 backdrop-blur-sm">
                 <span class="text-[#E14D4D] font-bold text-lg leading-none animate-bounce mt-1">↓</span>
             </div>
         </button>
@@ -103,9 +108,9 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.8;
-                this.vy = (Math.random() - 0.5) * 0.8;
-                this.size = Math.random() * 1.5 + 1;
+                this.vx = (Math.random() - 0.5) * 0.6;
+                this.vy = (Math.random() - 0.5) * 0.6;
+                this.size = Math.random() * 1.5 + 0.8;
             }
 
             update() {
@@ -117,15 +122,14 @@
             }
 
             draw() {
-                ctx.fillStyle = 'rgba(225, 77, 77, 0.35)';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        // Initialize particle density based on screen size
-        const particleCount = Math.min(Math.floor((width * height) / 12000), 70);
+        const particleCount = Math.min(Math.floor((width * height) / 14000), 60);
         for (let i = 0; i < particleCount; i++) {
             particles.push(new Particle());
         }
@@ -133,7 +137,6 @@
         function animate() {
             ctx.clearRect(0, 0, width, height);
 
-            // Update and draw particles & connections
             for (let i = 0; i < particles.length; i++) {
                 particles[i].update();
                 particles[i].draw();
@@ -143,9 +146,9 @@
                     const dy = particles[i].y - particles[j].y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
 
-                    if (dist < 110) {
-                        ctx.strokeStyle = `rgba(225, 77, 77, ${0.15 * (1 - dist / 110)})`;
-                        ctx.lineWidth = 0.8;
+                    if (dist < 100) {
+                        ctx.strokeStyle = `rgba(225, 77, 77, ${0.12 * (1 - dist / 100)})`;
+                        ctx.lineWidth = 0.6;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
@@ -153,15 +156,14 @@
                     }
                 }
 
-                // Connect particles to mouse cursor for interactive feel
                 if (mouse.x !== null && mouse.y !== null) {
                     const mdx = particles[i].x - mouse.x;
                     const mdy = particles[i].y - mouse.y;
                     const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
 
                     if (mdist < mouse.radius) {
-                        ctx.strokeStyle = `rgba(212, 175, 55, ${0.25 * (1 - mdist / mouse.radius)})`;
-                        ctx.lineWidth = 0.8;
+                        ctx.strokeStyle = `rgba(212, 175, 55, ${0.2 * (1 - mdist / mouse.radius)})`;
+                        ctx.lineWidth = 0.6;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(mouse.x, mouse.y);
