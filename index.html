@@ -1,211 +1,180 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nimesh Vasani | Mobile Application Developer</title>
+<!-- home.html -->
+<style>
+    /* Keyframe Animations for smooth entry */
+    @keyframes slideFromLeft {
+        0% { transform: translateX(-50px); opacity: 0; }
+        100% { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(15px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-slide-left {
+        opacity: 0;
+        animation: slideFromLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        will-change: transform, opacity;
+    }
+
+    .animate-fade-in {
+        opacity: 0;
+        animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+        will-change: transform, opacity;
+    }
+</style>
+
+<section id="home" class="min-h-screen flex flex-col justify-between pt-32 px-6 md:px-12 pb-8 relative font-mono bg-[#0B0F19] overflow-hidden">
     
-    <link rel="stylesheet" href="./dist/output.css">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* Modern Glassmorphic Terminal Styling */
-        .terminal-box {
-            background: rgba(13, 17, 23, 0.92);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(225, 77, 77, 0.25);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .terminal-glow {
-            text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
-        }
-        /* Custom scrollbar for terminal screen */
-        #terminal-body::-webkit-scrollbar {
-            width: 4px;
-        }
-        #terminal-body::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.1);
-        }
-        #terminal-body::-webkit-scrollbar-thumb {
-            background: rgba(225, 77, 77, 0.3);
-            border-radius: 4px;
-        }
-    </style>
-</head>
-<body class="bg-[#0B0F19] text-gray-100 font-sans leading-relaxed relative overflow-x-hidden min-h-screen">
+    <!-- LAYER 0: Looping Blackhole Webm Video Background -->
+    <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-60">
+        <source src="https://github.com/NimeshVasani/projects_videos/blob/9d7a35e9d1ee7b1a5ccd7910d6441f11efcb69f3/blackhole.webm" type="video/webm">
+    </video>
 
-    <!-- 1. HEADER CONTAINER -->
-    <div id="header-placeholder" class="sticky top-0 z-50 w-full"></div>
+    <!-- LAYER 1: Interactive Starfield Canvas Animation -->
+    <canvas id="hero-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-10"></canvas>
 
-    <!-- 2. HOME CONTAINER (Dynamically loaded home.html) -->
-    <div id="home-placeholder"></div>
-
-    <!-- 3. SKILLS SECTION -->
-    <section id="skills" class="py-24 bg-[#0B0F19]">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">My Technical Expertise</h2>
-                <p class="mt-4 text-gray-400">The tools, frameworks, and architectures I leverage to build highly performant digital solutions.</p>
+    <!-- LAYER 2: Hero content wrapper (Sits cleanly above video and canvas) -->
+    <div class="max-w-4xl mx-auto my-auto w-full space-y-6 z-20 relative">
+        
+        <!-- Animated Intro Block -->
+        <div class="animate-slide-left space-y-4">
+            <!-- Terminal status badge -->
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300 backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-[#E14D4D] animate-pulse"></span>
+                <span>Available for Mobile & Software Roles</span>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Mobile Development -->
-                <div class="bg-[#111827] p-8 rounded-xl border border-gray-800 hover:border-indigo-500/50 transition">
-                    <div class="w-12 h-12 bg-indigo-500/10 rounded-lg flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-mobile-screen-button text-2xl text-indigo-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-4">Mobile Apps</h3>
-                    <ul class="space-y-3 text-gray-400 text-sm">
-                        <li class="flex items-center"><span class="w-2 h-2 bg-indigo-400 rounded-full mr-2"></span> Android (Kotlin / Java)</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-indigo-400 rounded-full mr-2"></span> Kotlin Multiplatform (KMP)</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-indigo-400 rounded-full mr-2"></span> iOS (Swift / SwiftUI)</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-indigo-400 rounded-full mr-2"></span> Flutter & React Native</li>
-                    </ul>
-                </div>
+            <!-- Main Title -->
+            <h1 class="text-6xl md:text-8xl font-black italic tracking-tight text-white select-none leading-none drop-shadow-lg">
+                Nimesh Vasani
+            </h1>
+            
+            <!-- Role Highlight -->
+            <p class="text-xl md:text-2xl font-bold tracking-widest text-[#E14D4D] uppercase pt-1 drop-shadow-md">
+                [ Mobile Application Developer ]
+            </p>
+        </div>
+        
+        <!-- Bio Description -->
+        <div class="animate-fade-in">
+            <p class="text-base md:text-xl text-gray-300 max-w-2xl leading-relaxed tracking-wide font-sans drop-shadow-md">
+                Crafting high-performance, user-centric mobile applications for Android, iOS, and cross-platform ecosystems with precision architecture.
+            </p>
+        </div>
+    </div>
 
-                <!-- Backend Technology -->
-                <div class="bg-[#111827] p-8 rounded-xl border border-gray-800 hover:border-purple-500/50 transition">
-                    <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-server text-2xl text-purple-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-4">Backend</h3>
-                    <ul class="space-y-3 text-gray-400 text-sm">
-                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-400 rounded-full mr-2"></span> Spring Boot (Java)</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-400 rounded-full mr-2"></span> Node.js & Express.js</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-400 rounded-full mr-2"></span> Django (Python)</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-400 rounded-full mr-2"></span> Kotlin (Backend Dev)</li>
-                    </ul>
-                </div>
-
-                <!-- Database & Infrastructure -->
-                <div class="bg-[#111827] p-8 rounded-xl border border-gray-800 hover:border-pink-500/50 transition">
-                    <div class="w-12 h-12 bg-pink-500/10 rounded-lg flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-database text-2xl text-pink-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-4">Databases & Tools</h3>
-                    <ul class="space-y-3 text-gray-400 text-sm">
-                        <li class="flex items-center"><span class="w-2 h-2 bg-pink-400 rounded-full mr-2"></span> MySQL & SQLite</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-pink-400 rounded-full mr-2"></span> MongoDB</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-pink-400 rounded-full mr-2"></span> Room & Firebase Realtime</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-pink-400 rounded-full mr-2"></span> VCS (Git/GitHub) & CI/CD</li>
-                    </ul>
-                </div>
+    <!-- Scroll Down Indicator -->
+    <div class="flex justify-center w-full pb-6 z-20 relative">
+        <button id="scroll-to-next-btn" aria-label="Scroll down" class="flex flex-col items-center gap-2 text-gray-400 hover:text-[#E14D4D] transition-all duration-500 focus:outline-none group">
+            <div class="w-8 h-14 rounded-full border border-gray-700 group-hover:border-[#E14D4D] flex items-center justify-center p-1 transition duration-300 bg-black/30 backdrop-blur-sm">
+                <span class="text-[#E14D4D] font-bold text-lg leading-none animate-bounce mt-1">↓</span>
             </div>
-        </div>
-    </section>
-
-    <!-- 4. DYNAMIC SECTION PLACEHOLDERS -->
-    <div id="projects-placeholder"></div>
-    <div id="experience-placeholder"></div>
-    <div id="extra-placeholder"></div>
-
-    <!-- ========================================== -->
-    <!-- INTERACTIVE DEV TERMINAL WIDGET (Bottom Right) -->
-    <!-- ========================================== -->
-<div id="dev-terminal-widget" class="fixed bottom-6 right-6 z-40 hidden md:block w-80 terminal-box rounded-xl overflow-hidden font-mono text-xs shadow-2xl transition-all duration-300">
-    <!-- Terminal Header -->
-    <div class="bg-[#161D30] px-4 py-3 flex items-center justify-between border-b border-gray-800 cursor-pointer" onclick="toggleTerminalMinimize()">
-        <div class="flex items-center gap-2">
-            <!-- Red Minimize Dot -->
-            <button aria-label="Minimize terminal" class="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 transition focus:outline-none"></button>
-            <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
-            <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
-            <span class="text-gray-300 font-bold ml-1 text-[11px] tracking-tight">nimesh@dev-env:~</span>
-        </div>
-        <span class="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">● ONLINE</span>
+        </button>
     </div>
+</section>
 
-    <!-- Terminal Collapsible Wrapper -->
-    <div id="terminal-content-wrap" class="flex flex-col transition-all duration-300">
-        <!-- Terminal Body (Expands vertically up to max-h-80 before enabling scroll) -->
-        <div id="terminal-body" class="p-3.5 max-h-80 overflow-y-auto space-y-2 text-gray-300 bg-[#0B0F19]/90 transition-all duration-300">
-            <p class="text-gray-500 text-[11px]">[SYS] Initializing Kotlin Multiplatform runtime...</p>
-            <p class="text-emerald-400 terminal-glow">✓ Environment ready. Type <span class="text-yellow-400 font-bold">'help'</span> for instructions.</p>
-        </div>
+<!-- Canvas Animation Script -->
+<script>
+    (function() {
+        const canvas = document.getElementById('hero-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
 
-        <!-- Terminal Input Line -->
-        <div class="bg-[#111827] px-3 py-2.5 border-t border-gray-800 flex items-center gap-2 shrink-0">
-            <span class="text-[#E14D4D] font-bold">❯</span>
-            <input type="text" id="terminal-input" placeholder="type 'skills', 'projects', 'hire'..." class="bg-transparent border-none outline-none text-white w-full text-xs font-mono focus:ring-0 placeholder:text-gray-600">
-        </div>
-    </div>
-</div>
+        let width, height;
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 140 };
 
-    <!-- Script File Linking -->
-    <script src="script.js"></script>
+        function resize() {
+            width = canvas.width = canvas.offsetWidth;
+            height = canvas.height = canvas.offsetHeight;
+        }
 
-    <!-- Console Controller Script -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const inputField = document.getElementById("terminal-input");
-            const terminalBody = document.getElementById("terminal-body");
+        window.addEventListener('resize', resize);
+        resize();
 
-            if (inputField && terminalBody) {
-                inputField.addEventListener("keydown", (e) => {
-                    if (e.key === "Enter") {
-                        const cmd = inputField.value.trim().toLowerCase();
-                        if (!cmd) return;
-
-                        // Print user command line
-                        const userLine = document.createElement("div");
-                        userLine.className = "flex items-center gap-1.5 text-gray-300";
-                        userLine.innerHTML = `<span class="text-[#E14D4D]">❯</span> <span class="text-white">${escapeHtml(inputField.value)}</span>`;
-                        terminalBody.appendChild(userLine);
-
-                        // Response logic
-                        const responseDiv = document.createElement("div");
-                        responseDiv.className = "text-gray-400 pl-3 border-l border-gray-800 my-1 text-[11px]";
-
-                        switch(cmd) {
-                            case 'help':
-                                responseDiv.innerHTML = `Available commands: <br><span class="text-yellow-400">skills</span>, <span class="text-yellow-400">projects</span>, <span class="text-yellow-400">location</span>, <span class="text-yellow-400">hire</span>, <span class="text-yellow-400">clear</span>`;
-                                break;
-                            case 'skills':
-                                responseDiv.innerHTML = `• Mobile: Android (Kotlin/Java), KMP, iOS/SwiftUI, Flutter<br>• Backend: Spring Boot, Node.js, Django`;
-                                break;
-                            case 'projects':
-                                responseDiv.innerHTML = `<span class="text-emerald-400">-> Navigating to projects section...</span>`;
-                                window.location.hash = "#projects";
-                                break;
-                            case 'location':
-                                responseDiv.innerHTML = `Based in Canada 🇨🇦 | Open for global collaborations.`;
-                                break;
-                            case 'hire':
-                                responseDiv.innerHTML = `<span class="text-emerald-400">-> Redirecting to contact info...</span>`;
-                                window.location.hash = "#contact";
-                                break;
-                            case 'clear':
-                                terminalBody.innerHTML = `<p class="text-emerald-400 terminal-glow">✓ Terminal wiped. Type 'help' for commands.</p>`;
-                                inputField.value = "";
-                                terminalBody.scrollTop = 0;
-                                return;
-                            default:
-                                responseDiv.innerHTML = `<span class="text-red-400">zsh: command not found: ${escapeHtml(cmd)}. Type 'help'.</span>`;
-                        }
-
-                        terminalBody.appendChild(responseDiv);
-                        inputField.value = "";
-                        terminalBody.scrollTop = terminalBody.scrollHeight;
-                    }
-                });
-            }
+        window.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
         });
 
-        function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
+        window.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
 
-        // Fully functional minimize toggle for the terminal body & input wrapper
-        function toggleTerminalMinimize() {
-            const contentWrap = document.getElementById("terminal-content-wrap");
-            if (contentWrap.classList.contains("hidden")) {
-                contentWrap.classList.remove("hidden");
-            } else {
-                contentWrap.classList.add("hidden");
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.6;
+                this.vy = (Math.random() - 0.5) * 0.6;
+                this.size = Math.random() * 1.5 + 0.8;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
-    </script>
-</body>
-</html>
+
+        const particleCount = Math.min(Math.floor((width * height) / 14000), 60);
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 100) {
+                        ctx.strokeStyle = `rgba(225, 77, 77, ${0.12 * (1 - dist / 100)})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+
+                if (mouse.x !== null && mouse.y !== null) {
+                    const mdx = particles[i].x - mouse.x;
+                    const mdy = particles[i].y - mouse.y;
+                    const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+
+                    if (mdist < mouse.radius) {
+                        ctx.strokeStyle = `rgba(212, 175, 55, ${0.2 * (1 - mdist / mouse.radius)})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    })();
+</script>
