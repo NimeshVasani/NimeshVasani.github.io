@@ -219,6 +219,37 @@ const projectsData = [
 const FALLBACK_MEDIA = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop";
 
 // ==========================================
+// CUSTOM VISIBLE SMOOTH SCROLL UTILITY
+// ==========================================
+function customSmoothScrollTo(targetElement, duration = 1100, headerOffset = 80) {
+    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition - startPosition;
+    let startTime = null;
+
+    function animation(currentTime) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const run = easeInOutQuad(timeElapsed, startPosition, distance, duration);
+        
+        window.scrollTo(0, run);
+        
+        if (timeElapsed < duration) {
+            requestAnimationFrame(animation);
+        }
+    }
+
+    function easeInOutQuad(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
+    }
+
+    requestAnimationFrame(animation);
+}
+
+// ==========================================
 // 3. CORE LOGIC & CARD RENDERING
 // ==========================================
 function initializeProjectFilters() {
@@ -410,7 +441,7 @@ function initializeScrollToNext() {
     
     if (scrollBtn && skillsSection) {
         scrollBtn.addEventListener("click", () => {
-            skillsSection.scrollIntoView({ behavior: "smooth" });
+            customSmoothScrollTo(skillsSection, 1100, 80);
         });
 
         window.addEventListener("scroll", () => {
@@ -445,7 +476,6 @@ function initializeMobileMenu() {
 // 6. SCROLL SPY ENGINE (Updated for data-target)
 // ==========================================
 function initializeScrollSpy() {
-    // Select both desktop AND mobile navigation links that have custom target attributes
     const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
     
     const sections = [];
@@ -453,7 +483,6 @@ function initializeScrollSpy() {
         const targetId = link.getAttribute("data-target");
         if (targetId) {
             const element = document.getElementById(targetId);
-            // Push unique target elements to scroll monitoring array
             if (element && !sections.includes(element)) {
                 sections.push(element);
             }
@@ -473,7 +502,6 @@ function initializeScrollSpy() {
         "border-transparent"
     ];
 
-    // Apply baseline styles to desktop links
     document.querySelectorAll("#desktop-nav .nav-link").forEach(link => {
         link.classList.add("border", "transition-all", "duration-300", "ease-in-out");
     });
@@ -512,11 +540,9 @@ function initializeScrollSpy() {
             const targetId = link.getAttribute("data-target");
 
             if (targetId === activeId) {
-                // Apply visual state highlights
                 link.classList.add(...activeClasses);
                 link.classList.remove(...defaultClasses);
                 
-                // Keep mobile menu highlight styling in sync if matching
                 if (link.classList.contains("mobile-nav-link")) {
                     link.classList.add("text-[#D4AF37]");
                 }
@@ -568,37 +594,26 @@ window.toggleAccordion = function(id) {
 }
 
 // ==========================================
-// 8. GLOBAL EVENT LISTENERS
+// 8. GLOBAL EVENT LISTENERS (Custom Speed Smooth Scroll)
 // ==========================================
 document.addEventListener("click", (e) => {
-    // Find the closest element with a data-target attribute (in case they click an icon or inner span)
     const navLink = e.target.closest("[data-target]");
     if (!navLink) return;
 
     const targetId = navLink.getAttribute("data-target");
     
-    // 1. If we are on an independent sub-page (like bio or blog.html) and click "Home", 
-    // let the default anchor link redirect us back to the landing index page.
     if (targetId === "home" && (window.location.pathname.includes("/bio") || window.location.pathname.includes("/blog"))) {
         return; 
     }
 
-    // 2. Look for the target container on the current page
     const element = document.getElementById(targetId);
     if (element) {
         e.preventDefault();
 
-        // 3. Smoothly scroll to the clicked section, offsetting for a sticky header if you have one
-        const headerOffset = 80; // Adjust this value to match your header's actual height
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        // Use custom speed smooth scroll function (1100ms duration with 80px sticky header offset)
+        customSmoothScrollTo(element, 1100, 80);
 
-        window.scrollTo({
-            top: offsetPosition,
-            behavior: "smooth"
-        });
-
-        // 4. Instant Feedback: Force-apply active highlights immediately without waiting for scrollspy to catch up
+        // Instant Feedback: Force-apply active highlights immediately
         const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
         const activeClasses = ["bg-white/10", "text-[#E14D4D]", "border-white/10", "backdrop-blur-md", "shadow-sm"];
         const defaultClasses = ["text-gray-400", "border-transparent"];
