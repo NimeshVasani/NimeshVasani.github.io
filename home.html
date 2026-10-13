@@ -1,6 +1,4 @@
 <!-- home.html -->
-
-
 <style>
     /* Custom Keyframe Animations for a flawless transition sequence */
     @keyframes slideFromLeft {
@@ -34,12 +32,23 @@
         opacity: 0; /* Keep hidden initially */
         animation: fadeIn 0.8s ease-out 0.8s forwards; /* 0.8s delay starts after name finishes */
     }
+
+    /* Ambient Modern Tech Background Mesh */
+    .bg-ambient-mesh {
+        background-color: #0B0F19;
+        background-image: 
+            radial-gradient(at 10% 20%, rgba(225, 77, 77, 0.15) 0px, transparent 50%),
+            radial-gradient(at 90% 10%, rgba(212, 175, 55, 0.1) 0px, transparent 50%),
+            radial-gradient(at 50% 60%, rgba(147, 51, 234, 0.08) 0px, transparent 50%),
+            radial-gradient(at 90% 90%, rgba(225, 77, 77, 0.12) 0px, transparent 50%);
+        background-attachment: fixed;
+    }
 </style>
 
-<section id="home" class="min-h-screen flex flex-col justify-between pt-28 px-8 pb-8 relative font-mono bg-[#0B0F19]">
+<section id="home" class="min-h-screen flex flex-col justify-between pt-28 px-8 pb-8 relative font-mono bg-ambient-mesh">
     
     <!-- Hero content wrapper (Centered layout, Left-aligned text) -->
-    <div class="max-w-4xl mx-auto my-auto w-full space-y-6">
+    <div class="max-w-4xl mx-auto my-auto w-full space-y-6 z-10 relative">
         
         <!-- Animated Intro Block (Slides from Left) -->
         <div class="animate-slide-left space-y-4">
@@ -68,10 +77,10 @@
             
             <!-- Navigation Action Buttons -->
             <div class="flex flex-wrap gap-4 pt-2 font-sans">
-                <a href="#projects" class="px-6 py-3 bg-[#E14D4D] text-white font-semibold rounded-lg shadow-lg hover:bg-[#c93f3f] transition duration-200">
+                <a href="#projects" data-target="projects" class="px-6 py-3 bg-[#E14D4D] text-white font-semibold rounded-lg shadow-lg hover:bg-[#c93f3f] transition duration-200">
                     View My Work
                 </a>
-                <a href="#contact" class="px-6 py-3 border border-gray-700 hover:border-[#E14D4D]/50 rounded-lg font-medium text-gray-300 transition duration-200">
+                <a href="#contact" data-target="contact" class="px-6 py-3 border border-gray-700 hover:border-[#E14D4D]/50 rounded-lg font-medium text-gray-300 transition duration-200">
                     Get In Touch
                 </a>
             </div>
@@ -79,7 +88,7 @@
     </div>
 
     <!-- Red Rounded-Pill Scroll Button (Disappears on Scroll) -->
-    <div class="flex justify-center w-full pb-6">
+    <div class="flex justify-center w-full pb-6 z-10 relative">
         <button id="scroll-to-next-btn" class="flex flex-col items-center gap-2 text-gray-400 hover:text-[#E14D4D] transition-all duration-500 focus:outline-none group">
             <div class="w-8 h-14 rounded-full border border-[#E14D4D] flex items-center justify-center p-1 transition duration-300">
                 <!-- Smooth scrolling arrow -->
