@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fetchPromises.push(pExtra);
     }
 
- // ==========================================
+    // ==========================================
     // Run Scroll Spy & Handle URL Hashes AFTER templates load
     // ==========================================
     Promise.all(fetchPromises)
@@ -95,6 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("📂 Step 1: All HTML templates successfully fetched!");
             setTimeout(() => {
                 initializeScrollSpy();
+                initializeCanvasBackground(); // Initialize the full-screen canvas starfield
 
                 // FIX: If arriving from another page with a hash (e.g. index.html#projects), 
                 // scroll to it now that the asynchronous templates are fully loaded into the DOM!
@@ -111,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(err => {
             console.warn("One or more templates failed to load, initializing ScrollSpy anyway.", err);
             initializeScrollSpy();
+            initializeCanvasBackground();
         });
 });
 
@@ -229,7 +231,7 @@ const projectsData = [
 const FALLBACK_MEDIA = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop";
 
 // ==========================================
-// ACCELERATING SMOOTH SCROLL UTILITY (Slow Start, Regular Speed)
+// ACCELERATING SMOOTH SCROLL UTILITY
 // ==========================================
 function customSmoothScrollTo(targetElement, duration = 650, headerOffset = 80) {
     const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerOffset;
@@ -455,7 +457,7 @@ function initializeMobileMenu() {
 }
 
 // ==========================================
-// 6. SCROLL SPY ENGINE (Cross-Page & Subpage Aware)
+// 6. SCROLL SPY ENGINE (Active Tab Tracking)
 // ==========================================
 function initializeScrollSpy() {
     const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
@@ -559,7 +561,135 @@ function initializeScrollSpy() {
 }
 
 // ==========================================
-// 7. ACCORDION (Exposed Globally)
+// 7. FULL-SCREEN FALLING STARS & CANVAS ANIMATION
+// ==========================================
+function initializeCanvasBackground() {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    let stars = [];
+    let shootingStars = [];
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Star {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.3;
+            this.vy = (Math.random() - 0.5) * 0.3;
+            this.size = Math.random() * 1.5 + 0.5;
+            this.alpha = Math.random() * 0.7 + 0.3;
+            this.alphaChange = (Math.random() * 0.02) + 0.005;
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+
+            if (this.x < 0 || this.x > width) this.vx *= -1;
+            if (this.y < 0 || this.y > height) this.vy *= -1;
+
+            this.alpha += this.alphaChange;
+            if (this.alpha > 1 || this.alpha < 0.2) {
+                this.alphaChange *= -1;
+            }
+        }
+
+        draw() {
+            ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    class ShootingStar {
+        constructor() {
+            this.reset();
+        }
+
+        reset() {
+            this.x = Math.random() * width;
+            this.y = 0;
+            this.len = Math.random() * 90 + 50;
+            this.speed = Math.random() * 7 + 5;
+            this.angle = Math.PI / 4;
+            this.opacity = Math.random() * 0.8 + 0.2;
+        }
+
+        update() {
+            this.x += this.speed * Math.cos(this.angle);
+            this.y += this.speed * Math.sin(this.angle);
+
+            if (this.x > width || this.y > height) {
+                this.reset();
+            }
+        }
+
+        draw() {
+            ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(this.x - this.len * Math.cos(this.angle), this.y - this.len * Math.sin(this.angle));
+            ctx.stroke();
+        }
+    }
+
+    const starCount = Math.min(Math.floor((width * height) / 10000), 90);
+    for (let i = 0; i < starCount; i++) {
+        stars.push(new Star());
+    }
+
+    for (let i = 0; i < 4; i++) {
+        shootingStars.push(new ShootingStar());
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = 0; i < stars.length; i++) {
+            stars[i].update();
+            stars[i].draw();
+
+            for (let j = i + 1; j < stars.length; j++) {
+                const dx = stars[i].x - stars[j].x;
+                const dy = stars[i].y - stars[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < 90) {
+                    ctx.strokeStyle = `rgba(225, 77, 77, ${0.08 * (1 - dist / 90)})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.beginPath();
+                    ctx.moveTo(stars[i].x, stars[i].y);
+                    ctx.lineTo(stars[j].x, stars[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        for (let i = 0; i < shootingStars.length; i++) {
+            shootingStars[i].update();
+            shootingStars[i].draw();
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+}
+
+// ==========================================
+// 8. ACCORDION (Exposed Globally)
 // ==========================================
 window.toggleAccordion = function(id) {
     const content = document.getElementById(id);
@@ -578,7 +708,7 @@ window.toggleAccordion = function(id) {
 }
 
 // ==========================================
-// 8. GLOBAL EVENT LISTENERS (Cross-Page Safe)
+// 9. GLOBAL CLICK / NAVIGATION EVENT LISTENERS
 // ==========================================
 document.addEventListener("click", (e) => {
     const navLink = e.target.closest("[data-target]");
@@ -587,8 +717,6 @@ document.addEventListener("click", (e) => {
     const targetId = navLink.getAttribute("data-target");
     const element = document.getElementById(targetId);
 
-    // If the target section does NOT exist on the current page (e.g. clicking #projects from bio.html),
-    // do NOT prevent default—let the browser naturally navigate to index.html#projects!
     if (!element) {
         return; 
     }
@@ -599,7 +727,6 @@ document.addEventListener("click", (e) => {
     const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
     const activeClasses = ["bg-white/10", "text-[#E14D4D]", "border-white/10", "backdrop-blur-md", "shadow-sm"];
     const defaultClasses = ["text-gray-400", "border-transparent"];
-    console.log("v2")
 
     navLinks.forEach(link => {
         const linkTarget = link.getAttribute("data-target");
