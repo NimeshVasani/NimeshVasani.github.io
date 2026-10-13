@@ -24,18 +24,23 @@
     }
 </style>
 
+<!-- Hero Section locked strictly to min-h-screen with relative positioning -->
 <section id="home" class="min-h-screen flex flex-col justify-between pt-32 px-6 md:px-12 pb-8 relative font-mono bg-[#0B0F19] overflow-hidden">
     
-    <!-- LAYER 0: Looping Blackhole Webm Video Background -->
-    <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-60">
-        <source src="https://github.com/NimeshVasani/projects_videos/raw/refs/heads/main/blackhole.webm" type="video/webm">
-    </video>
+    <!-- VIDEO WRAPPER: Constrained to top half of the hero section with bottom fade gradient -->
+    <div class="absolute top-0 left-0 w-full h-[65vh] overflow-hidden pointer-events-none z-0">
+        <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-60">
+            <source src="https://raw.githubusercontent.com/YourUsername/YourVideoRepo/main/blackhole.webm" type="video/webm">
+        </video>
+        <!-- Fade-out gradient overlay so it merges cleanly into the dark theme -->
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B0F19]/40 to-[#0B0F19]"></div>
+    </div>
 
-    <!-- LAYER 1: Interactive Starfield Canvas Animation -->
+    <!-- LAYER 1: Interactive Starfield Canvas Overlay -->
     <canvas id="hero-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-10"></canvas>
 
-    <!-- LAYER 2: Hero content wrapper (Sits cleanly above video and canvas) -->
-    <div class="max-w-4xl mx-auto my-auto w-full space-y-6 z-20 relative">
+    <!-- LAYER 2: Hero content wrapper -->
+    <div class="max-w-4xl mx-auto my-auto w-full space-y-6 z-20 relative pt-12">
         
         <!-- Animated Intro Block -->
         <div class="animate-slide-left space-y-4">
