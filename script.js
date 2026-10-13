@@ -612,22 +612,31 @@ window.toggleAccordion = function(id) {
 // 8. GLOBAL EVENT LISTENERS (Cross-Page & Smooth Scroll Safe)
 // ==========================================
 
+// ==========================================
+// 8. GLOBAL EVENT LISTENERS (Cross-Page & Smooth Scroll Safe)
+// ==========================================
 document.addEventListener("click", (e) => {
     const navLink = e.target.closest("[data-target]");
     if (!navLink) return;
 
     const targetId = navLink.getAttribute("data-target");
+    const href = navLink.getAttribute("href");
     const element = document.getElementById(targetId);
 
-    // If the target section doesn't exist on this page (e.g. we are on bio.html or blog.html),
-    // let the default anchor link behavior take the user back to index.html with the hash.
+    // If we are clicking a link that points to a different page (e.g., index.html#projects from bio page),
+    // let the browser handle the navigation naturally.
+    if (href && href.includes("index.html") && !window.location.pathname.includes("index.html") && window.location.pathname !== "/") {
+        return; 
+    }
+
+    // If the element doesn't exist on this page, let browser handle href
     if (!element) {
         return; 
     }
 
     e.preventDefault();
 
-    // Use accelerating scroll function (650ms duration with slow start, snappy finish)
+    // Use accelerating scroll function
     customSmoothScrollTo(element, 650, 80);
 
     // Instant Feedback: Force-apply active highlights immediately
