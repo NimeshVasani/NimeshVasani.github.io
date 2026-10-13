@@ -61,63 +61,9 @@
     <!-- FIXED FULL-SCREEN STARFIELD CANVAS (Visible on entire website during scroll) -->
     <canvas id="hero-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
 
-    <!-- ========================================== -->
-    <!-- 1. HEADER CONTAINER (Glass Pill Layout with Active Red Tab) -->
-    <!-- ========================================== -->
-    <header class="sticky top-0 z-50 w-full bg-[#0B0F19]/80 backdrop-blur-xl border-b border-white/10 transition-all duration-300">
-        <nav class="max-w-7xl mx-auto px-6 py-3.5 flex items-center justify-between relative">
-            
-            <!-- Left: Brand / Name Logo -->
-            <div class="flex items-center">
-                <a href="#home" class="text-white font-black tracking-wider uppercase text-base hover:text-[#E14D4D] transition duration-200 select-none">
-                    NIMESH VASANI
-                </a>
-            </div>
-
-            <!-- Center: Floating Glass Pill Navigation Tabs -->
-            <div class="hidden md:flex items-center space-x-1 bg-[#111827]/80 border border-white/10 p-1.5 rounded-full shadow-lg backdrop-blur-md" id="desktop-nav">
-                <a href="#home" class="nav-link active px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Home</a>
-                <a href="#skills" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Skills</a>
-                <a href="#projects" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Projects</a>
-                <a href="#experience" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Experience</a>
-                <a href="blog.html" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Blog</a>         
-                <a href="bio.html" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Bio</a>
-            </div>
-            
-            <!-- Right: Social Icons & Mobile Toggle -->
-            <div class="flex items-center gap-4">
-                <div class="hidden sm:flex items-center space-x-3 text-gray-400">
-                    <a href="https://github.com/NimeshVasani" target="_blank" aria-label="GitHub" class="hover:text-white transition duration-200 p-1">
-                        <i class="fa-brands fa-github text-base"></i>
-                    </a>
-                    <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn" class="hover:text-[#E14D4D] transition duration-200 p-1">
-                        <i class="fa-brands fa-linkedin text-base"></i>
-                    </a>
-                    <a href="mailto:nmvasani@gmail.com" aria-label="Email" class="hover:text-[#E14D4D] transition duration-200 p-1">
-                        <i class="fa-solid fa-envelope text-base"></i>
-                    </a>
-                </div>
-
-                <div class="md:hidden">
-                    <button id="mobile-menu-btn" aria-label="Toggle menu" class="text-gray-300 hover:text-[#E14D4D] focus:outline-none p-1">
-                        <i class="fa-solid fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </nav>
-        
-        <!-- Mobile Dropdown Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-[#111827]/95 backdrop-blur-xl border-b border-gray-800 px-6 py-4 space-y-3 font-mono text-sm">
-            <a href="#home" class="block text-gray-300 hover:text-[#E14D4D] py-1">Home</a>
-            <a href="#skills" class="block text-gray-300 hover:text-[#E14D4D] py-1">Skills</a>
-            <a href="#projects" class="block text-gray-300 hover:text-[#E14D4D] py-1">Projects</a>
-            <a href="#experience" class="block text-gray-300 hover:text-[#E14D4D] py-1">Experience</a>
-            <a href="blog.html" class="block text-gray-300 hover:text-[#E14D4D] py-1">Blog</a>
-            <a href="bio.html" class="block text-gray-300 hover:text-[#E14D4D] py-1">Bio</a>
-        </div>
-    </header>
-
-    <!-- ========================================== -->
+       <!-- ========================================== -->
+    <div id="header-placeholder"></div>
+    
     <!-- 2. HOME CONTAINER (Centered Half Blackhole + Purple Nebula) -->
     <!-- ========================================== -->
     <section id="home" class="min-h-screen flex flex-col justify-between pt-24 px-6 md:px-12 pb-8 relative font-mono overflow-hidden">
