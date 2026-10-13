@@ -466,19 +466,24 @@ function initializeMobileMenu() {
 }
 
 // ==========================================
-// 6. SCROLL SPY ENGINE (Cross-Page & Subpage Aware)
+// 6. SCROLL SPY ENGINE (Robust & Cross-Template Aware)
 // ==========================================
 function initializeScrollSpy() {
-    const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu a");
+    // Select all links in both desktop and mobile navigation
+    const navLinks = document.querySelectorAll("#desktop-nav a, #mobile-menu a");
     const currentPath = window.location.pathname;
 
     const activeClasses = ["bg-[#E14D4D]", "text-white", "font-semibold"];
-    const defaultClasses = ["text-gray-300"];
+    const defaultClasses = ["text-gray-300", "hover:text-white", "hover:bg-white/10"];
 
     function forceSetActive(targetName) {
         navLinks.forEach(link => {
             const href = link.getAttribute("href") || "";
-            const isMatch = href.includes(`#${targetName}`) || (targetName === "home" && (href === "#home" || href === "index.html"));
+            const targetAttr = link.getAttribute("data-target") || "";
+            
+            const isMatch = targetAttr === targetName || 
+                            href.includes(`#${targetName}`) || 
+                            (targetName === "home" && (href === "#home" || href.endsWith("index.html#home") || href === "index.html"));
 
             if (isMatch) {
                 link.classList.add(...activeClasses);
@@ -500,44 +505,44 @@ function initializeScrollSpy() {
         return;
     }
 
+    // Collect all valid target sections present on the page
     const sections = [];
     navLinks.forEach(link => {
         const href = link.getAttribute("href") || "";
-        if (href.startsWith("#")) {
-            const targetId = href.substring(1);
-            const element = document.getElementById(targetId) || document.getElementById(`${targetId}-placeholder`);
-            if (element && !sections.includes(element)) {
-                sections.push(element);
+        if (href.includes("#")) {
+            const targetId = href.split("#")[1];
+            if (targetId) {
+                // Check for direct element or placeholder wrapper
+                const element = document.getElementById(targetId) || document.getElementById(`${targetId}-placeholder`);
+                if (element && !sections.includes(element)) {
+                    sections.push({ id: targetId, element: element });
+                }
             }
         }
     });
 
     function updateActiveSection() {
-        if (window.scrollY < 100) {
+        // If at the very top of the page, force Home active
+        if (window.scrollY < 120) {
             forceSetActive("home");
             return;
         }
 
-        let currentSection = null;
+        let currentSection = "home";
         let minDistance = Infinity;
-        const viewportCenter = window.innerHeight / 3;
+        const scrollPosition = window.scrollY + window.innerHeight / 3;
 
-        sections.forEach(section => {
-            const rect = section.getBoundingClientRect();
-            const sectionCenter = rect.top + rect.height / 2;
-            const distance = Math.abs(viewportCenter - sectionCenter);
+        sections.forEach(sec => {
+            const rect = sec.element.getBoundingClientRect();
+            const elementTop = rect.top + window.pageYOffset;
+            const elementBottom = elementTop + rect.height;
 
-            if (rect.top <= window.innerHeight / 2 && rect.bottom >= 0) {
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    currentSection = section.id.replace("-placeholder", "");
-                }
+            if (window.scrollY >= elementTop - 150 && window.scrollY < elementBottom - 150) {
+                currentSection = sec.id;
             }
         });
 
-        if (currentSection) {
-            forceSetActive(currentSection);
-        }
+        forceSetActive(currentSection);
     }
 
     updateActiveSection();
