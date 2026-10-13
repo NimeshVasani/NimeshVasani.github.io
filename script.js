@@ -503,9 +503,15 @@ function initializeScrollSpy() {
 
     // Helper to highlight a specific tab by its target name
     function forceSetActive(targetName) {
-        navLinks.forEach(link => {
-            const targetId = link.getAttribute("data-target");
-            if (targetId === targetName) {
+     navLinks.forEach(link => {
+            const targetId = link.getAttribute("data-target") || "";
+            const href = link.getAttribute("href") || "";
+
+            // Check if the link corresponds to our target name (handles data-target or href matching)
+            const isMatch = (targetId === targetName) || 
+                            (href.includes(targetName)) || 
+                            (targetName === "home" && href === "index.html");
+            if (isMatch) {
                 link.classList.add(...activeClasses);
                 link.classList.remove(...defaultClasses);
                 if (link.classList.contains("mobile-nav-link")) {
