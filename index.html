@@ -297,16 +297,7 @@
 
     <!-- Canvas & Terminal Controller Scripts -->
     <script>
-        // Dynamic Header Nav Active State Switching
-        document.addEventListener("DOMContentLoaded", () => {
-            const navLinks = document.querySelectorAll("#desktop-nav .nav-link");
-            navLinks.forEach(link => {
-                link.addEventListener("click", function() {
-                    navLinks.forEach(l => l.classList.remove("active"));
-                    this.classList.add("active");
-                });
-            });
-
+  
             // Terminal Logic
             const inputField = document.getElementById("terminal-input");
             const terminalBody = document.getElementById("terminal-body");
