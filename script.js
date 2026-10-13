@@ -88,14 +88,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // Run Scroll Spy & Handle URL Hashes AFTER templates load
+    // Run Scroll Spy, Terminal & Handle URL Hashes AFTER templates load
     // ==========================================
     Promise.all(fetchPromises)
         .then(() => {
             console.log("📂 Step 1: All HTML templates successfully fetched!");
             setTimeout(() => {
                 initializeScrollSpy();
-                initializeCanvasBackground(); // Initialize the full-screen canvas starfield
+                initializeCanvasBackground(); // Initialize full-screen canvas starfield
+                initializeTerminal();         // Initialize the interactive terminal widget
 
                 // FIX: If arriving from another page with a hash (e.g. index.html#projects), 
                 // scroll to it now that the asynchronous templates are fully loaded into the DOM!
@@ -110,9 +111,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 150); 
         })
         .catch(err => {
-            console.warn("One or more templates failed to load, initializing ScrollSpy anyway.", err);
+            console.warn("One or more templates failed to load, initializing fallbacks anyway.", err);
             initializeScrollSpy();
             initializeCanvasBackground();
+            initializeTerminal();
         });
 });
 
@@ -231,7 +233,7 @@ const projectsData = [
 const FALLBACK_MEDIA = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop";
 
 // ==========================================
-// ACCELERATING SMOOTH SCROLL UTILITY
+// 3. ACCELERATING SMOOTH SCROLL UTILITY
 // ==========================================
 function customSmoothScrollTo(targetElement, duration = 650, headerOffset = 80) {
     const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerOffset;
@@ -262,7 +264,7 @@ function customSmoothScrollTo(targetElement, duration = 650, headerOffset = 80) 
 }
 
 // ==========================================
-// 3. CORE LOGIC & CARD RENDERING
+// 4. CORE LOGIC & CARD RENDERING
 // ==========================================
 function initializeProjectFilters() {
     renderProjectCards(projectsData);
@@ -353,7 +355,7 @@ function setupFilterEventListeners() {
 }
 
 // ==========================================
-// 4. DETAILED MODAL VIEWER
+// 5. DETAILED MODAL VIEWER
 // ==========================================
 window.openProjectDetails = function(projectId) {
     const project = projectsData.find(p => p.id === projectId);
@@ -417,7 +419,7 @@ window.closeProjectDetails = function() {
 }
 
 // ==========================================
-// 5. LAYOUT ANIMATIONS & GLOBAL UTILITIES
+// 6. LAYOUT ANIMATIONS & GLOBAL UTILITIES
 // ==========================================
 function initializeScrollToNext() {
     const scrollBtn = document.getElementById("scroll-to-next-btn");
@@ -457,7 +459,76 @@ function initializeMobileMenu() {
 }
 
 // ==========================================
-// 6. SCROLL SPY ENGINE (Active Tab Tracking)
+// 7. INTERACTIVE DEV TERMINAL WIDGET LOGIC
+// ==========================================
+function initializeTerminal() {
+    const inputField = document.getElementById("terminal-input");
+    const terminalBody = document.getElementById("terminal-body");
+
+    if (inputField && terminalBody) {
+        inputField.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                const cmd = inputField.value.trim().toLowerCase();
+                if (!cmd) return;
+
+                const userLine = document.createElement("div");
+                userLine.className = "flex items-center gap-1.5 text-gray-300";
+                userLine.innerHTML = `<span class="text-[#E14D4D]">❯</span> <span class="text-white">${escapeHtml(inputField.value)}</span>`;
+                terminalBody.appendChild(userLine);
+
+                const responseDiv = document.createElement("div");
+                responseDiv.className = "text-gray-400 pl-3 border-l border-gray-800 my-1 text-[11px]";
+
+                switch(cmd) {
+                    case 'help':
+                        responseDiv.innerHTML = `Available commands: <br><span class="text-yellow-400">skills</span>, <span class="text-yellow-400">projects</span>, <span class="text-yellow-400">location</span>, <span class="text-yellow-400">hire</span>, <span class="text-yellow-400">clear</span>`;
+                        break;
+                    case 'skills':
+                        responseDiv.innerHTML = `• Mobile: Android (Kotlin/Java), KMP, iOS, Flutter, React Native<br>• Backend: Spring Boot, Node.js, Django`;
+                        break;
+                    case 'projects':
+                        responseDiv.innerHTML = `<span class="text-emerald-400">-> Navigating to projects section...</span>`;
+                        const projSec = document.getElementById("projects");
+                        if (projSec) customSmoothScrollTo(projSec, 650, 80);
+                        break;
+                    case 'location':
+                        responseDiv.innerHTML = `Based in Canada 🇨🇦 | Open for global collaborations.`;
+                        break;
+                    case 'hire':
+                        responseDiv.innerHTML = `<span class="text-emerald-400">-> Redirecting to contact info...</span>`;
+                        const extraSec = document.getElementById("extra");
+                        if (extraSec) customSmoothScrollTo(extraSec, 650, 80);
+                        break;
+                    case 'clear':
+                        terminalBody.innerHTML = `<p class="text-emerald-400 terminal-glow">✓ Terminal wiped. Type 'help' for commands.</p>`;
+                        inputField.value = "";
+                        terminalBody.scrollTop = 0;
+                        return;
+                    default:
+                        responseDiv.innerHTML = `<span class="text-red-400">zsh: command not found: ${escapeHtml(cmd)}. Type 'help'.</span>`;
+                }
+
+                terminalBody.appendChild(responseDiv);
+                inputField.value = "";
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            }
+        });
+    }
+}
+
+function escapeHtml(text) {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+window.toggleTerminalMinimize = function() {
+    const contentWrap = document.getElementById("terminal-content-wrap");
+    if (contentWrap) {
+        contentWrap.classList.toggle("hidden");
+    }
+}
+
+// ==========================================
+// 8. SCROLL SPY ENGINE (Active Tab Tracking)
 // ==========================================
 function initializeScrollSpy() {
     const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
@@ -561,7 +632,7 @@ function initializeScrollSpy() {
 }
 
 // ==========================================
-// 7. FULL-SCREEN FALLING STARS & CANVAS ANIMATION
+// 9. FULL-SCREEN FALLING STARS & CANVAS ANIMATION
 // ==========================================
 function initializeCanvasBackground() {
     const canvas = document.getElementById('hero-canvas');
@@ -689,7 +760,7 @@ function initializeCanvasBackground() {
 }
 
 // ==========================================
-// 8. ACCORDION (Exposed Globally)
+// 10. ACCORDION (Exposed Globally)
 // ==========================================
 window.toggleAccordion = function(id) {
     const content = document.getElementById(id);
@@ -708,7 +779,7 @@ window.toggleAccordion = function(id) {
 }
 
 // ==========================================
-// 9. GLOBAL CLICK / NAVIGATION EVENT LISTENERS
+// 11. GLOBAL CLICK / NAVIGATION EVENT LISTENERS
 // ==========================================
 document.addEventListener("click", (e) => {
     const navLink = e.target.closest("[data-target]");
