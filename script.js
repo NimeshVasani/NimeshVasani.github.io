@@ -596,45 +596,49 @@ window.toggleAccordion = function(id) {
 }
 
 // ==========================================
-// 8. GLOBAL EVENT LISTENERS (Accelerating Smooth Scroll)
+// 8. GLOBAL EVENT LISTENERS (Cross-Page & Smooth Scroll Safe)
 // ==========================================
 document.addEventListener("click", (e) => {
     const navLink = e.target.closest("[data-target]");
     if (!navLink) return;
 
     const targetId = navLink.getAttribute("data-target");
-    
+    const element = document.getElementById(targetId);
+
+    // If we are on a subpage (like bio or blog) and the target section isn't on this page,
+    // let the default link behavior redirect back to index.html with the anchor hash.
+    if (!element) {
+        return; 
+    }
+
     if (targetId === "home" && (window.location.pathname.includes("/bio") || window.location.pathname.includes("/blog"))) {
         return; 
     }
 
-    const element = document.getElementById(targetId);
-    if (element) {
-        e.preventDefault();
+    e.preventDefault();
 
-        // Use accelerating scroll function (650ms duration with slow start, snappy finish)
-        customSmoothScrollTo(element, 650, 80);
+    // Use accelerating scroll function (650ms duration with slow start, snappy finish)
+    customSmoothScrollTo(element, 650, 80);
 
-        // Instant Feedback: Force-apply active highlights immediately
-        const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
-        const activeClasses = ["bg-white/10", "text-[#E14D4D]", "border-white/10", "backdrop-blur-md", "shadow-sm"];
-        const defaultClasses = ["text-gray-400", "border-transparent"];
+    // Instant Feedback: Force-apply active highlights immediately
+    const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
+    const activeClasses = ["bg-white/10", "text-[#E14D4D]", "border-white/10", "backdrop-blur-md", "shadow-sm"];
+    const defaultClasses = ["text-gray-400", "border-transparent"];
 
-        navLinks.forEach(link => {
-            const linkTarget = link.getAttribute("data-target");
-            if (linkTarget === targetId) {
-                link.classList.add(...activeClasses);
-                link.classList.remove(...defaultClasses);
-                if (link.classList.contains("mobile-nav-link")) {
-                    link.classList.add("text-[#D4AF37]");
-                }
-            } else {
-                link.classList.remove(...activeClasses);
-                link.classList.add(...defaultClasses);
-                if (link.classList.contains("mobile-nav-link")) {
-                    link.classList.remove("text-[#D4AF37]");
-                }
+    navLinks.forEach(link => {
+        const linkTarget = link.getAttribute("data-target");
+        if (linkTarget === targetId) {
+            link.classList.add(...activeClasses);
+            link.classList.remove(...defaultClasses);
+            if (link.classList.contains("mobile-nav-link")) {
+                link.classList.add("text-[#D4AF37]");
             }
-        });
-    }
+        } else {
+            link.classList.remove(...activeClasses);
+            link.classList.add(...defaultClasses);
+            if (link.classList.contains("mobile-nav-link")) {
+                link.classList.remove("text-[#D4AF37]");
+            }
+        }
+    });
 });
