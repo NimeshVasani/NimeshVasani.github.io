@@ -88,15 +88,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // Run Scroll Spy, Terminal & Handle URL Hashes AFTER templates load
+    // Initialize Canvas, Terminal & ScrollSpy AFTER templates load
     // ==========================================
     Promise.all(fetchPromises)
         .then(() => {
             console.log("📂 Step 1: All HTML templates successfully fetched!");
             setTimeout(() => {
                 initializeScrollSpy();
-                initializeCanvasBackground(); // Initialize full-screen canvas starfield
-                initializeTerminal();         // Initialize the interactive terminal widget
+                initializeCanvasBackground();
+                initializeTerminal();
+                initializeMobileMenu(); // Re-bind in case header was injected
 
                 // FIX: If arriving from another page with a hash (e.g. index.html#projects), 
                 // scroll to it now that the asynchronous templates are fully loaded into the DOM!
@@ -111,10 +112,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 150); 
         })
         .catch(err => {
-            console.warn("One or more templates failed to load, initializing fallbacks anyway.", err);
+            console.warn("One or more templates failed to load, initializing components anyway.", err);
             initializeScrollSpy();
             initializeCanvasBackground();
             initializeTerminal();
+            initializeMobileMenu();
         });
 });
 
@@ -233,7 +235,7 @@ const projectsData = [
 const FALLBACK_MEDIA = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop";
 
 // ==========================================
-// 3. ACCELERATING SMOOTH SCROLL UTILITY
+// ACCELERATING SMOOTH SCROLL UTILITY (Slow Start, Regular Speed)
 // ==========================================
 function customSmoothScrollTo(targetElement, duration = 650, headerOffset = 80) {
     const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerOffset;
@@ -264,7 +266,7 @@ function customSmoothScrollTo(targetElement, duration = 650, headerOffset = 80) 
 }
 
 // ==========================================
-// 4. CORE LOGIC & CARD RENDERING
+// 3. CORE LOGIC & CARD RENDERING
 // ==========================================
 function initializeProjectFilters() {
     renderProjectCards(projectsData);
@@ -355,7 +357,7 @@ function setupFilterEventListeners() {
 }
 
 // ==========================================
-// 5. DETAILED MODAL VIEWER
+// 4. DETAILED MODAL VIEWER
 // ==========================================
 window.openProjectDetails = function(projectId) {
     const project = projectsData.find(p => p.id === projectId);
@@ -419,7 +421,7 @@ window.closeProjectDetails = function() {
 }
 
 // ==========================================
-// 6. LAYOUT ANIMATIONS & GLOBAL UTILITIES
+// 5. LAYOUT ANIMATIONS & GLOBAL UTILITIES
 // ==========================================
 function initializeScrollToNext() {
     const scrollBtn = document.getElementById("scroll-to-next-btn");
@@ -445,7 +447,12 @@ function initializeMobileMenu() {
     const mobileMenu = document.getElementById('mobile-menu');
     
     if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener('click', () => {
+        // Remove old listeners to prevent duplicate triggers
+        const newBtn = mobileMenuBtn.cloneNode(true);
+        mobileMenuBtn.parentNode.replaceChild(newBtn, mobileMenuBtn);
+
+        newBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             mobileMenu.classList.toggle('hidden');
         });
         
@@ -456,6 +463,97 @@ function initializeMobileMenu() {
             });
         });
     }
+}
+
+// ==========================================
+// 6. SCROLL SPY ENGINE (Cross-Page & Subpage Aware)
+// ==========================================
+function initializeScrollSpy() {
+    const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu a");
+    const currentPath = window.location.pathname;
+
+    const activeClasses = ["bg-[#E14D4D]", "text-white", "font-semibold"];
+    const defaultClasses = ["text-gray-300"];
+
+    function forceSetActive(targetName) {
+        navLinks.forEach(link => {
+            const href = link.getAttribute("href") || "";
+            const isMatch = href.includes(`#${targetName}`) || (targetName === "home" && (href === "#home" || href === "index.html"));
+
+            if (isMatch) {
+                link.classList.add(...activeClasses);
+                link.classList.remove(...defaultClasses);
+            } else {
+                link.classList.remove(...activeClasses);
+                link.classList.add(...defaultClasses);
+            }
+        });
+    }
+
+    if (currentPath.includes("bio")) {
+        forceSetActive("bio");
+        return;
+    }
+
+    if (currentPath.includes("blog")) {
+        forceSetActive("blog");
+        return;
+    }
+
+    const sections = [];
+    navLinks.forEach(link => {
+        const href = link.getAttribute("href") || "";
+        if (href.startsWith("#")) {
+            const targetId = href.substring(1);
+            const element = document.getElementById(targetId) || document.getElementById(`${targetId}-placeholder`);
+            if (element && !sections.includes(element)) {
+                sections.push(element);
+            }
+        }
+    });
+
+    function updateActiveSection() {
+        if (window.scrollY < 100) {
+            forceSetActive("home");
+            return;
+        }
+
+        let currentSection = null;
+        let minDistance = Infinity;
+        const viewportCenter = window.innerHeight / 3;
+
+        sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            const sectionCenter = rect.top + rect.height / 2;
+            const distance = Math.abs(viewportCenter - sectionCenter);
+
+            if (rect.top <= window.innerHeight / 2 && rect.bottom >= 0) {
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    currentSection = section.id.replace("-placeholder", "");
+                }
+            }
+        });
+
+        if (currentSection) {
+            forceSetActive(currentSection);
+        }
+    }
+
+    updateActiveSection();
+
+    let ticking = false;
+    window.addEventListener("scroll", () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                updateActiveSection();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    window.addEventListener("resize", updateActiveSection);
 }
 
 // ==========================================
@@ -496,7 +594,7 @@ function initializeTerminal() {
                         break;
                     case 'hire':
                         responseDiv.innerHTML = `<span class="text-emerald-400">-> Redirecting to contact info...</span>`;
-                        const extraSec = document.getElementById("extra");
+                        const extraSec = document.getElementById("extra-placeholder");
                         if (extraSec) customSmoothScrollTo(extraSec, 650, 80);
                         break;
                     case 'clear':
@@ -528,111 +626,7 @@ window.toggleTerminalMinimize = function() {
 }
 
 // ==========================================
-// 8. SCROLL SPY ENGINE (Active Tab Tracking)
-// ==========================================
-function initializeScrollSpy() {
-    const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
-    const currentPath = window.location.pathname;
-
-    const activeClasses = ["bg-white/10", "text-[#E14D4D]", "border-white/10", "backdrop-blur-md", "shadow-sm"];
-    const defaultClasses = ["text-gray-400", "border-transparent"];
-
-    document.querySelectorAll("#desktop-nav .nav-link").forEach(link => {
-        link.classList.add("border", "transition-all", "duration-300", "ease-in-out");
-    });
-
-    function forceSetActive(targetName) {
-        navLinks.forEach(link => {
-            const targetId = link.getAttribute("data-target") || "";
-            const href = link.getAttribute("href") || "";
-
-            const isMatch = (targetId === targetName) || 
-                            (href.includes(targetName)) || 
-                            (targetName === "home" && (href === "index.html" || href === "/"));
-
-            if (isMatch) {
-                link.classList.add(...activeClasses);
-                link.classList.remove(...defaultClasses);
-                if (link.classList.contains("mobile-nav-link")) {
-                    link.classList.add("text-[#D4AF37]");
-                }
-            } else {
-                link.classList.remove(...activeClasses);
-                link.classList.add(...defaultClasses);
-                if (link.classList.contains("mobile-nav-link")) {
-                    link.classList.remove("text-[#D4AF37]");
-                }
-            }
-        });
-    }
-
-    if (currentPath.includes("bio")) {
-        forceSetActive("bio");
-        return;
-    }
-
-    if (currentPath.includes("blog")) {
-        forceSetActive("blog");
-        return;
-    }
-
-    const sections = [];
-    navLinks.forEach(link => {
-        const targetId = link.getAttribute("data-target");
-        if (targetId) {
-            const element = document.getElementById(targetId);
-            if (element && !sections.includes(element)) {
-                sections.push(element);
-            }
-        }
-    });
-
-    function updateActiveSection() {
-        if (window.scrollY < 120) {
-            forceSetActive("home");
-            return;
-        }
-
-        let currentSection = null;
-        let minDistance = Infinity;
-        const viewportCenter = window.innerHeight / 2;
-
-        sections.forEach(section => {
-            const rect = section.getBoundingClientRect();
-            if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-
-            const sectionCenter = rect.top + rect.height / 2;
-            const distance = Math.abs(viewportCenter - sectionCenter);
-
-            if (distance < minDistance) {
-                minDistance = distance;
-                currentSection = section.id;
-            }
-        });
-
-        if (currentSection) {
-            forceSetActive(currentSection);
-        }
-    }
-
-    updateActiveSection();
-
-    let ticking = false;
-    window.addEventListener("scroll", () => {
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                updateActiveSection();
-                ticking = false;
-            });
-            ticking = true;
-        }
-    });
-
-    window.addEventListener("resize", updateActiveSection);
-}
-
-// ==========================================
-// 9. FULL-SCREEN FALLING STARS & CANVAS ANIMATION
+// 8. FULL-SCREEN FALLING STARS & CANVAS ANIMATION
 // ==========================================
 function initializeCanvasBackground() {
     const canvas = document.getElementById('hero-canvas');
@@ -760,7 +754,7 @@ function initializeCanvasBackground() {
 }
 
 // ==========================================
-// 10. ACCORDION (Exposed Globally)
+// 9. ACCORDION (Exposed Globally)
 // ==========================================
 window.toggleAccordion = function(id) {
     const content = document.getElementById(id);
@@ -779,40 +773,40 @@ window.toggleAccordion = function(id) {
 }
 
 // ==========================================
-// 11. GLOBAL CLICK / NAVIGATION EVENT LISTENERS
+// 10. GLOBAL CLICK / NAVIGATION EVENT LISTENERS
 // ==========================================
 document.addEventListener("click", (e) => {
-    const navLink = e.target.closest("[data-target]");
+    const navLink = e.target.closest("a[href^='#']");
     if (!navLink) return;
 
-    const targetId = navLink.getAttribute("data-target");
-    const element = document.getElementById(targetId);
+    const href = navLink.getAttribute("href");
+    const targetId = href.substring(1);
+    const element = document.getElementById(targetId) || document.getElementById(`${targetId}-placeholder`);
 
-    if (!element) {
-        return; 
-    }
+    if (!element) return;
 
     e.preventDefault();
     customSmoothScrollTo(element, 650, 80);
 
-    const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
-    const activeClasses = ["bg-white/10", "text-[#E14D4D]", "border-white/10", "backdrop-blur-md", "shadow-sm"];
-    const defaultClasses = ["text-gray-400", "border-transparent"];
+    // Close mobile menu if open
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+    }
+
+    // Force active state styling on click
+    const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu a");
+    const activeClasses = ["bg-[#E14D4D]", "text-white", "font-semibold"];
+    const defaultClasses = ["text-gray-300"];
 
     navLinks.forEach(link => {
-        const linkTarget = link.getAttribute("data-target");
-        if (linkTarget === targetId) {
+        const linkHref = link.getAttribute("href") || "";
+        if (linkHref.includes(`#${targetId}`)) {
             link.classList.add(...activeClasses);
             link.classList.remove(...defaultClasses);
-            if (link.classList.contains("mobile-nav-link")) {
-                link.classList.add("text-[#D4AF37]");
-            }
         } else {
             link.classList.remove(...activeClasses);
             link.classList.add(...defaultClasses);
-            if (link.classList.contains("mobile-nav-link")) {
-                link.classList.remove("text-[#D4AF37]");
-            }
         }
     });
 });
