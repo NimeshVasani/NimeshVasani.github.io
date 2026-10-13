@@ -556,6 +556,46 @@ function initializeScrollSpy() {
     window.addEventListener("resize", updateActiveSection);
 }
 
+// 8. GLOBAL EVENT LISTENERS (Cross-Page Safe)
+// ==========================================
+document.addEventListener("click", (e) => {
+    const navLink = e.target.closest("[data-target]");
+    if (!navLink) return;
+
+    const targetId = navLink.getAttribute("data-target");
+    const element = document.getElementById(targetId);
+
+    // If the target section does NOT exist on the current page (e.g. clicking #projects from bio.html),
+    // do NOT prevent default—let the browser naturally navigate to index.html#projects!
+    if (!element) {
+        return; 
+    }
+
+    e.preventDefault();
+    customSmoothScrollTo(element, 650, 80);
+
+    const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
+    const activeClasses = ["bg-white/10", "text-[#E14D4D]", "border-white/10", "backdrop-blur-md", "shadow-sm"];
+    const defaultClasses = ["text-gray-400", "border-transparent"];
+
+    navLinks.forEach(link => {
+        const linkTarget = link.getAttribute("data-target");
+        if (linkTarget === targetId) {
+            link.classList.add(...activeClasses);
+            link.classList.remove(...defaultClasses);
+            if (link.classList.contains("mobile-nav-link")) {
+                link.classList.add("text-[#D4AF37]");
+            }
+        } else {
+            link.classList.remove(...activeClasses);
+            link.classList.add(...defaultClasses);
+            if (link.classList.contains("mobile-nav-link")) {
+                link.classList.remove("text-[#D4AF37]");
+            }
+        }
+    });
+});
+
 // ==========================================
 // 7. INTERACTIVE DEV TERMINAL WIDGET LOGIC
 // ==========================================
