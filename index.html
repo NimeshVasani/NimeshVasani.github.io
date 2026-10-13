@@ -1,180 +1,149 @@
-<!-- home.html -->
-<style>
-    /* Keyframe Animations for smooth entry */
-    @keyframes slideFromLeft {
-        0% { transform: translateX(-50px); opacity: 0; }
-        100% { transform: translateX(0); opacity: 1; }
-    }
-
-    @keyframes fadeIn {
-        0% { opacity: 0; transform: translateY(15px); }
-        100% { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate-slide-left {
-        opacity: 0;
-        animation: slideFromLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        will-change: transform, opacity;
-    }
-
-    .animate-fade-in {
-        opacity: 0;
-        animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
-        will-change: transform, opacity;
-    }
-</style>
-
-<section id="home" class="min-h-screen flex flex-col justify-between pt-32 px-6 md:px-12 pb-8 relative font-mono bg-[#0B0F19] overflow-hidden">
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nimesh Vasani | Mobile Application Developer</title>
     
-    <!-- LAYER 0: Looping Blackhole Webm Video Background -->
-    <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-60">
-        <source src="https://github.com/NimeshVasani/projects_videos/raw/refs/heads/main/blackhole.webm" type="video/webm">
-    </video>
+    <link rel="stylesheet" href="./dist/output.css">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Modern Glassmorphic Terminal Styling */
+        .terminal-box {
+            background: rgba(13, 17, 23, 0.92);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(225, 77, 77, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .terminal-glow {
+            text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
+        }
+        #terminal-body::-webkit-scrollbar {
+            width: 4px;
+        }
+        #terminal-body::-webkit-scrollbar-thumb {
+            background: rgba(225, 77, 77, 0.3);
+            border-radius: 4px;
+        }
 
-    <!-- LAYER 1: Interactive Starfield Canvas Animation -->
-    <canvas id="hero-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-10"></canvas>
+        /* Keyframe Animations for Hero Entry */
+        @keyframes slideFromLeft {
+            0% { transform: translateX(-50px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-left {
+            opacity: 0;
+            animation: slideFromLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-fade-in {
+            opacity: 0;
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+        }
+    </style>
+</head>
+<body class="bg-[#0B0F19] text-gray-100 font-sans leading-relaxed relative overflow-x-hidden min-h-screen">
 
-    <!-- LAYER 2: Hero content wrapper (Sits cleanly above video and canvas) -->
-    <div class="max-w-4xl mx-auto my-auto w-full space-y-6 z-20 relative">
-        
-        <!-- Animated Intro Block -->
-        <div class="animate-slide-left space-y-4">
-            <!-- Terminal status badge -->
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300 backdrop-blur-md">
-                <span class="w-2 h-2 rounded-full bg-[#E14D4D] animate-pulse"></span>
-                <span>Available for Mobile & Software Roles</span>
+    <!-- ========================================== -->
+    <!-- 1. HEADER CONTAINER (Glass Pill Layout) -->
+    <!-- ========================================== -->
+    <header class="sticky top-0 z-50 w-full bg-[#0B0F19]/80 backdrop-blur-xl border-b border-white/10 transition-all duration-300">
+        <nav class="max-w-7xl mx-auto px-6 py-3.5 flex items-center justify-between relative">
+            
+            <!-- Left: Brand / Name Logo -->
+            <div class="flex items-center">
+                <a href="#home" class="text-white font-black tracking-wider uppercase text-base hover:text-[#E14D4D] transition duration-200 select-none">
+                    NIMESH VASANI
+                </a>
+            </div>
+
+            <!-- Center: Floating Glass Pill Navigation Tabs -->
+            <div class="hidden md:flex items-center space-x-1 bg-[#111827]/80 border border-white/10 p-1.5 rounded-full shadow-lg backdrop-blur-md" id="desktop-nav">
+                <a href="#home" class="px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200">Home</a>
+                <a href="#skills" class="px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200">Skills</a>
+                <a href="#projects" class="px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200">Projects</a>
+                <a href="#experience" class="px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200">Experience</a>
+                <a href="blog.html" class="px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200">Blog</a>         
+                <a href="bio.html" class="px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200">Bio</a>
             </div>
             
-            <!-- Main Title -->
-            <h1 class="text-6xl md:text-8xl font-black italic tracking-tight text-white select-none leading-none drop-shadow-lg">
-                Nimesh Vasani
-            </h1>
-            
-            <!-- Role Highlight -->
-            <p class="text-xl md:text-2xl font-bold tracking-widest text-[#E14D4D] uppercase pt-1 drop-shadow-md">
-                [ Mobile Application Developer ]
-            </p>
-        </div>
-        
-        <!-- Bio Description -->
-        <div class="animate-fade-in">
-            <p class="text-base md:text-xl text-gray-300 max-w-2xl leading-relaxed tracking-wide font-sans drop-shadow-md">
-                Crafting high-performance, user-centric mobile applications for Android, iOS, and cross-platform ecosystems with precision architecture.
-            </p>
-        </div>
-    </div>
+            <!-- Right: Social Icons & Mobile Toggle -->
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex items-center space-x-3 text-gray-400">
+                    <a href="https://github.com/NimeshVasani" target="_blank" aria-label="GitHub" class="hover:text-white transition duration-200 p-1">
+                        <i class="fa-brands fa-github text-base"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn" class="hover:text-[#E14D4D] transition duration-200 p-1">
+                        <i class="fa-brands fa-linkedin text-base"></i>
+                    </a>
+                    <a href="mailto:nmvasani@gmail.com" aria-label="Email" class="hover:text-[#E14D4D] transition duration-200 p-1">
+                        <i class="fa-solid fa-envelope text-base"></i>
+                    </a>
+                </div>
 
-    <!-- Scroll Down Indicator -->
-    <div class="flex justify-center w-full pb-6 z-20 relative">
-        <button id="scroll-to-next-btn" aria-label="Scroll down" class="flex flex-col items-center gap-2 text-gray-400 hover:text-[#E14D4D] transition-all duration-500 focus:outline-none group">
-            <div class="w-8 h-14 rounded-full border border-gray-700 group-hover:border-[#E14D4D] flex items-center justify-center p-1 transition duration-300 bg-black/30 backdrop-blur-sm">
-                <span class="text-[#E14D4D] font-bold text-lg leading-none animate-bounce mt-1">↓</span>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" aria-label="Toggle menu" class="text-gray-300 hover:text-[#E14D4D] focus:outline-none p-1">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
             </div>
-        </button>
-    </div>
-</section>
+        </nav>
+        
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#111827]/95 backdrop-blur-xl border-b border-gray-800 px-6 py-4 space-y-3 font-mono text-sm">
+            <a href="#home" class="block text-gray-300 hover:text-[#E14D4D] py-1">Home</a>
+            <a href="#skills" class="block text-gray-300 hover:text-[#E14D4D] py-1">Skills</a>
+            <a href="#projects" class="block text-gray-300 hover:text-[#E14D4D] py-1">Projects</a>
+            <a href="#experience" class="block text-gray-300 hover:text-[#E14D4D] py-1">Station</a>
+            <a href="blog.html" class="block text-gray-300 hover:text-[#E14D4D] py-1">Blog</a>
+            <a href="bio.html" class="block text-gray-300 hover:text-[#E14D4D] py-1">Bio</a>
+        </div>
+    </header>
 
-<!-- Canvas Animation Script -->
-<script>
-    (function() {
-        const canvas = document.getElementById('hero-canvas');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
+    <!-- ========================================== -->
+    <!-- 2. HOME CONTAINER (Half-Page Video + Falling Stars) -->
+    <!-- ========================================== -->
+    <section id="home" class="min-h-screen flex flex-col justify-between pt-24 px-6 md:px-12 pb-8 relative font-mono bg-[#0B0F19] overflow-hidden">
+        
+        <!-- Top Half Background Video Container with Fade -->
+        <div class="absolute top-0 left-0 w-full h-[65vh] overflow-hidden pointer-events-none z-0">
+            <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-60">
+                <source src="https://raw.githubusercontent.com/YourUsername/YourVideoRepo/main/blackhole.webm" type="video/webm">
+            </video>
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B0F19]/40 to-[#0B0F19]"></div>
+        </div>
 
-        let width, height;
-        let particles = [];
-        let mouse = { x: null, y: null, radius: 140 };
+        <!-- Falling Star & Node Canvas Animation Overlay -->
+        <canvas id="hero-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-10"></canvas>
 
-        function resize() {
-            width = canvas.width = canvas.offsetWidth;
-            height = canvas.height = canvas.offsetHeight;
-        }
+        <!-- Hero Content -->
+        <div class="max-w-4xl mx-auto my-auto w-full space-y-6 z-20 relative pt-12">
+            <div class="animate-slide-left space-y-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300 backdrop-blur-md">
+                    <span class="w-2 h-2 rounded-full bg-[#E14D4D] animate-pulse"></span>
+                    <span>Available for Mobile & Software Roles</span>
+                </div>
+                
+                <h1 class="text-6xl md:text-8xl font-black italic tracking-tight text-white select-none leading-none drop-shadow-lg">
+                    Nimesh Vasani
+                </h1>
+                
+                <p class="text-xl md:text-2xl font-bold tracking-widest text-[#E14D4D] uppercase pt-1 drop-shadow-md">
+                    [ Mobile Application Developer ]
+                </p>
+            </div>
+            
+            <div class="animate-fade-in">
+                <p class="text-base md:text-xl text-gray-300 max-w-2xl leading-relaxed tracking-wide font-sans drop-shadow-md">
+                    Crafting high-performance, user-centric mobile applications for Android, iOS, and cross-platform ecosystems with precision architecture.
+                </p>
+            </div>
+        </div>
 
-        window.addEventListener('resize', resize);
-        resize();
-
-        window.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            mouse.x = e.clientX - rect.left;
-            mouse.y = e.clientY - rect.top;
-        });
-
-        window.addEventListener('mouseleave', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.6;
-                this.vy = (Math.random() - 0.5) * 0.6;
-                this.size = Math.random() * 1.5 + 0.8;
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
-            }
-
-            draw() {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        const particleCount = Math.min(Math.floor((width * height) / 14000), 60);
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < 100) {
-                        ctx.strokeStyle = `rgba(225, 77, 77, ${0.12 * (1 - dist / 100)})`;
-                        ctx.lineWidth = 0.6;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-
-                if (mouse.x !== null && mouse.y !== null) {
-                    const mdx = particles[i].x - mouse.x;
-                    const mdy = particles[i].y - mouse.y;
-                    const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-
-                    if (mdist < mouse.radius) {
-                        ctx.strokeStyle = `rgba(212, 175, 55, ${0.2 * (1 - mdist / mouse.radius)})`;
-                        ctx.lineWidth = 0.6;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(mouse.x, mouse.y);
-                        ctx.stroke();
-                    }
-                }
-            }
-
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-    })();
-</script>
+        <!--
