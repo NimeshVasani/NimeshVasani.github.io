@@ -1,7 +1,7 @@
 // =========================================================
 // WIX RSS CONFIGURATION (With Proxy Fallback)
 // =========================================================
-const WIX_FREE_URL = 'https://nmvasani.com'; 
+const WIX_FREE_URL = 'https://vasaninimesh0.wixsite.com/nimesh-vasani'; 
 const WIX_RSS_URL = `${WIX_FREE_URL}/blog-feed.xml`;
 
 // Primary proxy and backup proxies
