@@ -10,19 +10,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* Custom Terminal Widget & Interactive Console Styling */
+        /* Modern Glassmorphic Terminal Styling */
         .terminal-box {
-            background: rgba(11, 15, 25, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(225, 77, 77, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(13, 17, 23, 0.92);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(225, 77, 77, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .cursor-blink {
-            animation: blink 1s infinite;
+        .terminal-glow {
+            text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
         }
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
+        /* Custom scrollbar for terminal screen */
+        #terminal-body::-webkit-scrollbar {
+            width: 4px;
+        }
+        #terminal-body::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        #terminal-body::-webkit-scrollbar-thumb {
+            background: rgba(225, 77, 77, 0.3);
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -31,7 +39,7 @@
     <!-- 1. HEADER CONTAINER -->
     <div id="header-placeholder" class="sticky top-0 z-50 w-full"></div>
 
-    <!-- 2. HOME CONTAINER (Dynamically loaded home.html with animations preserved) -->
+    <!-- 2. HOME CONTAINER (Dynamically loaded home.html) -->
     <div id="home-placeholder"></div>
 
     <!-- 3. SKILLS SECTION -->
@@ -94,30 +102,34 @@
     <div id="extra-placeholder"></div>
 
     <!-- ========================================== -->
-    <!-- INTERACTIVE DEV TERMINAL CONSOLE (Bottom Right) -->
+    <!-- INTERACTIVE DEV TERMINAL WIDGET (Bottom Right) -->
     <!-- ========================================== -->
-    <div id="dev-terminal-widget" class="fixed bottom-6 right-6 z-40 hidden md:block w-80 terminal-box rounded-xl overflow-hidden font-mono text-xs shadow-2xl transition-all duration-300">
+    <div id="dev-terminal-widget" class="fixed bottom-6 right-6 z-40 hidden md:block w-80 terminal-box rounded-xl overflow-hidden font-mono text-xs shadow-2xl">
         <!-- Terminal Header -->
-        <div class="bg-[#111827] px-4 py-2.5 flex items-center justify-between border-b border-gray-800">
+        <div class="bg-[#161D30] px-4 py-3 flex items-center justify-between border-b border-gray-800">
             <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-red-500 inline-block cursor-pointer" onclick="toggleTerminalMinimize()"></span>
+                <!-- Working Minimize / Close Red Dot -->
+                <button onclick="toggleTerminalMinimize()" aria-label="Minimize terminal" class="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 transition focus:outline-none"></button>
                 <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
                 <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
-                <span class="text-gray-400 font-bold ml-1 text-[11px]">nimesh@dev-env:~</span>
+                <span class="text-gray-300 font-bold ml-1 text-[11px] tracking-tight">nimesh@dev-env:~</span>
             </div>
-            <span class="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded">● LIVE</span>
+            <span class="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">● ONLINE</span>
         </div>
 
-        <!-- Terminal Body -->
-        <div id="terminal-body" class="p-3 h-36 overflow-y-auto space-y-1.5 text-gray-300">
-            <p class="text-gray-500">[SYS] Initializing Kotlin Multiplatform core...</p>
-            <p class="text-emerald-400">✓ Gradle build success. Type <span class="text-yellow-400 font-bold">'help'</span> below.</p>
-        </div>
+        <!-- Terminal Collapsible Content Container -->
+        <div id="terminal-content-wrap">
+            <!-- Terminal Body Screen -->
+            <div id="terminal-body" class="p-3.5 h-40 overflow-y-auto space-y-2 text-gray-300 bg-[#0B0F19]/90">
+                <p class="text-gray-500 text-[11px]">[SYS] Initializing Kotlin Multiplatform runtime...</p>
+                <p class="text-emerald-400 terminal-glow">✓ Environment ready. Type <span class="text-yellow-400 font-bold">'help'</span> for instructions.</p>
+            </div>
 
-        <!-- Terminal Input -->
-        <div class="bg-[#0b0f19] px-3 py-2 border-t border-gray-800 flex items-center gap-2">
-            <span class="text-[#E14D4D] font-bold">❯</span>
-            <input type="text" id="terminal-input" placeholder="try 'skills', 'projects', 'hire'..." class="bg-transparent border-none outline-none text-white w-full text-xs font-mono focus:ring-0">
+            <!-- Terminal Input Line -->
+            <div class="bg-[#111827] px-3 py-2.5 border-t border-gray-800 flex items-center gap-2">
+                <span class="text-[#E14D4D] font-bold">❯</span>
+                <input type="text" id="terminal-input" placeholder="type 'skills', 'projects', 'hire'..." class="bg-transparent border-none outline-none text-white w-full text-xs font-mono focus:ring-0 placeholder:text-gray-600">
+            </div>
         </div>
     </div>
 
@@ -136,43 +148,44 @@
                         const cmd = inputField.value.trim().toLowerCase();
                         if (!cmd) return;
 
-                        // Print command
-                        const userLine = document.createElement("p");
-                        userLine.innerHTML = `<span class="text-[#E14D4D]">❯</span> ${escapeHtml(inputField.value)}`;
+                        // Print user command line
+                        const userLine = document.createElement("div");
+                        userLine.className = "flex items-center gap-1.5 text-gray-300";
+                        userLine.innerHTML = `<span class="text-[#E14D4D]">❯</span> <span class="text-white">${escapeHtml(inputField.value)}</span>`;
                         terminalBody.appendChild(userLine);
 
                         // Response logic
-                        const responseLine = document.createElement("p");
-                        responseLine.className = "text-gray-400";
+                        const responseDiv = document.createElement("div");
+                        responseDiv.className = "text-gray-400 pl-3 border-l border-gray-800 my-1 text-[11px]";
 
                         switch(cmd) {
                             case 'help':
-                                responseLine.innerHTML = `Commands: <span class="text-yellow-400">skills, projects, location, hire, clear</span>`;
+                                responseDiv.innerHTML = `Available commands: <br><span class="text-yellow-400">skills</span>, <span class="text-yellow-400">projects</span>, <span class="text-yellow-400">location</span>, <span class="text-yellow-400">hire</span>, <span class="text-yellow-400">clear</span>`;
                                 break;
                             case 'skills':
-                                responseLine.innerHTML = `Android (Kotlin/Java), KMP, iOS/SwiftUI, Flutter, Spring Boot.`;
+                                responseDiv.innerHTML = `• Mobile: Android (Kotlin/Java), KMP, iOS/SwiftUI, Flutter<br>• Backend: Spring Boot, Node.js, Django`;
                                 break;
                             case 'projects':
-                                responseLine.innerHTML = `Navigating to projects...`;
+                                responseDiv.innerHTML = `<span class="text-emerald-400">-> Navigating to projects section...</span>`;
                                 window.location.hash = "#projects";
                                 break;
                             case 'location':
-                                responseLine.innerHTML = `Canada 🇨🇦 | Open to global mobile opportunities.`;
+                                responseDiv.innerHTML = `Based in Canada 🇨🇦 | Open for global collaborations.`;
                                 break;
                             case 'hire':
-                                responseLine.innerHTML = `Awesome! Redirecting to contact section...`;
+                                responseDiv.innerHTML = `<span class="text-emerald-400">-> Redirecting to contact info...</span>`;
                                 window.location.hash = "#contact";
                                 break;
                             case 'clear':
-                                terminalBody.innerHTML = `<p class="text-emerald-400">Console reset. Type 'help' for commands.</p>`;
+                                terminalBody.innerHTML = `<p class="text-emerald-400 terminal-glow">✓ Terminal wiped. Type 'help' for commands.</p>`;
                                 inputField.value = "";
-                                terminalBody.scrollTop = terminalBody.scrollHeight;
+                                terminalBody.scrollTop = 0;
                                 return;
                             default:
-                                responseLine.innerHTML = `command not found: ${escapeHtml(cmd)}. Type 'help'.`;
+                                responseDiv.innerHTML = `<span class="text-red-400">zsh: command not found: ${escapeHtml(cmd)}. Type 'help'.</span>`;
                         }
 
-                        terminalBody.appendChild(responseLine);
+                        terminalBody.appendChild(responseDiv);
                         inputField.value = "";
                         terminalBody.scrollTop = terminalBody.scrollHeight;
                     }
@@ -184,15 +197,13 @@
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
 
+        // Fully functional minimize toggle for the terminal body & input wrapper
         function toggleTerminalMinimize() {
-            const body = document.getElementById("terminal-body");
-            const inputContainer = document.querySelector("#dev-terminal-widget .bg-\\[\\#0b0f19\\]");
-            if (body.classList.contains("hidden")) {
-                body.classList.remove("hidden");
-                inputContainer.classList.remove("hidden");
+            const contentWrap = document.getElementById("terminal-content-wrap");
+            if (contentWrap.classList.contains("hidden")) {
+                contentWrap.classList.remove("hidden");
             } else {
-                body.classList.add("hidden");
-                inputContainer.classList.add("hidden");
+                contentWrap.classList.add("hidden");
             }
         }
     </script>
