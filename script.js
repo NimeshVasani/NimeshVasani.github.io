@@ -87,11 +87,25 @@ document.addEventListener("DOMContentLoaded", () => {
         fetchPromises.push(pExtra);
     }
 
+ // ==========================================
+    // Run Scroll Spy & Handle URL Hashes AFTER templates load
+    // ==========================================
     Promise.all(fetchPromises)
         .then(() => {
             console.log("📂 Step 1: All HTML templates successfully fetched!");
             setTimeout(() => {
                 initializeScrollSpy();
+
+                // FIX: If arriving from another page with a hash (e.g. index.html#projects), 
+                // scroll to it now that the asynchronous templates are fully loaded into the DOM!
+                if (window.location.hash) {
+                    const targetElement = document.querySelector(window.location.hash);
+                    if (targetElement) {
+                        setTimeout(() => {
+                            customSmoothScrollTo(targetElement, 650, 80);
+                        }, 100);
+                    }
+                }
             }, 150); 
         })
         .catch(err => {
@@ -585,7 +599,7 @@ document.addEventListener("click", (e) => {
     const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
     const activeClasses = ["bg-white/10", "text-[#E14D4D]", "border-white/10", "backdrop-blur-md", "shadow-sm"];
     const defaultClasses = ["text-gray-400", "border-transparent"];
-    console.log("v1")
+    console.log("v2")
 
     navLinks.forEach(link => {
         const linkTarget = link.getAttribute("data-target");
