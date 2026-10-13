@@ -598,6 +598,7 @@ window.toggleAccordion = function(id) {
 // ==========================================
 // 8. GLOBAL EVENT LISTENERS (Cross-Page & Smooth Scroll Safe)
 // ==========================================
+
 document.addEventListener("click", (e) => {
     const navLink = e.target.closest("[data-target]");
     if (!navLink) return;
@@ -605,13 +606,9 @@ document.addEventListener("click", (e) => {
     const targetId = navLink.getAttribute("data-target");
     const element = document.getElementById(targetId);
 
-    // If we are on a subpage (like bio or blog) and the target section isn't on this page,
-    // let the default link behavior redirect back to index.html with the anchor hash.
+    // If the target section doesn't exist on this page (e.g. we are on bio.html or blog.html),
+    // let the default anchor link behavior take the user back to index.html with the hash.
     if (!element) {
-        return; 
-    }
-
-    if (targetId === "home" && (window.location.pathname.includes("/bio") || window.location.pathname.includes("/blog"))) {
         return; 
     }
 
