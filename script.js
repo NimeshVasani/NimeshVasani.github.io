@@ -477,19 +477,12 @@ function initializeMobileMenu() {
 // ==========================================
 // 6. SCROLL SPY ENGINE (Updated for data-target)
 // ==========================================
+// ==========================================
+// 6. SCROLL SPY ENGINE (Cross-Page & Subpage Aware)
+// ==========================================
 function initializeScrollSpy() {
     const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
-    
-    const sections = [];
-    navLinks.forEach(link => {
-        const targetId = link.getAttribute("data-target");
-        if (targetId) {
-            const element = document.getElementById(targetId);
-            if (element && !sections.includes(element)) {
-                sections.push(element);
-            }
-        }
-    });
+    const currentPath = window.location.pathname;
 
     const activeClasses = [
         "bg-white/10",
@@ -508,9 +501,53 @@ function initializeScrollSpy() {
         link.classList.add("border", "transition-all", "duration-300", "ease-in-out");
     });
 
+    // Helper to highlight a specific tab by its target name
+    function forceSetActive(targetName) {
+        navLinks.forEach(link => {
+            const targetId = link.getAttribute("data-target");
+            if (targetId === targetName) {
+                link.classList.add(...activeClasses);
+                link.classList.remove(...defaultClasses);
+                if (link.classList.contains("mobile-nav-link")) {
+                    link.classList.add("text-[#D4AF37]");
+                }
+            } else {
+                link.classList.remove(...activeClasses);
+                link.classList.add(...defaultClasses);
+                if (link.classList.contains("mobile-nav-link")) {
+                    link.classList.remove("text-[#D4AF37]");
+                }
+            }
+        });
+    }
+
+    // IF WE ARE ON THE BIO PAGE: Force-highlight Bio tab and stop scroll spy
+    if (currentPath.includes("bio")) {
+        forceSetActive("bio");
+        return;
+    }
+
+    // IF WE ARE ON THE BLOG PAGE: Force-highlight Blog tab and stop scroll spy
+    if (currentPath.includes("blog")) {
+        forceSetActive("blog");
+        return;
+    }
+
+    // OTHERWISE (We are on the Home page): Run normal section tracking
+    const sections = [];
+    navLinks.forEach(link => {
+        const targetId = link.getAttribute("data-target");
+        if (targetId) {
+            const element = document.getElementById(targetId);
+            if (element && !sections.includes(element)) {
+                sections.push(element);
+            }
+        }
+    });
+
     function updateActiveSection() {
         if (window.scrollY < 120) {
-            setActiveLink("home");
+            forceSetActive("home");
             return;
         }
 
@@ -520,7 +557,6 @@ function initializeScrollSpy() {
 
         sections.forEach(section => {
             const rect = section.getBoundingClientRect();
-
             if (rect.bottom < 0 || rect.top > window.innerHeight) return;
 
             const sectionCenter = rect.top + rect.height / 2;
@@ -533,30 +569,8 @@ function initializeScrollSpy() {
         });
 
         if (currentSection) {
-            setActiveLink(currentSection);
+            forceSetActive(currentSection);
         }
-    }
-
-    function setActiveLink(activeId) {
-        navLinks.forEach(link => {
-            const targetId = link.getAttribute("data-target");
-
-            if (targetId === activeId) {
-                link.classList.add(...activeClasses);
-                link.classList.remove(...defaultClasses);
-                
-                if (link.classList.contains("mobile-nav-link")) {
-                    link.classList.add("text-[#D4AF37]");
-                }
-            } else {
-                link.classList.remove(...activeClasses);
-                link.classList.add(...defaultClasses);
-                
-                if (link.classList.contains("mobile-nav-link")) {
-                    link.classList.remove("text-[#D4AF37]");
-                }
-            }
-        });
     }
 
     updateActiveSection();
@@ -574,7 +588,6 @@ function initializeScrollSpy() {
 
     window.addEventListener("resize", updateActiveSection);
 }
-
 // ==========================================
 // 7. ACCORDION (Exposed Globally)
 // ==========================================
