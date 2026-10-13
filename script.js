@@ -585,7 +585,7 @@ document.addEventListener("click", (e) => {
     const navLinks = document.querySelectorAll("#desktop-nav .nav-link, #mobile-menu .mobile-nav-link");
     const activeClasses = ["bg-white/10", "text-[#E14D4D]", "border-white/10", "backdrop-blur-md", "shadow-sm"];
     const defaultClasses = ["text-gray-400", "border-transparent"];
-    console.og("v1")
+    console.log("v1")
 
     navLinks.forEach(link => {
         const linkTarget = link.getAttribute("data-target");
