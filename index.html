@@ -29,6 +29,13 @@
             border-radius: 4px;
         }
 
+        /* Active Nav Link Styling */
+        .nav-link.active {
+            background-color: #E14D4D !important;
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+
         /* Keyframe Animations for Hero Entry */
         @keyframes slideFromLeft {
             0% { transform: translateX(-50px); opacity: 0; }
@@ -50,8 +57,11 @@
 </head>
 <body class="bg-[#0B0F19] text-gray-100 font-sans leading-relaxed relative overflow-x-hidden min-h-screen">
 
+    <!-- FIXED FULL-SCREEN STARFIELD CANVAS (Visible on entire website during scroll) -->
+    <canvas id="hero-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
     <!-- ========================================== -->
-    <!-- 1. HEADER CONTAINER (Glass Pill Layout) -->
+    <!-- 1. HEADER CONTAINER (Glass Pill Layout with Active Red Tab) -->
     <!-- ========================================== -->
     <header class="sticky top-0 z-50 w-full bg-[#0B0F19]/80 backdrop-blur-xl border-b border-white/10 transition-all duration-300">
         <nav class="max-w-7xl mx-auto px-6 py-3.5 flex items-center justify-between relative">
@@ -65,12 +75,12 @@
 
             <!-- Center: Floating Glass Pill Navigation Tabs -->
             <div class="hidden md:flex items-center space-x-1 bg-[#111827]/80 border border-white/10 p-1.5 rounded-full shadow-lg backdrop-blur-md" id="desktop-nav">
-                <a href="#home" class="px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200">Home</a>
-                <a href="#skills" class="px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200">Skills</a>
-                <a href="#projects" class="px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200">Projects</a>
-                <a href="#experience" class="px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200">Experience</a>
-                <a href="blog.html" class="px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200">Blog</a>         
-                <a href="bio.html" class="px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200">Bio</a>
+                <a href="#home" class="nav-link active px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Home</a>
+                <a href="#skills" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Skills</a>
+                <a href="#projects" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Projects</a>
+                <a href="#experience" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Experience</a>
+                <a href="blog.html" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Blog</a>         
+                <a href="bio.html" class="nav-link px-4 py-1.5 rounded-full text-xs font-medium text-gray-300 hover:text-white transition-all duration-200">Bio</a>
             </div>
             
             <!-- Right: Social Icons & Mobile Toggle -->
@@ -100,30 +110,33 @@
             <a href="#home" class="block text-gray-300 hover:text-[#E14D4D] py-1">Home</a>
             <a href="#skills" class="block text-gray-300 hover:text-[#E14D4D] py-1">Skills</a>
             <a href="#projects" class="block text-gray-300 hover:text-[#E14D4D] py-1">Projects</a>
-            <a href="#experience" class="block text-gray-300 hover:text-[#E14D4D] py-1">Station</a>
+            <a href="#experience" class="block text-gray-300 hover:text-[#E14D4D] py-1">Experience</a>
             <a href="blog.html" class="block text-gray-300 hover:text-[#E14D4D] py-1">Blog</a>
             <a href="bio.html" class="block text-gray-300 hover:text-[#E14D4D] py-1">Bio</a>
         </div>
     </header>
 
     <!-- ========================================== -->
-    <!-- 2. HOME CONTAINER (Half-Page Video + Falling Stars) -->
+    <!-- 2. HOME CONTAINER (Centered Half Blackhole + Purple Nebula) -->
     <!-- ========================================== -->
-    <section id="home" class="min-h-screen flex flex-col justify-between pt-24 px-6 md:px-12 pb-8 relative font-mono bg-[#0B0F19] overflow-hidden">
+    <section id="home" class="min-h-screen flex flex-col justify-between pt-24 px-6 md:px-12 pb-8 relative font-mono overflow-hidden">
         
-        <!-- Top Half Background Video Container with Fade -->
-        <div class="absolute top-0 left-0 w-full h-[65vh] overflow-hidden pointer-events-none z-0">
-            <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-60">
+        <!-- TOP NEBULA & BLACKHOLE BACKGROUND WRAPPER -->
+        <div class="absolute top-0 left-0 w-full h-[50vh] overflow-hidden pointer-events-none z-10 flex items-center justify-center">
+            <!-- Radial Cosmic Purple Nebula Glow Effect -->
+            <div class="absolute top-0 w-[800px] h-[400px] bg-radial from-purple-600/35 via-indigo-900/20 to-transparent blur-3xl pointer-events-none"></div>
+            
+            <!-- Video Centered -->
+            <video autoplay muted loop playsinline class="w-full h-full object-cover object-center opacity-70">
                 <source src="https://raw.githubusercontent.com/YourUsername/YourVideoRepo/main/blackhole.webm" type="video/webm">
             </video>
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B0F19]/40 to-[#0B0F19]"></div>
+            
+            <!-- Bottom Smooth Transition Mask into Dark BG -->
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B0F19]/50 to-[#0B0F19]"></div>
         </div>
 
-        <!-- Falling Star & Node Canvas Animation Overlay -->
-        <canvas id="hero-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-10"></canvas>
-
         <!-- Hero Content -->
-        <div class="max-w-4xl mx-auto my-auto w-full space-y-6 z-20 relative pt-12">
+        <div class="max-w-4xl mx-auto my-auto w-full space-y-6 z-20 relative pt-16">
             <div class="animate-slide-left space-y-4">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300 backdrop-blur-md">
                     <span class="w-2 h-2 rounded-full bg-[#E14D4D] animate-pulse"></span>
@@ -157,54 +170,90 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- 3. SKILLS SECTION -->
+    <!-- 3. SKILLS SECTION (Horizontal 3-Column Terminal Layout) -->
     <!-- ========================================== -->
-    <section id="skills" class="py-24 bg-[#0B0F19] relative z-20">
+    <section id="skills" class="py-24 relative z-20">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">My Technical Expertise</h2>
-                <p class="mt-4 text-gray-400">The tools, frameworks, and architectures I leverage to build highly performant digital solutions.</p>
+            
+            <!-- Section Title -->
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black italic tracking-wider text-white uppercase">
+                    MY EXPERTISE
+                </h2>
+                <a href="#projects" class="text-xs font-mono text-gray-400 hover:text-[#E14D4D] underline underline-offset-4 mt-2 inline-block">In Details 🔗</a>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-[#111827] p-8 rounded-xl border border-gray-800 hover:border-indigo-500/50 transition">
-                    <div class="w-12 h-12 bg-indigo-500/10 rounded-lg flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-mobile-screen-button text-2xl text-indigo-400"></i>
+            <!-- Horizontal 3-Column Container (Matches Wix reference) -->
+            <div class="border border-gray-700 bg-[#0B0F19]/90 backdrop-blur-md rounded-lg overflow-hidden grid grid-cols-1 md:grid-cols-3 font-mono">
+                
+                <!-- COLUMN 1: Backend Technology -->
+                <div class="p-8 border-b md:border-b-0 md:border-r border-gray-700 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-4 mb-6">
+                            <i class="fa-solid fa-code text-3xl text-[#E14D4D]"></i>
+                            <h3 class="text-xl font-bold text-white leading-tight">
+                                Backend<br>Technology
+                            </h3>
+                        </div>
+
+                        <span class="text-xs text-gray-500">&lt;h1&gt;</span>
+                        <ul class="space-y-2 text-sm text-gray-300 pl-4 py-2">
+                            <li>| - Spring Boot (Java)</li>
+                            <li>| - Node.js</li>
+                            <li>| - Django (Python)</li>
+                            <li>| - Express.js (JavaScript)</li>
+                            <li>| - Kotlin (backend development)</li>
+                        </ul>
+                        <span class="text-xs text-gray-500">&lt;/h1&gt;</span>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-4">Mobile Apps</h3>
-                    <ul class="space-y-3 text-gray-400 text-sm">
-                        <li class="flex items-center"><span class="w-2 h-2 bg-indigo-400 rounded-full mr-2"></span> Android (Kotlin / Java)</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-indigo-400 rounded-full mr-2"></span> Kotlin Multiplatform (KMP)</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-indigo-400 rounded-full mr-2"></span> iOS (Swift / SwiftUI)</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-indigo-400 rounded-full mr-2"></span> Flutter & React Native</li>
-                    </ul>
                 </div>
 
-                <div class="bg-[#111827] p-8 rounded-xl border border-gray-800 hover:border-purple-500/50 transition">
-                    <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-server text-2xl text-purple-400"></i>
+                <!-- COLUMN 2: Mobile App Development -->
+                <div class="p-8 border-b md:border-b-0 md:border-r border-gray-700 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-4 mb-6">
+                            <i class="fa-solid fa-mobile-screen-button text-3xl text-purple-400"></i>
+                            <h3 class="text-xl font-bold text-white leading-tight">
+                                Mobile App<br>Development
+                            </h3>
+                        </div>
+
+                        <span class="text-xs text-gray-500">&lt;h1&gt;</span>
+                        <ul class="space-y-2 text-sm text-gray-300 pl-4 py-2">
+                            <li>| - Android (Kotlin / Java)</li>
+                            <li>| - Flutter</li>
+                            <li>| - iOS (Swift)</li>
+                            <li>| - KMP (Kotlin Multiplatform)</li>
+                            <li>| - React Native</li>
+                        </ul>
+                        <span class="text-xs text-gray-500">&lt;/h1&gt;</span>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-4">Backend</h3>
-                    <ul class="space-y-3 text-gray-400 text-sm">
-                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-400 rounded-full mr-2"></span> Spring Boot (Java)</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-400 rounded-full mr-2"></span> Node.js & Express.js</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-400 rounded-full mr-2"></span> Django (Python)</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-400 rounded-full mr-2"></span> Kotlin (Backend Dev)</li>
-                    </ul>
                 </div>
 
-                <div class="bg-[#111827] p-8 rounded-xl border border-gray-800 hover:border-pink-500/50 transition">
-                    <div class="w-12 h-12 bg-pink-500/10 rounded-lg flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-database text-2xl text-pink-400"></i>
+                <!-- COLUMN 3: Database & Other Tech -->
+                <div class="p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-4 mb-6">
+                            <i class="fa-solid fa-laptop-code text-3xl text-[#E14D4D]"></i>
+                            <h3 class="text-xl font-bold text-white leading-tight">
+                                Database &amp;<br>Other Tech
+                            </h3>
+                        </div>
+
+                        <span class="text-xs text-gray-500">&lt;h1&gt;</span>
+                        <ul class="space-y-2 text-sm text-gray-300 pl-4 py-2">
+                            <li>| - MySQL</li>
+                            <li>| - Room (Android-specific)</li>
+                            <li>| - SQLite (Android-specific)</li>
+                            <li>| - Firebase Real-time Database</li>
+                            <li>| - MongoDB</li>
+                            <li>| - Git / GitHub (VCS)</li>
+                            <li>| - CI/CD</li>
+                        </ul>
+                        <span class="text-xs text-gray-500">&lt;/h1&gt;</span>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-4">Databases & Tools</h3>
-                    <ul class="space-y-3 text-gray-400 text-sm">
-                        <li class="flex items-center"><span class="w-2 h-2 bg-pink-400 rounded-full mr-2"></span> MySQL & SQLite</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-pink-400 rounded-full mr-2"></span> MongoDB</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-pink-400 rounded-full mr-2"></span> Room & Firebase Realtime</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-pink-400 rounded-full mr-2"></span> VCS (Git/GitHub) & CI/CD</li>
-                    </ul>
                 </div>
+
             </div>
         </div>
     </section>
@@ -248,8 +297,17 @@
 
     <!-- Canvas & Terminal Controller Scripts -->
     <script>
-        // Terminal Logic
+        // Dynamic Header Nav Active State Switching
         document.addEventListener("DOMContentLoaded", () => {
+            const navLinks = document.querySelectorAll("#desktop-nav .nav-link");
+            navLinks.forEach(link => {
+                link.addEventListener("click", function() {
+                    navLinks.forEach(l => l.classList.remove("active"));
+                    this.classList.add("active");
+                });
+            });
+
+            // Terminal Logic
             const inputField = document.getElementById("terminal-input");
             const terminalBody = document.getElementById("terminal-body");
 
@@ -272,7 +330,7 @@
                                 responseDiv.innerHTML = `Available commands: <br><span class="text-yellow-400">skills</span>, <span class="text-yellow-400">projects</span>, <span class="text-yellow-400">location</span>, <span class="text-yellow-400">hire</span>, <span class="text-yellow-400">clear</span>`;
                                 break;
                             case 'skills':
-                                responseDiv.innerHTML = `• Mobile: Android (Kotlin/Java), KMP, iOS/SwiftUI, Flutter<br>• Backend: Spring Boot, Node.js, Django`;
+                                responseDiv.innerHTML = `• Mobile: Android (Kotlin/Java), KMP, iOS, Flutter, React Native<br>• Backend: Spring Boot, Node.js, Django`;
                                 break;
                             case 'projects':
                                 responseDiv.innerHTML = `<span class="text-emerald-400">-> Navigating to projects section...</span>`;
@@ -283,7 +341,7 @@
                                 break;
                             case 'hire':
                                 responseDiv.innerHTML = `<span class="text-emerald-400">-> Redirecting to contact info...</span>`;
-                                window.location.hash = "#contact";
+                                window.location.hash = "#extra";
                                 break;
                             case 'clear':
                                 terminalBody.innerHTML = `<p class="text-emerald-400 terminal-glow">✓ Terminal wiped. Type 'help' for commands.</p>`;
@@ -291,189 +349,4 @@
                                 terminalBody.scrollTop = 0;
                                 return;
                             default:
-                                responseDiv.innerHTML = `<span class="text-red-400">zsh: command not found: ${escapeHtml(cmd)}. Type 'help'.</span>`;
-                        }
-
-                        terminalBody.appendChild(responseDiv);
-                        inputField.value = "";
-                        terminalBody.scrollTop = terminalBody.scrollHeight;
-                    }
-                });
-            }
-        });
-
-        function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-
-        function toggleTerminalMinimize() {
-            const contentWrap = document.getElementById("terminal-content-wrap");
-            if (contentWrap.classList.contains("hidden")) {
-                contentWrap.classList.remove("hidden");
-            } else {
-                contentWrap.classList.add("hidden");
-            }
-        }
-
-        // Falling Stars & Shooting Star Sky Animation Canvas Script
-        (function() {
-            const canvas = document.getElementById('hero-canvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-
-            let width, height;
-            let stars = [];
-            let shootingStars = [];
-            let mouse = { x: null, y: null, radius: 140 };
-
-            function resize() {
-                width = canvas.width = canvas.offsetWidth;
-                height = canvas.height = canvas.offsetHeight;
-            }
-
-            window.addEventListener('resize', resize);
-            resize();
-
-            window.addEventListener('mousemove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                mouse.x = e.clientX - rect.left;
-                mouse.y = e.clientY - rect.top;
-            });
-
-            window.addEventListener('mouseleave', () => {
-                mouse.x = null;
-                mouse.y = null;
-            });
-
-            // Regular Twinkling Star Class
-            class Star {
-                constructor() {
-                    this.x = Math.random() * width;
-                    this.y = Math.random() * height;
-                    this.vx = (Math.random() - 0.5) * 0.4;
-                    this.vy = (Math.random() - 0.5) * 0.4;
-                    this.size = Math.random() * 1.5 + 0.5;
-                    this.alpha = Math.random() * 0.7 + 0.3;
-                    this.alphaChange = (Math.random() * 0.02) + 0.005;
-                }
-
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-
-                    if (this.x < 0 || this.x > width) this.vx *= -1;
-                    if (this.y < 0 || this.y > height) this.vy *= -1;
-
-                    // Twinkle effect
-                    this.alpha += this.alphaChange;
-                    if (this.alpha > 1 || this.alpha < 0.2) {
-                        this.alphaChange *= -1;
-                    }
-                }
-
-                draw() {
-                    ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-
-            // Falling / Shooting Star Class
-            class ShootingStar {
-                constructor() {
-                    this.reset();
-                }
-
-                reset() {
-                    this.x = Math.random() * width;
-                    this.y = 0;
-                    this.len = Math.random() * 80 + 40;
-                    this.speed = Math.random() * 8 + 6;
-                    this.angle = Math.PI / 4; // Diagonal falling angle (45 degrees)
-                    this.opacity = Math.random() * 0.8 + 0.2;
-                }
-
-                update() {
-                    this.x += this.speed * Math.cos(this.angle);
-                    this.y += this.speed * Math.sin(this.angle);
-
-                    if (this.x > width || this.y > height) {
-                        this.reset();
-                    }
-                }
-
-                draw() {
-                    ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                    ctx.lineWidth = 1.2;
-                    ctx.beginPath();
-                    ctx.moveTo(this.x, this.y);
-                    ctx.lineTo(this.x - this.len * Math.cos(this.angle), this.y - this.len * Math.sin(this.angle));
-                    ctx.stroke();
-                }
-            }
-
-            // Initialize Stars and Shooting Stars
-            const starCount = Math.min(Math.floor((width * height) / 12000), 70);
-            for (let i = 0; i < starCount; i++) {
-                stars.push(new Star());
-            }
-
-            for (let i = 0; i < 3; i++) {
-                shootingStars.push(new ShootingStar());
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, width, height);
-
-                // Update & draw regular twinkling stars and connect close nodes
-                for (let i = 0; i < stars.length; i++) {
-                    stars[i].update();
-                    stars[i].draw();
-
-                    for (let j = i + 1; j < stars.length; j++) {
-                        const dx = stars[i].x - stars[j].x;
-                        const dy = stars[i].y - stars[j].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-
-                        if (dist < 100) {
-                            ctx.strokeStyle = `rgba(225, 77, 77, ${0.1 * (1 - dist / 100)})`;
-                            ctx.lineWidth = 0.5;
-                            ctx.beginPath();
-                            ctx.moveTo(stars[i].x, stars[i].y);
-                            ctx.lineTo(stars[j].x, stars[j].y);
-                            ctx.stroke();
-                        }
-                    }
-
-                    // Mouse interaction
-                    if (mouse.x !== null && mouse.y !== null) {
-                        const mdx = stars[i].x - mouse.x;
-                        const mdy = stars[i].y - mouse.y;
-                        const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-
-                        if (mdist < mouse.radius) {
-                            ctx.strokeStyle = `rgba(212, 175, 55, ${0.2 * (1 - mdist / mouse.radius)})`;
-                            ctx.lineWidth = 0.6;
-                            ctx.beginPath();
-                            ctx.moveTo(stars[i].x, stars[i].y);
-                            ctx.lineTo(mouse.x, mouse.y);
-                            ctx.stroke();
-                        }
-                    }
-                }
-
-                // Update & draw shooting stars
-                for (let i = 0; i < shootingStars.length; i++) {
-                    shootingStars[i].update();
-                    shootingStars[i].draw();
-                }
-
-                requestAnimationFrame(animate);
-            }
-
-            animate();
-        })();
-    </script>
-</body>
-</html>
+                                responseDiv.innerHTML = `<span class="
